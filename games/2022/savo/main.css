@@ -1,0 +1,17 @@
+canvas {
+	justify-self: center;
+	align-self: center;
+}
+
+body {
+	margin: 0;
+
+	width: 100%;
+	height:100%;
+
+	display: grid;
+}
+
+html {
+	height: 100%;
+}
