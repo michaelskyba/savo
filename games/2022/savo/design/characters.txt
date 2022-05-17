@@ -9,3 +9,67 @@ Valeria: Protagonists's mother
 Frontinus: Akvedukto operator
 	Sextus Julius Frontinus
 	40 - 103 AD
+
+Augustus: Optional, "hidden"(?) boss
+	Caesar Augustus
+	27 BC - 14 AD
+
+	Before you fight him, you have to wait for 2 minutes, doing nothing. (Some
+	dialogue about "But first, take a moment to really consider what you're
+	doing. Is this worth it? Do you really stand to gain from fighting me?"
+		You can skip this using Tiberius's time machine
+
+	The fight should be the most difficult in the game, acting as "side
+	content". This also puts more value on the Tiberius interaction
+		There should also be a boss rush area, which Augustus takes part in
+
+	Maybe have a hint like "I wish I had a [time machine] right now... this
+	waiting feels like a waste of time." half-way through
+
+	Maybe increase the time required by 1 second each death
+
+Tiberius: Time machine provider
+	Tiberius Claudius Caesar Britannicus
+	41 - 55 AD
+
+	Claudia finds some kind of building where swords (Claudia uses a sword in
+	combat) are forbidden. This is enforced by some other (possibly unnamed)
+	guard character which you have to speak to (to give your sword) when
+	entering. Inside the building you find Tiberius, who arrogantly declares
+	himself "perfectly logical". He owns a primitive time machine, which he says
+	he will give you if you manage to beat him in an argument. His positions are
+	that
+	1. It's impossible to truly know anything
+	2. No moral statement is objectively true or false
+
+	When arguing on either topic, you go in a circle, with the same ~5 responses
+	in a loop. Come up with them later in an event txt file
+
+	Dialogue prompts should stop you from moving, so the only way to exit the
+	interaction is by selecting a "Leave" dialogue option. This should give a
+	hint (maybe in a different text colour) that there might be some other way
+	of convincing him to give you the time machine
+
+	The solution is to threaten his livelihood. Without a weapon, you can't do
+	much, and you can't attack him with your sword because the guard has it.
+	Instead, you have to use a knife that you find somewhere else (maybe from an
+	interaction with Claudia Antonia). The knife doesn't count as a sword (which
+	should come up as a hint too, when you acquire it - "I wonder if this
+	[counts as a sword] (different colour?)..." or something) which lets you
+	bring it into the building and threaten Tiberius.
+
+	If you do so, Tiberius gives you the time machine and then mocks you in any
+	future interactions for relying on the knife instead of "arguments". With
+	the time machine, you can skip the two-minute delay at the start of the
+	Augustus fight, which makes it much easier to get practice in and thus
+	defeat him
+
+	Also, Tiberius's speech style should be quite different:
+	- lowercase letters
+	- no punctuation (including apostrophes - "dont")
+	- short forms like "u" instead of "you"
+	- other mistakes like "ppl like u come here everyday"
+	Maybe Claudia should comment on it once "You mean 'every day'? Are you
+	completely illiterate or something? I can barely understand any word you
+	say..." - Tiberius would reply mockingly that she's attacking him instead of
+	his arguments
