@@ -19,3 +19,5 @@ const mainMenu = {
 	}
 }
 mainMenu.draw = mainMenu.draw.bind(mainMenu)
+
+export default mainMenu

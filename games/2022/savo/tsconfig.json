@@ -1,7 +1,8 @@
 {
 	"compilerOptions": {
 		"target": "es5",
-		"watch": true,
-		"lib": ["dom", "es2015"]
-	}
+		"lib": ["dom", "es2015"],
+		"outDir": "out-ts"
+	},
+	"include": ["./src/*.ts"]
 }
