@@ -2,6 +2,8 @@ import { ctx } from "./canvas"
 import menuOption from "./menuOption"
 
 const mainMenu = {
+	selected: 0,
+
 	options: [
 		new menuOption(0, "Start"),
 		new menuOption(1, "Credits")
@@ -15,12 +17,21 @@ const mainMenu = {
 		ctx.fillStyle = "#4a4a4a"
 		ctx.fillText("Malfacile Gajnita Savo", 50, 50)
 
-		this.options[0].draw(true)
-		this.options[1].draw(false)
+		for (let i = 0; i < this.options.length; i++) {
+			this.options[i].draw(this.selected == i)
+		}
+
+		this.selected = 1 - this.selected
 
 		window.requestAnimationFrame(this.draw)
 	}
 }
 mainMenu.draw = mainMenu.draw.bind(mainMenu)
+
+/*
+const handleKey = e => {
+	if (e.code)
+}
+*/
 
 export default mainMenu
