@@ -1,1 +1,2 @@
-*.js
+out-ts
+public/build.js
