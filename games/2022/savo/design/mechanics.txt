@@ -1,0 +1,15 @@
+Dialogue / text
+	Use (e.g.) Z to select an option or progress through dialogue
+
+	The letters should appear incrementally like in Undertale
+		Pressing Z would finish rendering it instantly if it's not done yet
+
+	When there's something particularly important, especially something easy to
+	miss, like a somewhat vague hint about an action required for progression,
+	make the important part's text colour different
+
+	Whenever a character's text prompt appears, it should play a sound (one
+	note/sound - not a melody). Each of Claudia's might play a recorder,
+	Valeria's a piano, Tiberius's a trumpet, etc.
+
+	Maybe each character could have a different text colour as well
