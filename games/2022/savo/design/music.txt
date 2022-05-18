@@ -1,0 +1,17 @@
+Maybe have the music decrease in volume (if that's possible in JavaScript -
+probably) while you are in a dialogue/cutscene
+
+Giorno's theme from JoJo's bizarre adventure
+	- For some kind of boss
+	- Have the aggressiveness of its attacks change based on the segment of the
+	  song that's playing
+	- Maybe you win once it finishes? Or it would loop, replaying the same
+	attack patterns
+
+Box 15 from Danganronpa
+	For some kind of overworld area
+	Or maybe for e.g. all of Lerwick
+
+Où est passée ma bohème
+	For the starting area, including Claudia's house and the surrounding
+	overworld (but probably not the aqueduct)
