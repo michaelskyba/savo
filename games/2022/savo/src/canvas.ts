@@ -1,2 +1,4 @@
 export const canvas = document.getElementById("canvas") as HTMLCanvasElement
-export default const ctx = canvas.getContext("2d")
+const ctx = canvas.getContext("2d")
+
+export default ctx

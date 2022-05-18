@@ -11,7 +11,7 @@ const mainMenu = {
 		new menuOption(1, "Credits")
 	],
 
-	handleInput(e: number) {
+	handleInput(e: KeyboardEvent) {
 		if (e.code == "ArrowUp" || e.code == "KeyK") mainMenu.selected = 0
 		if (e.code == "ArrowDown" || e.code == "KeyJ") mainMenu.selected = 1
 
@@ -39,8 +39,7 @@ const mainMenu = {
 			window.requestAnimationFrame(this.draw)
 
 		// Once the user selects "Start", we need to switch screens
-		else
-			window.requestAnimationFrame(claudiaHouse.draw)
+		else window.requestAnimationFrame(claudiaHouse.draw)
 	}
 }
 
