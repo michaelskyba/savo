@@ -1,4 +1,4 @@
-import { ctx } from "./canvas"
+import {ctx} from "./canvas"
 import menuOption from "./menuOption"
 
 const mainMenu = {
@@ -31,4 +31,4 @@ const handleKeys = e => {
 	if (e.code == "ArrowDown" || e.code == "KeyJ") mainMenu.selected = 1
 }
 
-export { mainMenu, handleKeys }
+export {mainMenu, handleKeys}
