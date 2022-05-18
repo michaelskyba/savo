@@ -1,0 +1,1 @@
+window.requestAnimationFrame(mainMenu.draw)
