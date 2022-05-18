@@ -1,4 +1,6 @@
-class menuOption {
+import { ctx } from "./canvas"
+
+export default class menuOption {
 	id: number
 	text: string
 

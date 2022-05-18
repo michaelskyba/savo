@@ -1,3 +1,6 @@
+import { ctx } from "./canvas"
+import menuOption from "./menuOption"
+
 const mainMenu = {
 	options: [
 		new menuOption(0, "Start"),
