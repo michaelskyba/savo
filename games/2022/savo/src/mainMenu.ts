@@ -21,17 +21,14 @@ const mainMenu = {
 			this.options[i].draw(this.selected == i)
 		}
 
-		this.selected = 1 - this.selected
-
 		window.requestAnimationFrame(this.draw)
 	}
 }
 mainMenu.draw = mainMenu.draw.bind(mainMenu)
 
-/*
-const handleKey = e => {
-	if (e.code)
+const handleKeys = e => {
+	if (e.code == "ArrowUp" || e.code == "KeyK") mainMenu.selected = 0
+	if (e.code == "ArrowDown" || e.code == "KeyJ") mainMenu.selected = 1
 }
-*/
 
-export default mainMenu
+export { mainMenu, handleKeys }
