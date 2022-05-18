@@ -1,4 +1,4 @@
-import {mainMenu, handleKeys} from "./mainMenu"
+import mainMenu from "./mainMenu"
 
-document.onkeydown = handleKeys
+document.onkeydown = mainMenu.handleInput
 window.requestAnimationFrame(mainMenu.draw)

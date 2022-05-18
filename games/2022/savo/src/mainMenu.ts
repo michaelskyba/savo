@@ -1,6 +1,5 @@
-import {ctx} from "./canvas"
+import ctx from "./canvas"
 import menuOption from "./menuOption"
-
 import claudiaHouse from "./claudiaHouse"
 
 const mainMenu = {
@@ -11,6 +10,18 @@ const mainMenu = {
 		new menuOption(0, "Start"),
 		new menuOption(1, "Credits")
 	],
+
+	handleInput(e: number) {
+		if (e.code == "ArrowUp" || e.code == "KeyK") mainMenu.selected = 0
+		if (e.code == "ArrowDown" || e.code == "KeyJ") mainMenu.selected = 1
+
+		// Select option
+		if (e.code == "KeyZ") {
+			if (mainMenu.selected == 0) {
+				mainMenu.screen = "Claudia's house"
+			}
+		}
+	},
 
 	draw() {
 		ctx.fillStyle = "#f9f9f9"
@@ -32,18 +43,6 @@ const mainMenu = {
 			window.requestAnimationFrame(claudiaHouse.draw)
 	}
 }
+
 mainMenu.draw = mainMenu.draw.bind(mainMenu)
-
-const handleKeys = e => {
-	if (e.code == "ArrowUp" || e.code == "KeyK") mainMenu.selected = 0
-	if (e.code == "ArrowDown" || e.code == "KeyJ") mainMenu.selected = 1
-
-	// Select option
-	if (e.code == "KeyZ") {
-		if (mainMenu.selected == 0) {
-			mainMenu.screen = "Claudia's house"
-		}
-	}
-}
-
-export {mainMenu, handleKeys}
+export default mainMenu

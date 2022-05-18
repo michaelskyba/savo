@@ -1,4 +1,4 @@
-import {ctx} from "./canvas"
+import ctx from "./canvas"
 
 const claudiaHouse = {
 	draw() {
