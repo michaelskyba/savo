@@ -1,6 +1,3 @@
 #!/bin/sh
-rm -rf out-ts
-rm public/bundle.js
-
 tsc
 npx rollup -c rollup.config.js
