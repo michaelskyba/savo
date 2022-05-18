@@ -1,4 +1,4 @@
-import ctx from "./canvas"
+import c from "./canvas"
 
 const player = {
 	x: 200,
@@ -6,8 +6,8 @@ const player = {
 	size: 50,
 
 	draw() {
-		ctx.fillStyle = "#2c8898"
-		ctx.fillRect(this.x, this.y, this.size, this.size)
+		c.fillStyle = "#2c8898"
+		c.frect(this.x, this.y, this.size, this.size)
 	}
 }
 
