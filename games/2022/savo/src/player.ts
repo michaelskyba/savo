@@ -40,7 +40,7 @@ const player = {
 	},
 
 	draw() {
-		c.fillStyle = "#2c8898"
+		c.fillStyle = "blue"
 		c.frect(this.x, this.y, this.size, this.size)
 	}
 }

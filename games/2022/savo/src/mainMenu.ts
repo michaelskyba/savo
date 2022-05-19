@@ -29,14 +29,14 @@ const mainMenu = {
 	},
 
 	draw() {
-		c.fillStyle = "#f9f9f9"
+		c.fillStyle = "white"
 		c.frect(0, 0, 1325, 325)
 
-		c.fillStyle = "#2c8898"
+		c.fillStyle = "blue"
 		c.frect(0, 325, 1325, 400)
 
 		c.font = "48px monospace"
-		c.fillStyle = "#4a4a4a"
+		c.fillStyle = "black"
 		c.text("Malfacile Gajnita Savo", 50, 50)
 
 		for (let i = 0; i < this.options.length; i++) {

@@ -18,10 +18,10 @@ const claudiaHouse = {
 	},
 
 	draw() {
-		c.fillStyle = "#f9f9f9"
+		c.fillStyle = "white"
 		c.frect(0, 0, 1325, 725)
 
-		c.fillStyle = "#982c61"
+		c.fillStyle = "purple"
 		c.frect(400, 0, 925, 725)
 
 		// Dialogue scene
