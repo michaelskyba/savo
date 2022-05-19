@@ -1,5 +1,5 @@
 import c from "./canvas"
-import menuOption from "./menuOption"
+import MenuOption from "./MenuOption"
 import claudiaHouse from "./claudiaHouse"
 
 const mainMenu = {
@@ -7,8 +7,8 @@ const mainMenu = {
 	screen: "Main menu",
 
 	options: [
-		new menuOption("Start", 150, 200),
-		new menuOption("Credits", 150, 260)
+		new MenuOption("Start", 150, 200),
+		new MenuOption("Credits", 150, 260)
 	],
 
 	handleInput(e: KeyboardEvent) {

@@ -1,12 +1,12 @@
 import c from "./canvas"
-import textBox from "./textBox"
+import TextBox from "./TextBox"
 
 let gray = "#f1f1f1"
 let black = "#4a4a4a"
 let white = "#f9f9f9"
 let purple = "#982c61"
 
-export default class menuOption extends textBox {
+export default class MenuOption extends TextBox {
 	constructor(text: string, x: number, y: number) {
 		super(text, x, y, 30, "serif", purple, white)
 	}

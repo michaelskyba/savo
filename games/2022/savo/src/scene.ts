@@ -1,4 +1,4 @@
-import textBox from "./textBox"
+import TextBox from "./TextBox"
 
 class Scene {
 	dialogue: string[][]
@@ -6,8 +6,8 @@ class Scene {
 
 	frame = 1
 
-	speaker: textBox | null
-	speech: textBox
+	speaker: TextBox | null
+	speech: TextBox
 
 	constructor(dialogue: string[][], playing?: boolean) {
 		this.dialogue = dialogue
@@ -18,10 +18,10 @@ class Scene {
 		let line = dialogue[this.frame]
 
 		if (line[0])
-			this.speaker = new textBox(line[0], 50, 550, 30, "serif", "black", "white")
+			this.speaker = new TextBox(line[0], 50, 550, 30, "serif", "black", "white")
 		else this.speaker = null
 
-		this.speech = new textBox(line[1], 50, 600, 30, "serif", "white", "black")
+		this.speech = new TextBox(line[1], 50, 600, 30, "serif", "white", "black")
 	}
 }
 

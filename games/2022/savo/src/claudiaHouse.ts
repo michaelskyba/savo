@@ -3,7 +3,7 @@ import player from "./player"
 
 import dialogue from "./dialogue_1"
 import Scene from "./scene"
-import textBox from "./textBox"
+import TextBox from "./TextBox"
 
 const scene: Scene | null = new Scene(dialogue.main)
 

@@ -1,6 +1,6 @@
 import c from "./canvas"
 
-export default class textBox {
+export default class TextBox {
 	text: string
 
 	x: number
