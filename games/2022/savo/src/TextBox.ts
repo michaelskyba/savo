@@ -32,7 +32,7 @@ export default class TextBox {
 
 		this.textWidth = c.textWidth(text)
 
-		this.width = this.textWidth * 1.1 + 20
+		this.width = this.textWidth + 40
 		this.height = this.fontSize + 10
 
 		this.fgColour = fgColour
@@ -42,20 +42,20 @@ export default class TextBox {
 	draw() {
 		c.beginPath()
 
+		c.strokeStyle = "black"
 		c.font = this.font
 
 		c.fillStyle = this.bgColour
 		c.rect(this.x, this.y, this.width, this.height)
-		c.fill()
 
-		// 0.05 = (1.1 - 1) / 2
-		let x = this.x + this.textWidth * 0.05 + 10
+		c.fill()
+		c.stroke()
 
 		// The y position of c.text is higher than it's supposed to be
 		// Adding the fontSize creates a decent but imperfect offset
 		let y = this.y + this.fontSize
 
 		c.fillStyle = this.fgColour
-		c.text(this.text, x, y)
+		c.text(this.text, this.x + 20, y)
 	}
 }
