@@ -32,6 +32,15 @@ const player = {
 		console.log(this.keyPressed)
 	},
 
+	move() {
+		let speed = 8
+
+		if (this.keyPressed.up) this.y -= speed
+		if (this.keyPressed.right) this.x += speed
+		if (this.keyPressed.left) this.x -= speed
+		if (this.keyPressed.down) this.y += speed
+	},
+
 	draw() {
 		c.fillStyle = "#2c8898"
 		c.frect(this.x, this.y, this.size, this.size)

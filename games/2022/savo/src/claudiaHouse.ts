@@ -18,6 +18,8 @@ const claudiaHouse = {
 		c.fillStyle = "#982c61"
 		c.frect(400, 0, 925, 725)
 
+		// .move() doesn't really belong in draw() but it's fine for now
+		player.move()
 		player.draw()
 
 		window.requestAnimationFrame(this.draw)
