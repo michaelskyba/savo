@@ -39,6 +39,14 @@ const mainMenu = {
 		c.fillStyle = "black"
 		c.text("Malfacile Gajnita Savo", 50, 50)
 
+		c.fillStyle = "white"
+		c.font = "48px serif"
+		c.text("Controls", 400, 400)
+		c.font = "20px monospace"
+		c.text("Arrow keys: Movement", 400, 450)
+		c.text("Z: UI Selection", 400, 480)
+		c.text("Other keys will be introduced later", 400, 510)
+
 		for (let i = 0; i < this.options.length; i++) {
 			this.options[i].show(this.selected == i)
 		}
