@@ -7,37 +7,42 @@ const mainMenu = {
 	screen: "Main menu",
 
 	options: [
-		new menuOption(0, "Start"),
-		new menuOption(1, "Credits")
+		new menuOption("Start", 150, 200),
+		new menuOption("Credits", 150, 260)
 	],
 
 	handleInput(e: KeyboardEvent) {
-		if (e.code == "ArrowUp" || e.code == "KeyK") mainMenu.selected = 0
-		if (e.code == "ArrowDown" || e.code == "KeyJ") mainMenu.selected = 1
+		console.log(this)
+
+		if (e.code == "ArrowUp" || e.code == "KeyK") this.selected = 0
+		if (e.code == "ArrowDown" || e.code == "KeyJ") this.selected = 1
 
 		// Select option
 		if (e.code == "KeyZ") {
 
 			// You pressed start, so enter the claudiaHouse object
-			if (mainMenu.selected == 0) {
+			if (this.selected == 0) {
 				claudiaHouse.init()
 
 				// Putting this in claudiaHouse.ts would require an additional import
-				mainMenu.screen = "Claudia's house"
+				this.screen = "Claudia's house"
 			}
 		}
 	},
 
 	draw() {
 		c.fillStyle = "#f9f9f9"
-		c.frect(0, 0, 1325, 725)
+		c.frect(0, 0, 1325, 325)
+
+		c.fillStyle = "#2c8898"
+		c.frect(0, 325, 1325, 400)
 
 		c.font = "48px monospace"
 		c.fillStyle = "#4a4a4a"
 		c.text("Malfacile Gajnita Savo", 50, 50)
 
 		for (let i = 0; i < this.options.length; i++) {
-			this.options[i].draw(this.selected == i)
+			this.options[i].show(this.selected == i)
 		}
 
 		if (this.screen == "Main menu")
@@ -49,4 +54,6 @@ const mainMenu = {
 }
 
 mainMenu.draw = mainMenu.draw.bind(mainMenu)
+mainMenu.handleInput = mainMenu.handleInput.bind(mainMenu)
+
 export default mainMenu
