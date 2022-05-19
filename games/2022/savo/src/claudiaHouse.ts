@@ -2,6 +2,15 @@ import c from "./canvas"
 import player from "./player"
 
 const claudiaHouse = {
+	init() {
+		document.onkeydown = e => {
+			player.handleKey("keydown", e)
+		}
+		document.onkeyup = e => {
+			player.handleKey("keyup", e)
+		}
+	},
+
 	draw() {
 		c.fillStyle = "#f9f9f9"
 		c.frect(0, 0, 1325, 725)

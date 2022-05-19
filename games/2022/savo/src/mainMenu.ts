@@ -17,7 +17,12 @@ const mainMenu = {
 
 		// Select option
 		if (e.code == "KeyZ") {
+
+			// You pressed start, so enter the claudiaHouse object
 			if (mainMenu.selected == 0) {
+				claudiaHouse.init()
+
+				// Putting this in claudiaHouse.ts would require an additional import
 				mainMenu.screen = "Claudia's house"
 			}
 		}
