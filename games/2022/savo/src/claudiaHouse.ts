@@ -9,18 +9,20 @@ const scene: Scene | null = new Scene(dialogue.main)
 
 const claudiaHouse = {
 	init() {
-		document.onkeydown = e => {
-			player.handleKey("keydown", e)
-			this.handleInput(e)
+		document.onkeydown = event => {
+			let key = event.code
+
+			player.handleKey("keydown", key)
+			this.handleInput(key)
 		}
 
-		document.onkeyup = e => {
-			player.handleKey("keyup", e)
+		document.onkeyup = event => {
+			player.handleKey("keyup", event.code)
 		}
 	},
 
-	handleInput(e: KeyboardEvent) {
-		if (e.code == "KeyZ") scene.progress()
+	handleInput(key: string) {
+		if (key == "KeyZ") scene.progress()
 	},
 
 	draw() {

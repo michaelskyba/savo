@@ -11,12 +11,12 @@ const mainMenu = {
 		new MenuOption("Credits", 150, 260)
 	],
 
-	handleInput(e: KeyboardEvent) {
-		if (e.code == "ArrowUp" || e.code == "KeyK") this.selected = 0
-		if (e.code == "ArrowDown" || e.code == "KeyJ") this.selected = 1
+	handleInput(key: string) {
+		if (key == "ArrowUp" || key == "KeyK") this.selected = 0
+		if (key == "ArrowDown" || key == "KeyJ") this.selected = 1
 
 		// Select option
-		if (e.code == "KeyZ") {
+		if (key == "KeyZ") {
 
 			// You pressed start, so enter the claudiaHouse object
 			if (this.selected == 0) {

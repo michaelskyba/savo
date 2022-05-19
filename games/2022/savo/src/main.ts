@@ -1,4 +1,4 @@
 import mainMenu from "./mainMenu"
 
-document.onkeydown = mainMenu.handleInput
+document.onkeydown = e => mainMenu.handleInput(e.code)
 window.requestAnimationFrame(mainMenu.draw)
