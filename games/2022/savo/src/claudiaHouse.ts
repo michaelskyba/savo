@@ -2,7 +2,7 @@ import c from "./canvas"
 import player from "./player"
 
 import dialogue from "./dialogue_1"
-import Scene from "./scene"
+import Scene from "./Scene"
 import TextBox from "./TextBox"
 
 const scene: Scene | null = new Scene(dialogue.main)
