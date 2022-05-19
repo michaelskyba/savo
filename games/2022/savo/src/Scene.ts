@@ -2,9 +2,9 @@ import TextBox from "./TextBox"
 
 class Scene {
 	dialogue: string[][]
-	playing: boolean
+	playing = true
 
-	frame = 1
+	frame = 0
 
 	speaker: TextBox | null
 	speech: TextBox
@@ -22,11 +22,19 @@ class Scene {
 
 	constructor(dialogue: string[][], playing?: boolean) {
 		this.dialogue = dialogue
-
-		// If it's not provided (undefined), let it be true
-		this.playing = (playing !== false)
-
 		this.setBoxes(this.frame)
+	}
+
+	progress() {
+		if (this.frame <= this.dialogue.length - 2) {
+			this.frame++
+			this.setBoxes(this.frame)
+		}
+
+		// e.g. pressed z, frame = 5 (fifth frame), six total frames
+		else {
+			this.playing = false
+		}
 	}
 }
 

@@ -11,10 +11,16 @@ const claudiaHouse = {
 	init() {
 		document.onkeydown = e => {
 			player.handleKey("keydown", e)
+			this.handleInput(e)
 		}
+
 		document.onkeyup = e => {
 			player.handleKey("keyup", e)
 		}
+	},
+
+	handleInput(e: KeyboardEvent) {
+		if (e.code == "KeyZ") scene.progress()
 	},
 
 	draw() {
@@ -24,13 +30,16 @@ const claudiaHouse = {
 		c.fillStyle = "purple"
 		c.frect(400, 0, 925, 725)
 
-		// Dialogue scene
-		scene.speech.draw()
-		if (scene.speaker) scene.speaker.draw()
-
-		// .move() doesn't really belong in draw() but it's fine for now
-		player.move()
 		player.draw()
+
+		if (scene.playing) {
+			// Dialogue scene
+
+			scene.speech.draw()
+			if (scene.speaker) scene.speaker.draw()
+		}
+
+		else player.move()
 
 		window.requestAnimationFrame(this.draw)
 	}
