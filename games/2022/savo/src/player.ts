@@ -28,8 +28,6 @@ const player = {
 			if (event.code == keys[dir])
 				this.keyPressed[dir] = inputType == "keydown"
 		}
-
-		console.log(this.keyPressed)
 	},
 
 	move() {
