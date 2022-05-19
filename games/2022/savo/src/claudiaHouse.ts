@@ -26,8 +26,13 @@ const claudiaHouse = {
 		c.fillStyle = "#982c61"
 		c.frect(400, 0, 925, 725)
 
+		let line = this.scene.dialogue[this.scene.frame]
+		let speaker = line[0]
+		let speech = line[1]
+
 		c.fillStyle = "#2c8898"
-		c.text(this.scene.dialogue[this.scene.frame], 20, 20)
+		if (speaker) c.text(speaker, 20, 20)
+		c.text(speech, 20, 100)
 
 		// .move() doesn't really belong in draw() but it's fine for now
 		player.move()

@@ -12,8 +12,6 @@ const mainMenu = {
 	],
 
 	handleInput(e: KeyboardEvent) {
-		console.log(this)
-
 		if (e.code == "ArrowUp" || e.code == "KeyK") this.selected = 0
 		if (e.code == "ArrowDown" || e.code == "KeyJ") this.selected = 1
 
