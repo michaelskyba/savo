@@ -1,11 +1,21 @@
 import c from "./canvas"
 import player from "./player"
+import Wall from "./Wall"
 
 import dialogue from "./dialogue_1"
 import Scene from "./Scene"
 import TextBox from "./TextBox"
 
 const scene: Scene | null = new Scene(dialogue.main)
+
+const walls = [
+	new Wall(0, 0, 1325, 25),
+	new Wall(0, 0, 25, 1325),
+	new Wall(0, 700, 1325, 25),
+
+	new Wall(1300, 0, 25, 262.5),
+	new Wall(1300, 462.5, 25, 262.5)
+]
 
 const claudiaHouse = {
 	init() {
@@ -33,6 +43,10 @@ const claudiaHouse = {
 		c.frect(400, 0, 925, 725)
 
 		player.draw()
+
+		for (const wall of walls) {
+			wall.draw()
+		}
 
 		if (scene.playing) {
 			// Dialogue scene
