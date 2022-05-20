@@ -3,7 +3,8 @@
 		"target": "es2018",
 		"module": "esnext",
 		"lib": ["dom", "es2015"],
-		"outDir": "out-ts"
+		"outDir": "out-ts",
+		"watch": true
 	},
 	"include": ["./src/*.ts"]
 }

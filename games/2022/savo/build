@@ -1,8 +1,9 @@
-#!/bin/sh
+#!/bin/sh -e
 
-while :
-do
-	tsc
-	npx rollup -c rollup.config.js
-	read
-done
+# Recompile TypeScript incrementally in the background
+tsc &
+
+# When any file in out-ts/ changes, compile with rollup
+# entr needs the relative filenames (how else would it know where to look?), so
+# ls out-ts | ... by itself wouldn't work.
+ls out-ts/* | entr npx rollup -c rollup.config.js
