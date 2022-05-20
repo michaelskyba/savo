@@ -9,15 +9,29 @@ import TextBox from "./TextBox"
 const scene: Scene | null = new Scene(dialogue.main)
 
 const walls = [
-	new Wall(0, 0, 1325, 25),
-	new Wall(0, 0, 25, 1325),
-	new Wall(0, 700, 1325, 25),
+	[
+		new Wall(0, 0, 1325, 25),
+		new Wall(0, 0, 25, 1325),
+		new Wall(0, 700, 1325, 25),
 
-	new Wall(1300, 0, 25, 262.5),
-	new Wall(1300, 462.5, 25, 262.5)
+		new Wall(1300, 0, 25, 262.5),
+		new Wall(1300, 462.5, 25, 262.5)
+	],
+	[
+		new Wall(0, 0, 1325, 25),
+		new Wall(0, 700, 1325, 25),
+
+		new Wall(0, 0, 25, 262.5),
+		new Wall(0, 462.5, 25, 262.5),
+
+		new Wall(1300, 0, 25, 262.5),
+		new Wall(1300, 462.5, 25, 262.5)
+	]
 ]
 
 const claudiaHouse = {
+	room: 1,
+
 	init() {
 		document.onkeydown = event => {
 			let key = event.code
@@ -43,12 +57,12 @@ const claudiaHouse = {
 		c.frect(400, 0, 925, 725)
 
 		if (!scene.playing) {
-			player.move(walls)
+			player.move(walls[this.room])
 		}
 
 		player.draw()
 
-		for (const wall of walls) {
+		for (const wall of walls[this.room]) {
 			wall.draw()
 		}
 
