@@ -1,3 +1,8 @@
 #!/bin/sh
-tsc
-npx rollup -c rollup.config.js
+
+while :
+do
+	tsc
+	npx rollup -c rollup.config.js
+	read
+done
