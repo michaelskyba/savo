@@ -49,6 +49,21 @@ const claudiaHouse = {
 		if (key == "KeyZ") scene.progress()
 	},
 
+	transitions() {
+		if (player.x < 0) {
+			this.room = 0
+			player.x = 1325 - player.size
+		}
+
+		if (player.x > 1325 - player.size) {
+			if (this.room == 0) {
+				this.room = 1
+				player.x = 0
+			}
+			else console.log("out!")
+		}
+	},
+
 	draw() {
 		c.fillStyle = "white"
 		c.frect(0, 0, 1325, 725)
@@ -58,6 +73,7 @@ const claudiaHouse = {
 
 		if (!scene.playing) {
 			player.move(walls[this.room])
+			this.transitions()
 		}
 
 		player.draw()
