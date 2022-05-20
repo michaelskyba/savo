@@ -42,6 +42,10 @@ const claudiaHouse = {
 		c.fillStyle = "purple"
 		c.frect(400, 0, 925, 725)
 
+		if (!scene.playing) {
+			player.move(walls)
+		}
+
 		player.draw()
 
 		for (const wall of walls) {
@@ -54,8 +58,6 @@ const claudiaHouse = {
 			scene.speech.draw()
 			if (scene.speaker) scene.speaker.draw()
 		}
-
-		else player.move()
 
 		window.requestAnimationFrame(this.draw)
 	}
