@@ -65,7 +65,12 @@ const claudiaHouse = {
 			}
 
 			// Leaving the house
-			else this.screen = "Perinthus"
+			else {
+				this.screen = "Perinthus"
+
+				player.x = 0
+				player.y = 0
+			}
 		}
 	},
 
