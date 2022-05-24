@@ -67,6 +67,7 @@ const claudiaHouse = {
 			// Leaving the house
 			else {
 				this.screen = "Perinthus"
+				perinthus.init()
 
 				player.x = 0
 				player.y = 0
@@ -82,7 +83,7 @@ const claudiaHouse = {
 		c.frect(400, 0, 925, 725)
 
 		if (!scene.playing) {
-			player.move(walls[this.room])
+			player.move("fixed", walls[this.room])
 			this.transitions()
 		}
 

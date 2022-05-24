@@ -19,11 +19,16 @@ const doors = [
 ]
 
 const perinthus = {
+	init() {
+		player.x = 5
+		player.y = 0
+	},
+
 	draw() {
 		c.fillStyle = "purple"
 		c.frect(0, 0, 1325, 725)
 
-		player.move([])
+		player.move("overworld", buildings)
 
 		for (const road of roads) {
 			road.draw(player.x, player.y)

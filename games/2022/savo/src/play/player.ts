@@ -26,7 +26,7 @@ const player = {
 		if (dir) this.keyPressed[dir] = inputType == "keydown"
 	},
 
-	move(collisions) {
+	move(mode: "fixed" | "overworld", collisions) {
 		let speed = 8
 
 		if (this.keyPressed.left) this.x -= speed
@@ -37,10 +37,24 @@ const player = {
 		// Correct collisions
 
 		for (const collision of collisions) {
-			if (this.x + this.size > collision.x &&
-				this.x < collision.x + collision.width &&
-				this.y + this.size > collision.y &&
-				this.y < collision.y + collision.height) {
+			let colX = collision.x
+			let colY = collision.y
+
+			// We can't check for overworld once at the start because we would
+			// have to modify the collisions array (or a copy), both of which
+			// change it for perinthus.ts. I'm guessing that
+			// Object.assign([], myArray) is even slower than this, though.
+
+			// Correct for overworld display shifting
+			if (mode == "overworld") {
+				colX -= 662.25 - 25
+				colY -= 362.25 - 25
+			}
+
+			if (this.x + this.size > colX &&
+				this.x < colX + collision.width &&
+				this.y + this.size > colY &&
+				this.y < colY + collision.height) {
 
 				// The way we correct the position depends on how the player collided
 
@@ -50,20 +64,20 @@ const player = {
 				// and won't know which one it was
 
 				if (this.keyPressed.left &&
-					this.x + speed >= collision.x + collision.width)
-					this.x = collision.x + collision.width
+					this.x + speed >= colX + collision.width)
+					this.x = colX + collision.width
 
 				if (this.keyPressed.right &&
-					this.x - speed + this.size <= collision.x)
-					this.x = collision.x - this.size
+					this.x - speed + this.size <= colX)
+					this.x = colX - this.size
 
 				if (this.keyPressed.up &&
-					this.y + speed >= collision.y + collision.height)
-					this.y = collision.y + collision.height
+					this.y + speed >= colY + collision.height)
+					this.y = colY + collision.height
 
 				if (this.keyPressed.down &&
-					this.y - speed + this.size <= collision.y)
-					this.y = collision.y - this.size
+					this.y - speed + this.size <= colY)
+					this.y = colY - this.size
 			}
 		}
 	},
