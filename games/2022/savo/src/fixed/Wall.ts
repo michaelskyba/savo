@@ -1,4 +1,4 @@
-import c from "./canvas"
+import c from "../canvas"
 
 export default class Wall {
 	x: number

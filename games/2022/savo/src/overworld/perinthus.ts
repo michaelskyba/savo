@@ -1,5 +1,5 @@
-import c from "./canvas"
-import player from "./player"
+import c from "../canvas"
+import player from "../play/player"
 
 const perinthus = {
 	draw() {

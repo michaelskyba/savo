@@ -4,9 +4,8 @@
 tsc &
 
 # When any file in out-ts/ changes, compile with rollup
-# entr needs the relative filenames (how else would it know where to look?), so
-# ls out-ts | ... by itself wouldn't work.
-ls out-ts/* | entr npx rollup -c rollup.config.js
+find out-ts/* -type f | entr npx rollup -c rollup.config.js
 
-# However, since ls doesn't update, you'll have to restart this build script if
-# you add a new file to look for changes in.
+# However, since find doesn't update, you'll have to restart this build script if
+# you add a new file to look for changes in. I think it's possible to set up a
+# loop that checks the whole directory but that's probably more resource-intensive.

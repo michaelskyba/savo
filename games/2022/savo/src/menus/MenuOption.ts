@@ -1,5 +1,5 @@
-import c from "./canvas"
-import TextBox from "./TextBox"
+import c from "../canvas"
+import TextBox from "../menus/TextBox"
 
 export default class MenuOption extends TextBox {
 	constructor(text: string, x: number, y: number) {

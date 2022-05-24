@@ -1,6 +1,6 @@
-import c from "./canvas"
+import c from "../canvas"
 import MenuOption from "./MenuOption"
-import claudiaHouse from "./claudiaHouse"
+import claudiaHouse from "../fixed/claudiaHouse"
 
 const mainMenu = {
 	selected: 0,

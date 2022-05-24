@@ -1,12 +1,12 @@
-import c from "./canvas"
-import player from "./player"
+import c from "../canvas"
+import player from "../play/player"
 import Wall from "./Wall"
 
-import perinthus from "./perinthus"
+import perinthus from "../overworld/perinthus"
 
-import dialogue from "./dialogue_1"
-import Scene from "./Scene"
-import TextBox from "./TextBox"
+import dialogue from "../events/1"
+import Scene from "../menus/Scene"
+import TextBox from "../menus/TextBox"
 
 const scene: Scene | null = new Scene(dialogue.main)
 
