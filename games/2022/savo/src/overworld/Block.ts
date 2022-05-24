@@ -9,15 +9,21 @@ class Block {
 	width: number
 	height: number
 
-	constructor(x: number, y: number, width: number, height: number) {
-		this.x = x
-		this.y = y
+	colour: string
+
+	constructor(x: number, y: number, width: number, height: number, colour: string) {
+		// So, (0, 0) would be the center of the player
+		this.x = x + 662.5
+		this.y = y + 362.5
+
 		this.width = width
 		this.height = height
+
+		this.colour = colour
 	}
 
 	draw(scrollX: number, scrollY: number) {
-		c.fillStyle = "yellow"
+		c.fillStyle = this.colour
 		c.frect(this.x - scrollX, this.y - scrollY, this.width, this.height)
 	}
 }

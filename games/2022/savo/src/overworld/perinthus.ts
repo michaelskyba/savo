@@ -4,19 +4,24 @@ import player from "../play/player"
 import Block from "./Block"
 
 const blocks = [
-	new Block(237.5, 200, 400, 400)
+	new Block(-425, -150, 400, 300, "yellow")
+]
+
+const decorations = [
+	new Block(-50, -50, 155, 100, "gray"),
+	new Block(100, -1000, 200, 2000, "gray")
 ]
 
 const perinthus = {
 	draw() {
-		// Background (temporary)
-		c.fillStyle = "green"
-		c.frect(0, 0, 1325, 725)
 		c.fillStyle = "purple"
-		c.frect(0, 0, 500, 500)
-		c.frect(500, 500, 825, 225)
+		c.frect(0, 0, 1325, 725)
 
 		player.move([])
+
+		for (const block of decorations) {
+			block.draw(player.x, player.y)
+		}
 
 		for (const block of blocks) {
 			block.draw(player.x, player.y)
