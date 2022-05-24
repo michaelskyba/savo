@@ -7,3 +7,6 @@ tsc &
 # entr needs the relative filenames (how else would it know where to look?), so
 # ls out-ts | ... by itself wouldn't work.
 ls out-ts/* | entr npx rollup -c rollup.config.js
+
+# However, since ls doesn't update, you'll have to restart this build script if
+# you add a new file to look for changes in.
