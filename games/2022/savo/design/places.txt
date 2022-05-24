@@ -1,0 +1,27 @@
+Claudia's House (fixed)
+	This is where the game starts
+		Opens with events/1.txt
+
+	You talk to Valeria and then leave --> Perinthus
+
+	Has Room 1 (left), where Valeria is
+	Has Room 2 (right), where the exit is
+
+Perinthus: the starting "town" area (overworld)
+	You start in Claudia's house, which is inside Perinthus
+
+	Subareas
+		Claudia's House
+		Nova Anio-akvedukto
+
+Nova Anio-akvedukto (fixed)
+	The place Valeria tells you to head to; inside Perinthus
+
+	Frontinus is located here
+
+	When you step in, you get the combat tutorial event events/2.txt
+
+	On the side, there's a gate --> Lerwick
+
+Lerwick: main, larger "town" area (overworld)
+	Entrance/exit --> Nova Anio-akvedukto (Perinthus)
