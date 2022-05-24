@@ -18,7 +18,7 @@ class Block {
 
 	draw(scrollX: number, scrollY: number) {
 		c.fillStyle = "yellow"
-		c.frect(scrollX + this.x, scrollY + this.y, this.width, this.height)
+		c.frect(this.x - scrollX, this.y - scrollY, this.width, this.height)
 	}
 }
 

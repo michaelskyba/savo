@@ -16,6 +16,8 @@ const perinthus = {
 		c.frect(0, 0, 500, 500)
 		c.frect(500, 500, 825, 225)
 
+		player.move([])
+
 		for (const block of blocks) {
 			block.draw(player.x, player.y)
 		}
