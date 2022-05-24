@@ -81,7 +81,7 @@ const claudiaHouse = {
 			this.transitions()
 		}
 
-		player.draw()
+		player.draw("fixed")
 
 		for (const wall of walls[this.room]) {
 			wall.draw()

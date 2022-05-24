@@ -68,9 +68,16 @@ const player = {
 		}
 	},
 
-	draw() {
+	draw(mode: "fixed" | "overworld") {
 		c.fillStyle = "blue"
-		c.frect(this.x, this.y, this.size, this.size)
+
+		if (mode == "fixed")
+			c.frect(this.x, this.y, this.size, this.size)
+
+		else {
+			let split = this.size / 2
+			c.frect(662.5 - split, 362.5 - split, this.size, this.size)
+		}
 	}
 }
 
