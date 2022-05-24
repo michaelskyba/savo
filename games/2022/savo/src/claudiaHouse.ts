@@ -2,6 +2,8 @@ import c from "./canvas"
 import player from "./player"
 import Wall from "./Wall"
 
+import perinthus from "./perinthus"
+
 import dialogue from "./dialogue_1"
 import Scene from "./Scene"
 import TextBox from "./TextBox"
@@ -30,6 +32,7 @@ const walls = [
 ]
 
 const claudiaHouse = {
+	screen: "Claudia's House",
 	room: 1,
 
 	init() {
@@ -60,7 +63,9 @@ const claudiaHouse = {
 				this.room = 1
 				player.x = 0
 			}
-			else console.log("out!")
+
+			// Leaving the house
+			else this.screen = "Perinthus"
 		}
 	},
 
@@ -89,7 +94,10 @@ const claudiaHouse = {
 			if (scene.speaker) scene.speaker.draw()
 		}
 
-		window.requestAnimationFrame(this.draw)
+		if (this.screen == "Claudia's House")
+			window.requestAnimationFrame(this.draw)
+
+		else window.requestAnimationFrame(perinthus.draw)
 	}
 }
 claudiaHouse.draw = claudiaHouse.draw.bind(claudiaHouse)
