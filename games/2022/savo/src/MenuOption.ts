@@ -8,7 +8,7 @@ export default class MenuOption extends TextBox {
 
 	// We can't call it "draw" or it would violate TypeScript
 	show(selected: boolean) {
-		this.bgColour = selected ? "purple" : "gray"
+		this.bgColour = selected ? "purple" : "white"
 		this.fgColour = selected ? "white" : "black"
 
 		this.draw()
