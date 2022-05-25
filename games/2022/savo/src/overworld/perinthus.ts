@@ -3,6 +3,8 @@ import player from "../play/player"
 
 import Block from "./Block"
 
+import claudiaHouse from "../fixed/claudiaHouse"
+
 const buildings = [
 	new Block(-425, -150, 400, 300, "yellow"),
 	new Block(50, -1150, 300, 250, "lightblue")
@@ -27,11 +29,23 @@ const perinthus = {
 		document.onkeyup = event => player.handleKey("keyup", event.code)
 	},
 
+	transitions() {
+		let x = player.x
+		let y = player.y
+
+		if (x == 0.25 && y > -75 && y < 75) {
+			claudiaHouse.init()
+			window.requestAnimationFrame(claudiaHouse.draw)
+		}
+	},
+
 	draw() {
 		c.fillStyle = "purple"
 		c.frect(0, 0, 1325, 725)
 
 		player.move("overworld", buildings)
+
+		this.transitions()
 
 		for (const road of roads) {
 			road.draw(player.x, player.y)
