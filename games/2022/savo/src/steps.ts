@@ -50,7 +50,9 @@ const steps = {
 	},
 
 	akvedukto() {
+		akvedukto.move()
 		akvedukto.draw()
+
 		window.requestAnimationFrame(this.akvedukto)
 	}
 }
