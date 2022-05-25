@@ -1,6 +1,8 @@
 import claudiaHouse from "./fixed/claudiaHouse"
 import perinthus from "./overworld/perinthus"
 
+import player from "./play/player"
+
 const steps = {
 	claudiaHouse() {
 		claudiaHouse.move()
@@ -33,6 +35,9 @@ const steps = {
 				break
 
 			case "claudiaHouse":
+				player.x = 1275
+				player.y = 337.5
+
 				window.requestAnimationFrame(this.claudiaHouse)
 				break
 		}
