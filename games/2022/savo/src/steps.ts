@@ -43,6 +43,7 @@ const steps = {
 				break
 
 			case "akvedukto":
+				akvedukto.init()
 				window.requestAnimationFrame(this.akvedukto)
 				break
 		}
