@@ -2,6 +2,8 @@ import c from "../canvas"
 import MenuOption from "./MenuOption"
 import claudiaHouse from "../fixed/claudiaHouse"
 
+import steps from "../steps"
+
 const mainMenu = {
 	selected: 0,
 	screen: "Main menu",
@@ -55,7 +57,7 @@ const mainMenu = {
 			window.requestAnimationFrame(this.draw)
 
 		// Once the user selects "Start", we need to switch screens
-		else window.requestAnimationFrame(claudiaHouse.draw)
+		else window.requestAnimationFrame(steps.claudiaHouse)
 	}
 }
 

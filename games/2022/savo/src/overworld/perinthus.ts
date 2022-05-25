@@ -29,23 +29,21 @@ const perinthus = {
 		document.onkeyup = event => player.handleKey("keyup", event.code)
 	},
 
-	transitions() {
+	move: () => player.move("overworld", buildings),
+
+	transitions(): string | null {
 		let x = player.x
 		let y = player.y
 
-		if (x == 0.25 && y > -75 && y < 75) {
-			claudiaHouse.init()
-			window.requestAnimationFrame(claudiaHouse.draw)
-		}
+		if (x == 0.25 && y > -75 && y < 75)
+			return "claudiaHouse"
+
+		else return null
 	},
 
 	draw() {
 		c.fillStyle = "purple"
 		c.frect(0, 0, 1325, 725)
-
-		player.move("overworld", buildings)
-
-		this.transitions()
 
 		for (const road of roads) {
 			road.draw(player.x, player.y)
@@ -60,8 +58,6 @@ const perinthus = {
 		}
 
 		player.draw("overworld")
-
-		window.requestAnimationFrame(this.draw)
 	}
 }
 

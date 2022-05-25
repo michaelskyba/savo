@@ -2,8 +2,6 @@ import c from "../canvas"
 import player from "../play/player"
 import Wall from "./Wall"
 
-import perinthus from "../overworld/perinthus"
-
 import dialogue from "../events/1"
 import Scene from "../menus/Scene"
 import TextBox from "../menus/TextBox"
@@ -32,7 +30,6 @@ const walls = [
 ]
 
 const claudiaHouse = {
-	screen: "Claudia's House",
 	room: 1,
 
 	init() {
@@ -52,7 +49,12 @@ const claudiaHouse = {
 		if (key == "KeyZ") scene.progress()
 	},
 
-	transitions() {
+	move() {
+		if (!scene.playing)
+			player.move("fixed", walls[this.room])
+	},
+
+	transitions(): boolean {
 		if (player.x < 0) {
 			this.room = 0
 			player.x = 1325 - player.size
@@ -64,15 +66,11 @@ const claudiaHouse = {
 				player.x = 0
 			}
 
-			// Leaving the house
-			else {
-				this.screen = "Perinthus"
-				perinthus.init()
-
-				player.x = 0
-				player.y = 0
-			}
+			// Leaving the house - read by steps.ts
+			else return true
 		}
+
+		return false
 	},
 
 	draw() {
@@ -81,11 +79,6 @@ const claudiaHouse = {
 
 		c.fillStyle = "purple"
 		c.frect(400, 0, 925, 725)
-
-		if (!scene.playing) {
-			player.move("fixed", walls[this.room])
-			this.transitions()
-		}
 
 		player.draw("fixed")
 
@@ -99,11 +92,6 @@ const claudiaHouse = {
 			scene.speech.draw()
 			if (scene.speaker) scene.speaker.draw()
 		}
-
-		if (this.screen == "Claudia's House")
-			window.requestAnimationFrame(this.draw)
-
-		else window.requestAnimationFrame(perinthus.draw)
 	}
 }
 claudiaHouse.draw = claudiaHouse.draw.bind(claudiaHouse)
