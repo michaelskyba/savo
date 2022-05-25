@@ -1,5 +1,6 @@
 import claudiaHouse from "./fixed/claudiaHouse"
 import perinthus from "./overworld/perinthus"
+import akvedukto from "./fixed/akvedukto"
 
 import player from "./play/player"
 
@@ -40,7 +41,16 @@ const steps = {
 
 				window.requestAnimationFrame(this.claudiaHouse)
 				break
+
+			case "akvedukto":
+				window.requestAnimationFrame(this.akvedukto)
+				break
 		}
+	},
+
+	akvedukto() {
+		akvedukto.draw()
+		window.requestAnimationFrame(this.akvedukto)
 	}
 }
 

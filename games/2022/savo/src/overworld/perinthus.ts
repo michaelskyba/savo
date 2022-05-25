@@ -38,6 +38,11 @@ const perinthus = {
 		if (x == 0.25 && y > -75 && y < 75)
 			return "claudiaHouse"
 
+		else if (y == -874.75 && x > 125 && x < 275) {
+			console.log("test")
+			return "akvedukto"
+		}
+
 		else return null
 	},
 
