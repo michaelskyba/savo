@@ -55,12 +55,14 @@ const claudiaHouse = {
 	},
 
 	transitions(): boolean {
+		// 1275 = canvas width - player width
+
 		if (player.x < 0) {
 			this.room = 0
-			player.x = 1325 - player.size
+			player.x = 1275
 		}
 
-		if (player.x > 1325 - player.size) {
+		if (player.x > 1275) {
 			if (this.room == 0) {
 				this.room = 1
 				player.x = 0

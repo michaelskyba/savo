@@ -3,7 +3,6 @@ import c from "../canvas"
 const player = {
 	x: 200,
 	y: 200,
-	size: 50,
 
 	keyPressed: {
 		left: false,
@@ -47,13 +46,16 @@ const player = {
 
 			// Correct for overworld display shifting
 			if (mode == "overworld") {
-				colX -= 662.25 - 25
-				colY -= 362.25 - 25
+				// 637.5 = canvas width / 2 - player width / 2
+				// 337.5 = canvas height / 2 - player width / 2
+
+				colX -= 637.5
+				colY -= 337.5
 			}
 
-			if (this.x + this.size > colX &&
+			if (this.x + 50 > colX &&
 				this.x < colX + collision.width &&
-				this.y + this.size > colY &&
+				this.y + 50 > colY &&
 				this.y < colY + collision.height) {
 
 				// The way we correct the position depends on how the player collided
@@ -68,16 +70,16 @@ const player = {
 					this.x = colX + collision.width
 
 				if (this.keyPressed.right &&
-					this.x - speed + this.size <= colX)
-					this.x = colX - this.size
+					this.x - speed + 50 <= colX)
+					this.x = colX - 50
 
 				if (this.keyPressed.up &&
 					this.y + speed >= colY + collision.height)
 					this.y = colY + collision.height
 
 				if (this.keyPressed.down &&
-					this.y - speed + this.size <= colY)
-					this.y = colY - this.size
+					this.y - speed + 50 <= colY)
+					this.y = colY - 50
 			}
 		}
 	},
@@ -86,11 +88,14 @@ const player = {
 		c.fillStyle = "blue"
 
 		if (mode == "fixed")
-			c.frect(this.x, this.y, this.size, this.size)
+			c.frect(this.x, this.y, 50, 50)
 
 		else {
-			let split = this.size / 2
-			c.frect(662.5 - split, 362.5 - split, this.size, this.size)
+			// We want to draw it centered:
+			// 637.5 = canvas width / 2 - player width / 2
+			// 337.5 = canvas height / 2 - player width / 2
+
+			c.frect(637.5, 337.5, 50, 50)
 		}
 	}
 }
