@@ -35,10 +35,10 @@ const perinthus = {
 		let x = player.x
 		let y = player.y
 
-		if (x == 0.25 && y > -75 && y < 75)
+		if (x == 0 && y > -75 && y < 75)
 			return "claudiaHouse"
 
-		else if (y == -874.75 && x > 125 && x < 275)
+		else if (y == -875 && x > 125 && x < 275)
 			return "akvedukto"
 
 		else return null
