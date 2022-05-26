@@ -21,7 +21,6 @@ const akvedukto = {
 		c.frect(0, 0, 1325, 725)
 
 		player.draw("fixed")
-
 		enemy.draw()
 	}
 }
