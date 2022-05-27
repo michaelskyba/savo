@@ -14,7 +14,7 @@ const akvedukto = {
 		document.onkeyup = event => player.handleKey("keyup", event.code)
 	},
 
-	move: () => {
+	move() {
 		enemy.move()
 
 		player.move("fixed", [{
