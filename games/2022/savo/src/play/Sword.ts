@@ -4,8 +4,23 @@ class Sword {
 	length: number
 	colour = "coral"
 
-	constructor(length: number) {
+	angle: number
+
+	offsetX: number
+	offsetY: number
+
+	constructor(length: number, angle: number) {
 		this.length = length
+		this.angle = angle
+
+		this.genPoints()
+	}
+
+	genPoints() {
+		let rad = this.angle * Math.PI / 180
+
+		this.offsetX = this.length * Math.cos(rad)
+		this.offsetY = this.length * Math.sin(rad)
 	}
 
 	collision(originX: number, originY: number, playerX: number, playerY: number) {
@@ -15,9 +30,8 @@ class Sword {
 		let x1 = originX
 		let y1 = originY
 
-		// For now, assume that the line is constantly in the (+50, +200) position
-		let x2 = x1 + 50
-		let y2 = y1 + 200
+		let x2 = x1 + this.offsetX
+		let y2 = y1 + this.offsetY
 
 		let x3 = playerX
 		let y3 = playerY
@@ -92,7 +106,7 @@ class Sword {
 
 		c.beginPath()
 		c.moveTo(x, y)
-		c.lineTo(x + 50, y + 200)
+		c.lineTo(x + this.offsetX, y + this.offsetY)
 		c.stroke()
 	}
 }

@@ -11,7 +11,7 @@ class Enemy {
 		this.x = x
 		this.y = y
 
-		this.sword = new Sword(100)
+		this.sword = new Sword(200, 80)
 	}
 
 	collision = (playerX: number, playerY: number) => {
