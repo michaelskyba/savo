@@ -23,11 +23,40 @@ class Sword {
 		let x4 = x3 + 50
 		let y4 = y3 + 50
 
-		// Quick rejects
+		// Quick rejects: player out of range of diagonal box
 		if (x1 > x4 || x2 < x3 || y1 > y4 || y2 < y3)
 			return false
 
-		return true
+		// Quick accept: sword endpoint inside player
+		if (x2 > x3 && x2 < x4 && y2 > y3 && y2 < y4)
+			return true
+
+		// Slope
+		let m = (x2 - x1)/(y2 - y1)
+
+		/*
+		Y-intercept
+
+		y = mx + b
+		b = y - mx
+		*/
+
+		let b = y1 - m*x1
+
+		// y value of equation when x = player left side (x)
+		let intersectLeft = m * x3 + b
+		if (intersectLeft >= y3 && intersectLeft <= y4)
+			return true
+
+		// y value of equation when x = player right side (x + 50)
+		let intersectRight = m * x4 + b
+		if (intersectRight >= y3 && intersectRight <= y4)
+			return true
+
+		// This logic shouldn't work for all cases
+		// We'll get to that once we start changing x2 and y2
+
+		return false
 	}
 
 	// Takes the x and y of the origin
