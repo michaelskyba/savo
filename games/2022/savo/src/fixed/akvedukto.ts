@@ -14,12 +14,16 @@ const akvedukto = {
 		document.onkeyup = event => player.handleKey("keyup", event.code)
 	},
 
-	move: () => player.move("fixed", [{
-		x: enemy.x,
-		y: enemy.y,
-		width: 50,
-		height: 50
-	}]),
+	move: () => {
+		enemy.move()
+
+		player.move("fixed", [{
+			x: enemy.x,
+			y: enemy.y,
+			width: 50,
+			height: 50
+		}])
+	},
 
 	draw() {
 		c.fillStyle = "floralwhite"

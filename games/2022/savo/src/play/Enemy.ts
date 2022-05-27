@@ -19,6 +19,8 @@ class Enemy {
 		this.sword.colour = collided ? "red" : "coral"
 	}
 
+	move = () => this.sword.rotate(1)
+
 	draw() {
 		c.fillStyle = "coral"
 

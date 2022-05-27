@@ -16,6 +16,15 @@ class Sword {
 		this.genPoints()
 	}
 
+	rotate(change: number) {
+		this.angle += change
+
+		if (this.angle < 0) this.angle = 360 + this.angle % 360
+		if (this.angle > 360) this.angle = this.angle % 360
+
+		this.genPoints()
+	}
+
 	genPoints() {
 		let rad = this.angle * Math.PI / 180
 
