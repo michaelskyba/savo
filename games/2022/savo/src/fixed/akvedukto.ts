@@ -3,7 +3,7 @@ import c from "../canvas"
 import player from "../play/player"
 import Enemy from "../play/Enemy"
 
-const enemy = new Enemy(200, 200, 50, 50)
+const enemy = new Enemy(200, 200)
 
 const akvedukto = {
 	init() {
@@ -14,13 +14,20 @@ const akvedukto = {
 		document.onkeyup = event => player.handleKey("keyup", event.code)
 	},
 
-	move: () => player.move("fixed", [enemy]),
+	move: () => player.move("fixed", [{
+		x: enemy.x,
+		y: enemy.y,
+		width: 50,
+		height: 50
+	}]),
 
 	draw() {
 		c.fillStyle = "floralwhite"
 		c.frect(0, 0, 1325, 725)
 
 		player.draw("fixed")
+
+		enemy.collision(player.x, player.y)
 		enemy.draw()
 	}
 }
