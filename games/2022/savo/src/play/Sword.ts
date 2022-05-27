@@ -9,10 +9,13 @@ class Sword {
 	}
 
 	collision(originX: number, originY: number, playerX: number, playerY: number) {
+		// I hope this is optimal enough to avoid causing a significant input lag
+		// I might have been easier to compare angles instead
+
 		let x1 = originX
 		let y1 = originY
 
-		// For now, assume that the line is constantly in the (+100, +100) position
+		// For now, assume that the line is constantly in the (+50, +200) position
 		let x2 = x1 + 50
 		let y2 = y1 + 200
 
@@ -57,8 +60,26 @@ class Sword {
 		if (intersectRight >= y3 && intersectRight <= y4)
 			return true
 
-		// This logic shouldn't work for all cases
-		// We'll get to that once we start changing x2 and y2
+		/*
+		y = mx + b
+		mx + b = y
+		mx = y - b
+		x = (y - b)/m
+		*/
+
+		// x value of equation when y = player top side (y)
+		let intersectTop = (y3 - b) / m
+
+		// Check if line intersects the top side of the player
+		if (intersectTop >= x3 && intersectTop <= x4)
+			return true
+
+		// x value of equation when y = player bottom side (y + 50)
+		let intersectBottom = (y4 - b) / m
+
+		// Check if line intersects the bottom side of the player
+		if (intersectBottom >= x3 && intersectBottom <= x4)
+			return true
 
 		return false
 	}
