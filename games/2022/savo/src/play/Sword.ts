@@ -13,8 +13,8 @@ class Sword {
 		let y1 = originY
 
 		// For now, assume that the line is constantly in the (+100, +100) position
-		let x2 = x1 + 100
-		let y2 = y1 + 100
+		let x2 = x1 + 50
+		let y2 = y1 + 200
 
 		let x3 = playerX
 		let y3 = playerY
@@ -32,7 +32,7 @@ class Sword {
 			return true
 
 		// Slope
-		let m = (x2 - x1)/(y2 - y1)
+		let m = (y2 - y1)/(x2 - x1)
 
 		/*
 		Y-intercept
@@ -45,11 +45,15 @@ class Sword {
 
 		// y value of equation when x = player left side (x)
 		let intersectLeft = m * x3 + b
+
+		// Check if the line intersects the left side of the player
 		if (intersectLeft >= y3 && intersectLeft <= y4)
 			return true
 
 		// y value of equation when x = player right side (x + 50)
 		let intersectRight = m * x4 + b
+
+		// Check if the line intersects the right side of the player
 		if (intersectRight >= y3 && intersectRight <= y4)
 			return true
 
@@ -67,7 +71,7 @@ class Sword {
 
 		c.beginPath()
 		c.moveTo(x, y)
-		c.lineTo(x + 100, y + 100)
+		c.lineTo(x + 50, y + 200)
 		c.stroke()
 	}
 }
