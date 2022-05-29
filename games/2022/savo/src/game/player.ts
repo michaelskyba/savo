@@ -8,25 +8,27 @@ const player = {
 		left: false,
 		right: false,
 		up: false,
-		down: false
+		down: false,
+		shift: false
 	},
 
 	// Used as both onkeydown and onkeyup (specify with inputType)
 	// Sets this.keyPressed accordingly according to keys pressed and released
-	handleKey(inputType: string, key: string) {
+	handleKey(inputType: string, input: string) {
 		let keys = {
 			"ArrowLeft": "left",
 			"ArrowRight": "right",
 			"ArrowUp": "up",
-			"ArrowDown": "down"
+			"ArrowDown": "down",
+			"ShiftLeft": "shift"
 		}
 
-		let dir = keys[key]
-		if (dir) this.keyPressed[dir] = inputType == "keydown"
+		let key = keys[input]
+		if (key) this.keyPressed[key] = inputType == "keydown"
 	},
 
 	move(mode: "fixed" | "overworld", collisions) {
-		let speed = 8
+		let speed = this.keyPressed.shift ? 4 : 8
 
 		if (this.keyPressed.left) this.x -= speed
 		if (this.keyPressed.right) this.x += speed

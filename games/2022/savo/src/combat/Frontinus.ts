@@ -12,8 +12,7 @@ class Frontinus extends Enemy {
 	}
 
 	move(time: number) {
-		if (this.lastFrame == null) {
-			console.log(this.lastFrame)
+		if (!this.lastFrame) {
 			this.lastFrame = time
 		}
 
