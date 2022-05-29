@@ -50,7 +50,8 @@ class Sword {
 		let y4 = y3 + 50
 
 		// Quick rejects: player out of range of diagonal box
-		if (x1 > x4 || x2 < x3 || y1 > y4 || y2 < y3)
+		if (Math.min(x1, x2) > x4 || Math.max(x1, x2) < x3 ||
+			Math.min(y1, y2) > y4 || Math.max(y1, y2) < y3)
 			return false
 
 		// Quick accept: sword endpoint inside player
