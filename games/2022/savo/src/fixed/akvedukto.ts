@@ -1,9 +1,9 @@
 import c from "../game/canvas"
 
 import player from "../game/player"
-import Enemy from "../combat/Enemy"
+import Frontinus from "../combat/Frontinus"
 
-const enemy = new Enemy(200, 200)
+const frontinus = new Frontinus()
 
 const akvedukto = {
 	init() {
@@ -15,11 +15,11 @@ const akvedukto = {
 	},
 
 	move(time: number) {
-		enemy.move(time)
+		frontinus.move(time)
 
 		player.move("fixed", [{
-			x: enemy.x,
-			y: enemy.y,
+			x: frontinus.x,
+			y: frontinus.y,
 			width: 50,
 			height: 50
 		}])
@@ -31,8 +31,8 @@ const akvedukto = {
 
 		player.draw("fixed")
 
-		enemy.collision(player.x, player.y)
-		enemy.draw()
+		frontinus.collision(player.x, player.y)
+		frontinus.draw()
 	}
 }
 
