@@ -23,6 +23,9 @@ const akvedukto = {
 			width: 50,
 			height: 50
 		}])
+
+		if (frontinus.collision(player.x, player.y))
+			player.life.hit()
 	},
 
 	draw() {
@@ -31,7 +34,6 @@ const akvedukto = {
 
 		player.draw("fixed")
 
-		frontinus.collision(player.x, player.y)
 		frontinus.draw()
 
 		player.life.draw()

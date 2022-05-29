@@ -17,10 +17,8 @@ class Enemy {
 		this.sword = new Sword(200, 0)
 	}
 
-	collision = (playerX: number, playerY: number) => {
-		let collided = this.sword.collision(this.x + 25, this.y + 25, playerX, playerY)
-		this.sword.colour = collided ? "red" : "coral"
-	}
+	collision = (playerX: number, playerY: number): boolean =>
+		this.sword.collision(this.x + 25, this.y + 25, playerX, playerY)
 
 	move(time: number) {
 		// For now, let's say that we want one full rotation per minute
