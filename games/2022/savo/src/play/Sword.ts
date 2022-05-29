@@ -42,20 +42,6 @@ class Sword {
 		let x2 = x1 + this.offsetX
 		let y2 = y1 + this.offsetY
 
-		// Keep track of endpoints for quick accepts
-		let xe = x2
-		let ye = y2
-
-		let temp: number
-		if (y2 < y1) {
-			y2 = y1
-			y1 = ye
-		}
-		if (x2 < x1) {
-			x2 = x1
-			x1 = xe
-		}
-
 		let x3 = playerX
 		let y3 = playerY
 
@@ -68,7 +54,7 @@ class Sword {
 			return false
 
 		// Quick accept: sword endpoint inside player
-		if (xe > x3 && xe < x4 && ye > y3 && ye < y4)
+		if (x2 > x3 && x2 < x4 && y2 > y3 && y2 < y4)
 			return true
 
 		// Slope
