@@ -1,8 +1,8 @@
-import claudiaHouse from "./fixed/claudiaHouse"
-import perinthus from "./overworld/perinthus"
-import akvedukto from "./fixed/akvedukto"
+import claudiaHouse from "../fixed/claudiaHouse"
+import perinthus from "../overworld/perinthus"
+import akvedukto from "../fixed/akvedukto"
 
-import player from "./play/player"
+import player from "../game/player"
 
 const steps = {
 	claudiaHouse() {

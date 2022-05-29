@@ -1,9 +1,11 @@
-import c from "../canvas"
+import c from "../game/canvas"
 import Sword from "./Sword"
 
 class Enemy {
 	x: number
 	y: number
+
+	counter: number
 
 	lastFrame: number
 

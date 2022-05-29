@@ -1,7 +1,7 @@
-import c from "../canvas"
+import c from "../game/canvas"
 
-import player from "../play/player"
-import Enemy from "../play/Enemy"
+import player from "../game/player"
+import Enemy from "../combat/Enemy"
 
 const enemy = new Enemy(200, 200)
 

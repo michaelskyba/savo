@@ -1,4 +1,4 @@
-import c from "../canvas"
+import c from "../game/canvas"
 import TextBox from "../menus/TextBox"
 
 export default class MenuOption extends TextBox {

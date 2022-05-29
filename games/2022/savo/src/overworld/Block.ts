@@ -1,4 +1,4 @@
-import c from "../canvas"
+import c from "../game/canvas"
 
 // "Block" is kind of a stupid name for this but I'm not sure what would be
 // better. We can't use "Object".

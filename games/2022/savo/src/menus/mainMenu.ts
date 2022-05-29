@@ -1,8 +1,8 @@
-import c from "../canvas"
+import c from "../game/canvas"
 import MenuOption from "./MenuOption"
 import claudiaHouse from "../fixed/claudiaHouse"
 
-import steps from "../steps"
+import steps from "../game/steps"
 
 const mainMenu = {
 	selected: 0,

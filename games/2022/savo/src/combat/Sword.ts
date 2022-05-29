@@ -1,4 +1,4 @@
-import c from "../canvas"
+import c from "../game/canvas"
 
 class Sword {
 	length: number

@@ -1,5 +1,5 @@
-import c from "../canvas"
-import player from "../play/player"
+import c from "../game/canvas"
+import player from "../game/player"
 
 import Block from "./Block"
 

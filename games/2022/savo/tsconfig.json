@@ -6,5 +6,5 @@
 		"outDir": "out-ts",
 		"watch": true
 	},
-	"include": ["./src/*.ts"]
+	"include": ["./src/*/*.ts"]
 }

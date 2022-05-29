@@ -7,7 +7,7 @@ window.requestAnimationFrame(mainMenu.draw)
 
 // (Faster start for testing)
 
-import akvedukto from "./fixed/akvedukto"
+import akvedukto from "../fixed/akvedukto"
 import steps from "./steps"
 
 akvedukto.init()

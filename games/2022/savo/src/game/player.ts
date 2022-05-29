@@ -1,4 +1,4 @@
-import c from "../canvas"
+import c from "./canvas"
 
 const player = {
 	x: 200,
