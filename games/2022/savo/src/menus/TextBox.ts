@@ -44,6 +44,7 @@ export default class TextBox {
 
 		c.strokeStyle = "black"
 		c.font = this.font
+		c.lineWidth = 1
 
 		c.fillStyle = this.bgColour
 		c.rect(this.x, this.y, this.width, this.height)

@@ -1,14 +1,17 @@
 import c from "./canvas"
+import Life from "../combat/Life"
 
 const player = {
 	x: 200,
 	y: 200,
 
+	life: new Life(99, 5, 5),
+
 	keyPressed: {
-		left: false,
+		left : false,
 		right: false,
-		up: false,
-		down: false,
+		up   : false,
+		down : false,
 		shift: false
 	},
 
@@ -16,11 +19,11 @@ const player = {
 	// Sets this.keyPressed accordingly according to keys pressed and released
 	handleKey(inputType: string, input: string) {
 		let keys = {
-			"ArrowLeft": "left",
+			"ArrowLeft" : "left",
 			"ArrowRight": "right",
-			"ArrowUp": "up",
-			"ArrowDown": "down",
-			"ShiftLeft": "shift"
+			"ArrowUp"   : "up",
+			"ArrowDown" : "down",
+			"ShiftLeft" : "shift"
 		}
 
 		let key = keys[input]
@@ -30,10 +33,10 @@ const player = {
 	move(mode: "fixed" | "overworld", collisions) {
 		let speed = this.keyPressed.shift ? 4 : 8
 
-		if (this.keyPressed.left) this.x -= speed
+		if (this.keyPressed.left ) this.x -= speed
 		if (this.keyPressed.right) this.x += speed
-		if (this.keyPressed.up) this.y -= speed
-		if (this.keyPressed.down) this.y += speed
+		if (this.keyPressed.up   ) this.y -= speed
+		if (this.keyPressed.down ) this.y += speed
 
 		// Correct collisions
 
