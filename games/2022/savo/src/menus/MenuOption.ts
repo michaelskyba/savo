@@ -7,6 +7,8 @@ export default class MenuOption extends TextBox {
 	}
 
 	// We can't call it "draw" or it would violate TypeScript
+	// If we didn't have the boolean variable, I could name it "draw" and then
+	// use super.draw() to call the superclass's draw.
 	show(selected: boolean) {
 		this.bgColour = selected ? "purple" : "white"
 		this.fgColour = selected ? "white" : "black"

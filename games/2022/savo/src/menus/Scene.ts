@@ -32,9 +32,7 @@ class Scene {
 		}
 
 		// e.g. pressed z, frame = 5 (fifth frame), six total frames
-		else {
-			this.playing = false
-		}
+		else this.playing = false
 	}
 }
 

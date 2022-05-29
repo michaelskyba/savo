@@ -34,7 +34,7 @@ const akvedukto = {
 		frontinus.collision(player.x, player.y)
 		frontinus.draw()
 
-		player.life.drawLife()
+		player.life.draw()
 	}
 }
 

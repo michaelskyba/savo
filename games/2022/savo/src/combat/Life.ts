@@ -14,7 +14,7 @@ class Life extends TextBox {
 		this.hp = hp
 	}
 
-	drawLife() {
+	draw() {
 		let colIdx = this.threatened ? 1 : 0
 		this.bgColour = bg[colIdx]
 		this.fgColour = fg[colIdx]
@@ -22,7 +22,7 @@ class Life extends TextBox {
 		this.text = this.hp.toString()
 
 		// Draws the TextBox
-		this.draw()
+		super.draw()
 	}
 }
 
