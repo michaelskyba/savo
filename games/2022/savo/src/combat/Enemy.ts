@@ -5,17 +5,16 @@ class Enemy {
 	x: number
 	y: number
 
-	counter = 0
+	counter: number
+	sword: Sword
 
 	lastFrame: number
-
-	sword: Sword
 
 	constructor(x: number, y: number) {
 		this.x = x
 		this.y = y
 
-		this.sword = new Sword(200, 80)
+		this.sword = new Sword(200, 0)
 	}
 
 	collision = (playerX: number, playerY: number) => {
