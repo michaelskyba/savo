@@ -26,7 +26,7 @@ class Sword {
 	}
 
 	genPoints() {
-		let rad = this.angle * Math.PI / 180
+		let rad = Math.round(this.angle) * Math.PI / 180
 
 		this.offsetX = this.length * Math.cos(rad)
 		this.offsetY = this.length * Math.sin(rad)

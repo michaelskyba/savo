@@ -5,6 +5,8 @@ class Enemy {
 	x: number
 	y: number
 
+	lastFrame: number
+
 	sword: Sword
 
 	constructor(x: number, y: number) {
@@ -19,7 +21,22 @@ class Enemy {
 		this.sword.colour = collided ? "red" : "coral"
 	}
 
-	move = () => this.sword.rotate(1)
+	move(time: number) {
+		// For now, let's say that we want one full rotation per minute
+		// That's 360 per minute --> 360 per 60 s --> 6 per s
+		// Time is given in ms, so we want 6 * ((ms - last frame) / 1000)
+
+		if (this.lastFrame == null) {
+			this.lastFrame = time
+			return
+		}
+
+		let diff = time - this.lastFrame
+		let move = 6 * diff / 1000
+		this.lastFrame = time
+
+		this.sword.rotate(move)
+	}
 
 	draw() {
 		c.fillStyle = "coral"

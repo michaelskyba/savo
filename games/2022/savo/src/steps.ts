@@ -49,8 +49,8 @@ const steps = {
 		}
 	},
 
-	akvedukto() {
-		akvedukto.move()
+	akvedukto(time: number) {
+		akvedukto.move(time)
 		akvedukto.draw()
 
 		window.requestAnimationFrame(this.akvedukto)
