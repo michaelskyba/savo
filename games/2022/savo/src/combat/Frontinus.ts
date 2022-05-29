@@ -5,7 +5,7 @@ class Frontinus extends Enemy {
 	elapsed = 0
 	lastFrame: number
 
-	counter = 60
+	counter = 5
 
 	constructor() {
 		super(400, 300)
@@ -19,9 +19,11 @@ class Frontinus extends Enemy {
 
 		this.elapsed += time - this.lastFrame
 
-		while (this.elapsed > 1000) {
+		let threshold = 500
+
+		while (this.elapsed > threshold) {
 			if (this.counter > 0) this.counter--
-			this.elapsed -= 1000
+			this.elapsed -= threshold
 		}
 
 		this.lastFrame = time
