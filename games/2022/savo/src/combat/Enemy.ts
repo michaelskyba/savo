@@ -5,7 +5,7 @@ class Enemy {
 	x: number
 	y: number
 
-	counter: number
+	counter = 0
 
 	lastFrame: number
 
@@ -40,7 +40,7 @@ class Enemy {
 		this.sword.rotate(move)
 	}
 
-	draw() {
+	render() {
 		c.fillStyle = "coral"
 
 		// 25 = enemy size / 2 (so the sword starts in the center)
