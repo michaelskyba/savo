@@ -40,7 +40,7 @@ class Enemy {
 		this.sword.rotate(move)
 	}
 
-	render() {
+	draw() {
 		c.fillStyle = "coral"
 
 		// 25 = enemy size / 2 (so the sword starts in the center)

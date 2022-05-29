@@ -8,7 +8,12 @@ class Frontinus extends Enemy {
 	}
 
 	draw() {
-		this.render()
+		c.fillStyle = "coral"
+		c.frect(this.x, this.y, 50, 50)
+
+		// 25 = enemy size / 2 (so the sword starts in the center)
+		if (this.counter == 0)
+			this.sword.draw(this.x + 25, this.y + 25)
 
 		let fontSize = 40
 		c.font = fontSize+ "px monospace"
