@@ -28,7 +28,7 @@ class Life extends TextBox {
 		this.bgColour = bg[colIdx]
 		this.fgColour = fg[colIdx]
 
-		this.text = this.hp.toString()
+		this.text = (this.hp < 10 ? "0" : "") + this.hp.toString()
 
 		// Draws the TextBox
 		super.draw()
