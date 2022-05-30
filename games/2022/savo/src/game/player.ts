@@ -21,9 +21,18 @@ const player = {
 		shift: false
 	},
 
+	dodge() {
+		console.log("Rolling")
+	},
+
 	// Used as both onkeydown and onkeyup (specify with inputType)
 	// Sets this.keyPressed accordingly according to keys pressed and released
 	handleKey(inputType: string, input: string) {
+		if (inputType == "keydown" && input == "KeyZ") {
+			this.dodge()
+			return
+		}
+
 		let keys = {
 			"ArrowLeft" : "left",
 			"ArrowRight": "right",
