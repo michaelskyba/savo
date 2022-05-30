@@ -28,7 +28,7 @@ const akvedukto = {
 		}])
 
 		if (frontinus.collision(player.x, player.y))
-			player.life.hit()
+			player.receiveDamage()
 	},
 
 	draw() {
@@ -40,6 +40,7 @@ const akvedukto = {
 		frontinus.draw()
 
 		player.life.draw()
+		player.drawCooldowns()
 	}
 }
 

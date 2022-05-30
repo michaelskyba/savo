@@ -10,7 +10,7 @@ class Life extends TextBox {
 	threatened = false
 
 	constructor(hp: number, x: number, y: number) {
-		super("00 HP", x, y, 40, "monospace", "#fff", "#000")
+		super("00", x, y, 40, "monospace", "#fff", "#000")
 		this.hp = hp
 	}
 
@@ -28,7 +28,7 @@ class Life extends TextBox {
 		this.bgColour = bg[colIdx]
 		this.fgColour = fg[colIdx]
 
-		this.text = this.hp.toString() + " HP"
+		this.text = this.hp.toString()
 
 		// Draws the TextBox
 		super.draw()

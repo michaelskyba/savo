@@ -1,11 +1,17 @@
 import c from "./canvas"
+
 import Life from "../combat/Life"
+import Cooldown from "../combat/Cooldown"
 
 const player = {
 	x: 200,
 	y: 200,
 
 	life: new Life(99, 5, 5),
+
+	cooldowns: {
+		damage: new Cooldown(0, 600, "#ff0000")
+	},
 
 	keyPressed: {
 		left : false,
@@ -102,6 +108,14 @@ const player = {
 
 			c.frect(637.5, 337.5, 50, 50)
 		}
+	},
+
+	receiveDamage() {
+		this.life.hit()
+	},
+
+	drawCooldowns() {
+		this.cooldowns.damage.draw()
 	}
 }
 
