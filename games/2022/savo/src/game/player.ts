@@ -3,7 +3,7 @@ import c from "./canvas"
 import Life from "../combat/Life"
 import Cooldown from "../combat/Cooldown"
 
-let cooldowns = ["damage", "action"]
+let cooldowns = ["damage", "dodge", "action"]
 
 const player = {
 	x: 200,
@@ -13,6 +13,7 @@ const player = {
 
 	cooldowns: {
 		damage: new Cooldown(0, 331.25, "#ff0000"),
+		dodge: new Cooldown(662.5, 331.25, "#00ffff"),
 		action: new Cooldown(993.75, 331.25, "#0000ff")
 	},
 
@@ -26,6 +27,7 @@ const player = {
 
 	dodge() {
 		this.cooldowns.action.start()
+		this.cooldowns.dodge.start()
 	},
 
 	// Used as both onkeydown and onkeyup (specify with inputType)
@@ -146,35 +148,39 @@ const player = {
 
 let damage = player.cooldowns.damage
 damage.getY = (counter: number) => 725 - counter
-damage.progress = (time: number) => {
+damage.progress = function(time: number) {
 	// We need it to decrease by 725 in 0.5s
 	// So, that's (725/0.5)/1000 = 1.45 per millisecond
 
-	if (!damage.lastFrame) {
-		damage.lastFrame = time
+	if (!this.lastFrame) {
+		this.lastFrame = time
 		return
 	}
 
-	let diff = time - damage.lastFrame
-	damage.counter -= diff * 1.45
+	let diff = time - this.lastFrame
+	this.counter -= diff * 1.45
 
-	damage.lastFrame = time
+	this.lastFrame = time
 }
 
+let dodge = player.cooldowns.dodge
+dodge.getY = damage.getY
+dodge.progress = damage.progress
+
 let action = player.cooldowns.action
-action.progress = (time: number) => {
+action.progress = function(time: number) {
 	// We need it to decrease by 725 in 1s
 	// So, that's 725/1000 = 0.725 per millisecond
 
-	if (!action.lastFrame) {
-		action.lastFrame = time
+	if (!this.lastFrame) {
+		this.lastFrame = time
 		return
 	}
 
-	let diff = time - action.lastFrame
-	action.counter -= diff * 0.725
+	let diff = time - this.lastFrame
+	this.counter -= diff * 0.725
 
-	action.lastFrame = time
+	this.lastFrame = time
 }
 
 export default player
