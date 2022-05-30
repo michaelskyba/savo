@@ -31,6 +31,15 @@ const player = {
 			this.cooldowns.action.start()
 	},
 
+	heal() {
+		if (this.cooldowns.heal.counter < 1 &&
+			this.life.threatened == true) {
+
+			this.life.heal()
+			this.cooldowns.heal.start()
+		}
+	},
+
 	dodge() {
 		if (this.cooldowns.action.counter < 1) {
 			this.cooldowns.action.start()
@@ -46,26 +55,14 @@ const player = {
 		if (inputType == "keydown") {
 
 			// Pressed Z: Dodge roll
-			if (input == "KeyZ") {
-				this.dodge()
-				return
-			}
+			if (input == "KeyZ") this.dodge()
 
 			// Pressed X: Attack
-			if (input == "KeyX") {
-				this.attack()
-				return
-			}
+			if (input == "KeyX") this.attack()
 
 			// Pressed C: Heal
-			if (input == "KeyC") {
-				if (this.cooldowns.heal.counter < 1) {
-					this.life.heal()
-					this.cooldowns.heal.start()
-				}
+			if (input == "KeyC") this.heal()
 
-				return
-			}
 		}
 
 		let keys = {
