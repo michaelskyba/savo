@@ -3,7 +3,7 @@ import c from "./canvas"
 import Life from "../combat/Life"
 import Cooldown from "../combat/Cooldown"
 
-let cooldowns = ["damage", "dodge", "action"]
+let cooldowns = ["damage", "heal", "dodge", "action"]
 
 const player = {
 	x: 200,
@@ -13,6 +13,7 @@ const player = {
 
 	cooldowns: {
 		damage: new Cooldown(0, 331.25, "#ff0000"),
+		heal: new Cooldown(331.25, 331.25, "#ffff00"),
 		dodge: new Cooldown(662.5, 331.25, "#00ffff"),
 		action: new Cooldown(993.75, 331.25, "#0000ff")
 	},
@@ -33,9 +34,20 @@ const player = {
 	// Used as both onkeydown and onkeyup (specify with inputType)
 	// Sets this.keyPressed accordingly according to keys pressed and released
 	handleKey(inputType: string, input: string) {
-		if (inputType == "keydown" && input == "KeyZ") {
-			this.dodge()
-			return
+		// Clicked instead of pressed
+		if (inputType == "keydown") {
+			// Pressed Z: Dodge roll
+			if (input == "KeyZ") {
+				this.dodge()
+				return
+			}
+
+			// Pressed C: Heal
+			if (input == "KeyC") {
+				this.life.heal()
+				this.cooldowns.heal.start()
+				return
+			}
 		}
 
 		let keys = {
@@ -182,5 +194,8 @@ action.progress = function(time: number) {
 
 	this.lastFrame = time
 }
+
+let heal = player.cooldowns.heal
+heal.progress = action.progress
 
 export default player

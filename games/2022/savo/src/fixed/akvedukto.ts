@@ -10,10 +10,7 @@ const akvedukto = {
 		player.x = 500
 		player.y = 600
 
-		document.onkeydown = event => {
-			player.handleKey("keydown", event.code)
-			player.life.handleKey(event.code)
-		}
+		document.onkeydown = event => player.handleKey("keydown", event.code)
 		document.onkeyup = event => player.handleKey("keyup", event.code)
 	},
 

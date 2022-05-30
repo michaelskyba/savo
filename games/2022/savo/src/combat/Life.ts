@@ -14,8 +14,8 @@ class Life extends TextBox {
 		this.hp = hp
 	}
 
-	handleKey(code: string) {
-		if (code == "KeyC") this.threatened = false
+	heal() {
+		this.threatened = false
 	}
 
 	hit() {
