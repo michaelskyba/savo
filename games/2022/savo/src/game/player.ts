@@ -162,5 +162,19 @@ damage.progress = (time: number) => {
 }
 
 let action = player.cooldowns.action
+action.progress = (time: number) => {
+	// We need it to decrease by 725 in 1s
+	// So, that's 725/1000 = 0.725 per millisecond
+
+	if (!action.lastFrame) {
+		action.lastFrame = time
+		return
+	}
+
+	let diff = time - action.lastFrame
+	action.counter -= diff * 0.725
+
+	action.lastFrame = time
+}
 
 export default player
