@@ -5,6 +5,22 @@ import Cooldown from "../combat/Cooldown"
 
 let cooldowns = ["damage", "heal", "dodge", "action"]
 
+class HealCooldown extends Cooldown {
+	constructor() {
+		// We need it to decrease by 725 in 1s
+		// So, that's 725/1000 = 0.725 per millisecond
+		super(331.25, 331.25, "#ffff00", 0.725)
+	}
+
+	progress(time: number) {
+		if (this.counter < 1) return
+
+		super.progress(time)
+
+		if (this.counter < 1) player.life.heal()
+	}
+}
+
 const player = {
 	x: 200,
 	y: 200,
@@ -16,9 +32,7 @@ const player = {
 		// So, that's (725/0.5)/1000 = 1.45 per millisecond
 		damage: new Cooldown(0, 331.25, "#ff0000", 1.45),
 
-		// We need it to decrease by 725 in 1s
-		// So, that's 725/1000 = 0.725 per millisecond
-		heal: new Cooldown(331.25, 331.25, "#ffff00", 0.725),
+		heal: new HealCooldown(),
 
 		// Same as damage: 725p/0.5s --> 1.45
 		dodge: new Cooldown(662.5, 331.25, "#00ffff", 1.45),
@@ -41,12 +55,10 @@ const player = {
 	},
 
 	heal() {
+		// The actual heal will trigger once the cooldown ends
 		if (this.cooldowns.heal.counter < 1 &&
-			this.life.threatened == true) {
-
-			this.life.heal()
+			this.life.threatened == true)
 			this.cooldowns.heal.start()
-		}
 	},
 
 	dodge() {
@@ -184,6 +196,5 @@ const player = {
 let damage = player.cooldowns.damage
 damage.getY = (counter: number) => 725 - counter
 player.cooldowns.dodge.getY = damage.getY
-
 
 export default player
