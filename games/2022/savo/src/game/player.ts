@@ -111,6 +111,8 @@ const player = {
 	},
 
 	receiveDamage() {
+		if (this.cooldowns.damage.counter > 0) return
+
 		this.life.hit()
 		this.cooldowns.damage.start()
 	},
