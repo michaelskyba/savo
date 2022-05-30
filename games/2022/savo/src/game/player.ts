@@ -3,6 +3,8 @@ import c from "./canvas"
 import Life from "../combat/Life"
 import Cooldown from "../combat/Cooldown"
 
+let cooldowns = ["damage", "action"]
+
 const player = {
 	x: 200,
 	y: 200,
@@ -10,7 +12,8 @@ const player = {
 	life: new Life(99, 5, 5),
 
 	cooldowns: {
-		damage: new Cooldown(0, 600, "#ff0000")
+		damage: new Cooldown(0, 331.25, "#ff0000"),
+		action: new Cooldown(993.75, 331.25, "#0000ff")
 	},
 
 	keyPressed: {
@@ -22,7 +25,7 @@ const player = {
 	},
 
 	dodge() {
-		console.log("Rolling")
+		this.cooldowns.action.start()
 	},
 
 	// Used as both onkeydown and onkeyup (specify with inputType)
@@ -127,11 +130,12 @@ const player = {
 	},
 
 	drawCooldowns() {
-		this.cooldowns.damage.draw()
+		for (const cooldown of cooldowns) {
+			this.cooldowns[cooldown].draw()
+		}
 	},
 
 	progressCooldowns(time: number) {
-		let cooldowns = ["damage"]
 		for (const cooldown of cooldowns) {
 			this.cooldowns[cooldown].progress(time)
 		}
@@ -139,6 +143,7 @@ const player = {
 }
 
 // Custom cooldown animations
+
 let damage = player.cooldowns.damage
 damage.getY = (counter: number) => 725 - counter
 damage.progress = (time: number) => {
@@ -155,5 +160,7 @@ damage.progress = (time: number) => {
 
 	damage.lastFrame = time
 }
+
+let action = player.cooldowns.action
 
 export default player
