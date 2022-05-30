@@ -128,6 +128,13 @@ const player = {
 
 	drawCooldowns() {
 		this.cooldowns.damage.draw()
+	},
+
+	progressCooldowns(time: number) {
+		let cooldowns = ["damage"]
+		for (const cooldown of cooldowns) {
+			this.cooldowns[cooldown].progress(time)
+		}
 	}
 }
 

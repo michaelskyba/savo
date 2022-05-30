@@ -27,10 +27,11 @@ const akvedukto = {
 			height: 50
 		}])
 
+		// Have the player take damage if Frontinus' sword hits them
 		if (frontinus.collision(player.x, player.y))
 			player.receiveDamage()
 
-		player.cooldowns.damage.progress(time)
+		player.progressCooldowns(time)
 	},
 
 	draw() {
