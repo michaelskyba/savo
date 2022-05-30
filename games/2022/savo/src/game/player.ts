@@ -27,12 +27,15 @@ const player = {
 	},
 
 	attack() {
-		this.cooldowns.action.start()
+		if (this.cooldowns.action.counter < 1)
+			this.cooldowns.action.start()
 	},
 
 	dodge() {
-		this.cooldowns.action.start()
-		this.cooldowns.dodge.start()
+		if (this.cooldowns.action.counter < 1) {
+			this.cooldowns.action.start()
+			this.cooldowns.dodge.start()
+		}
 	},
 
 	// Used as both onkeydown and onkeyup (specify with inputType)
@@ -56,8 +59,11 @@ const player = {
 
 			// Pressed C: Heal
 			if (input == "KeyC") {
-				this.life.heal()
-				this.cooldowns.heal.start()
+				if (this.cooldowns.heal.counter < 1) {
+					this.life.heal()
+					this.cooldowns.heal.start()
+				}
+
 				return
 			}
 		}
