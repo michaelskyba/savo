@@ -11,6 +11,12 @@ class Frontinus extends Enemy {
 		super(400, 300)
 	}
 
+	collision(playerX: number, playerY: number): boolean {
+		if (this.counter != 0) return false
+
+		return super.collision(playerX, playerY)
+	}
+
 	move(time: number) {
 		if (!this.lastFrame) {
 			this.lastFrame = time
