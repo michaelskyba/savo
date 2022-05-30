@@ -29,6 +29,8 @@ const akvedukto = {
 
 		if (frontinus.collision(player.x, player.y))
 			player.receiveDamage()
+
+		player.cooldowns.damage.progress(time)
 	},
 
 	draw() {

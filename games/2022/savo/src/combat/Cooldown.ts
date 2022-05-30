@@ -5,6 +5,7 @@ class Cooldown {
 	width: number
 	colour: string
 
+	lastFrame: number
 	counter = 0
 
 	constructor(x: number, width: number, colour: string) {
@@ -14,12 +15,13 @@ class Cooldown {
 	}
 
 	start() {
+		this.lastFrame = 0
 		this.counter = 725
 	}
 
 	getY = (counter: number) => 0
 
-	progress() {
+	progress(time: number) {
 		this.counter--
 	}
 
@@ -32,8 +34,6 @@ class Cooldown {
 		c.frect(this.x, this.getY(this.counter), this.width, this.counter)
 
 		c.globalAlpha = 1
-
-		this.progress()
 	}
 }
 

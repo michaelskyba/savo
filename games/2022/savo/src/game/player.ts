@@ -123,6 +123,19 @@ const player = {
 // Custom cooldown animations
 let damage = player.cooldowns.damage
 damage.getY = (counter: number) => 725 - counter
-damage.progress = () => damage.counter -= 5
+damage.progress = (time: number) => {
+	// We need it to decrease by 725 in 0.5s
+	// So, that's (725/0.5)/1000 = 1.45 per millisecond
+
+	if (!damage.lastFrame) {
+		damage.lastFrame = time
+		return
+	}
+
+	let diff = time - damage.lastFrame
+	damage.counter -= diff * 1.45
+
+	damage.lastFrame = time
+}
 
 export default player
