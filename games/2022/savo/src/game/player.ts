@@ -12,10 +12,19 @@ const player = {
 	life: new Life(99, 5, 5),
 
 	cooldowns: {
-		damage: new Cooldown(0, 331.25, "#ff0000"),
-		heal: new Cooldown(331.25, 331.25, "#ffff00"),
-		dodge: new Cooldown(662.5, 331.25, "#00ffff"),
-		action: new Cooldown(993.75, 331.25, "#0000ff")
+		// We need it to decrease by 725 in 0.5s
+		// So, that's (725/0.5)/1000 = 1.45 per millisecond
+		damage: new Cooldown(0, 331.25, "#ff0000", 1.45),
+
+		// We need it to decrease by 725 in 1s
+		// So, that's 725/1000 = 0.725 per millisecond
+		heal: new Cooldown(331.25, 331.25, "#ffff00", 0.725),
+
+		// Same as damage: 725p/0.5s --> 1.45
+		dodge: new Cooldown(662.5, 331.25, "#00ffff", 1.45),
+
+		// Same as healing: 725p/s --> 0.725
+		action: new Cooldown(993.75, 331.25, "#0000ff", 0.725)
 	},
 
 	keyPressed: {
@@ -171,46 +180,10 @@ const player = {
 	}
 }
 
-// Custom cooldown animations
-
+// Have damage and dodge cooldowns go backwards
 let damage = player.cooldowns.damage
 damage.getY = (counter: number) => 725 - counter
-damage.progress = function(time: number) {
-	// We need it to decrease by 725 in 0.5s
-	// So, that's (725/0.5)/1000 = 1.45 per millisecond
+player.cooldowns.dodge.getY = damage.getY
 
-	if (!this.lastFrame) {
-		this.lastFrame = time
-		return
-	}
-
-	let diff = time - this.lastFrame
-	this.counter -= diff * 1.45
-
-	this.lastFrame = time
-}
-
-let dodge = player.cooldowns.dodge
-dodge.getY = damage.getY
-dodge.progress = damage.progress
-
-let action = player.cooldowns.action
-action.progress = function(time: number) {
-	// We need it to decrease by 725 in 1s
-	// So, that's 725/1000 = 0.725 per millisecond
-
-	if (!this.lastFrame) {
-		this.lastFrame = time
-		return
-	}
-
-	let diff = time - this.lastFrame
-	this.counter -= diff * 0.725
-
-	this.lastFrame = time
-}
-
-let heal = player.cooldowns.heal
-heal.progress = action.progress
 
 export default player

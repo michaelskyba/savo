@@ -6,12 +6,14 @@ class Cooldown {
 	colour: string
 
 	lastFrame: number
+	progressInterval: number
 	counter = 0
 
-	constructor(x: number, width: number, colour: string) {
+	constructor(x: number, width: number, colour: string, pI: number) {
 		this.x = x
 		this.width = width
 		this.colour = colour
+		this.progressInterval = pI
 	}
 
 	start() {
@@ -23,6 +25,16 @@ class Cooldown {
 
 	progress(time: number) {
 		this.counter--
+
+		if (!this.lastFrame) {
+			this.lastFrame = time
+			return
+		}
+
+		let diff = time - this.lastFrame
+		this.counter -= diff * this.progressInterval
+
+		this.lastFrame = time
 	}
 
 	draw() {
