@@ -112,11 +112,17 @@ const player = {
 
 	receiveDamage() {
 		this.life.hit()
+		this.cooldowns.damage.start()
 	},
 
 	drawCooldowns() {
 		this.cooldowns.damage.draw()
 	}
 }
+
+// Custom cooldown animations
+let damage = player.cooldowns.damage
+damage.getY = (counter: number) => 725 - counter
+damage.progress = () => damage.counter -= 5
 
 export default player
