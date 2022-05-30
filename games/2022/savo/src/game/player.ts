@@ -26,6 +26,10 @@ const player = {
 		shift: false
 	},
 
+	attack() {
+		this.cooldowns.action.start()
+	},
+
 	dodge() {
 		this.cooldowns.action.start()
 		this.cooldowns.dodge.start()
@@ -34,11 +38,19 @@ const player = {
 	// Used as both onkeydown and onkeyup (specify with inputType)
 	// Sets this.keyPressed accordingly according to keys pressed and released
 	handleKey(inputType: string, input: string) {
+
 		// Clicked instead of pressed
 		if (inputType == "keydown") {
+
 			// Pressed Z: Dodge roll
 			if (input == "KeyZ") {
 				this.dodge()
+				return
+			}
+
+			// Pressed X: Attack
+			if (input == "KeyX") {
+				this.attack()
 				return
 			}
 
