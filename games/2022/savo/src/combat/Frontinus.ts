@@ -1,6 +1,8 @@
 import Enemy from "./Enemy"
 import c from "../game/canvas"
 
+import player from "../game/player"
+
 class Frontinus extends Enemy {
 	elapsed = 0
 	lastFrame: number
@@ -37,6 +39,21 @@ class Frontinus extends Enemy {
 				if (this.counter == 0) {
 					this.status = "attack"
 					this.elapsed = 0
+
+					// From what I understand, tan(θ) = y/x from the origin
+					// Since our origin is frontinus's (x, y), we need to
+					// subtract each from the player's corresponding value
+
+					let x = player.x - this.x
+					let y = player.y - this.y
+					let angle = Math.atan(y/x) * 180 / Math.PI
+
+					console.log(angle)
+
+					this.sword.angle = angle
+					this.sword.rotate(-90)
+
+					console.log(this.sword.angle)
 				}
 			}
 		}
