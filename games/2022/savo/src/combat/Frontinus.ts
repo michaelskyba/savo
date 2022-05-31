@@ -40,20 +40,17 @@ class Frontinus extends Enemy {
 					this.status = "attack"
 					this.elapsed = 0
 
-					// From what I understand, tan(θ) = y/x from the origin
+					// Math.atan2 gets the angle to the point from the origin.
 					// Since our origin is frontinus's (x, y), we need to
-					// subtract each from the player's corresponding value
+					// subtract each from the player's corresponding value.
+					// https://stackoverflow.com/a/28227643
 
 					let x = player.x - this.x
 					let y = player.y - this.y
-					let angle = Math.atan(y/x) * 180 / Math.PI
-
-					console.log(angle)
+					let angle = Math.atan2(y, x) * 180 / Math.PI
 
 					this.sword.angle = angle
 					this.sword.rotate(-90)
-
-					console.log(this.sword.angle)
 				}
 			}
 		}
