@@ -173,7 +173,9 @@ const player = {
 	},
 
 	receiveDamage() {
-		if (this.cooldowns.damage.counter > 0) return
+		// Quit if invincible
+		if (this.cooldowns.damage.counter > 0 ||
+			this.cooldowns.dodge.counter > 0) return
 
 		this.life.hit()
 		this.cooldowns.damage.start()
