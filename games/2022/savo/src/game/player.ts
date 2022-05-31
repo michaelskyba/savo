@@ -180,6 +180,27 @@ const player = {
 		}
 	},
 
+	// Player attack range
+	drawRange(enemyX, enemyY) {
+		let range = 100
+		let width = 50
+
+		if (enemyX + width > this.x + width/2 - range &&
+			enemyY + width > this.y + width/2 - range &&
+			enemyX < this.x + width * 1.5 + range &&
+			enemyY < this.y + width * 1.5 + range &&
+			this.cooldowns.action.counter < 1) {
+
+			c.globalAlpha = 0.3
+			c.fillStyle = "blue"
+
+			let offset = width/2 - range
+			c.frect(this.x + offset, this.y + offset, range * 2, range * 2)
+
+			c.globalAlpha = 1
+		}
+	},
+
 	receiveDamage() {
 		// Quit if invincible
 		if (this.cooldowns.damage.counter > 0 ||

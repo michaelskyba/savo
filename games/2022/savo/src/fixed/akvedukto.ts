@@ -35,6 +35,7 @@ const akvedukto = {
 		c.fillStyle = "floralwhite"
 		c.frect(0, 0, 1325, 725)
 
+		player.drawRange(frontinus.x, frontinus.y)
 		player.draw("fixed")
 
 		frontinus.draw()
