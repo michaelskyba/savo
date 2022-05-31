@@ -55,10 +55,16 @@ const player = {
 	},
 
 	heal() {
+		let cooldowns = this.cooldowns
+
 		// The actual heal will trigger once the cooldown ends
-		if (this.cooldowns.heal.counter < 1 &&
-			this.life.threatened == true)
-			this.cooldowns.heal.start()
+		if (cooldowns.heal.counter < 1 &&
+			cooldowns.action.counter < 1 &&
+			this.life.threatened == true) {
+
+			cooldowns.heal.start()
+			cooldowns.action.start()
+		}
 	},
 
 	dodge() {
