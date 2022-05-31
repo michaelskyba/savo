@@ -6,6 +6,7 @@ class Frontinus extends Enemy {
 	lastFrame: number
 
 	counter = 5
+	status = "countdown"
 
 	constructor() {
 		super(400, 300)
@@ -21,14 +22,25 @@ class Frontinus extends Enemy {
 		if (!this.lastFrame) {
 			this.lastFrame = time
 		}
-
 		this.elapsed += time - this.lastFrame
 
-		let threshold = 500
+		// Counting down to the next attack
+		if (this.status == "countdown") {
+			let threshold = 500
 
-		while (this.elapsed > threshold) {
-			if (this.counter > 0) this.counter--
-			this.elapsed -= threshold
+			while (this.elapsed > threshold) {
+				this.counter--
+				this.elapsed -= threshold
+
+				if (this.counter == 0) {
+					this.status = "attack"
+					this.elapsed = 0
+				}
+			}
+		}
+
+		// Executing the attack
+		else {
 		}
 
 		this.lastFrame = time
@@ -36,14 +48,14 @@ class Frontinus extends Enemy {
 
 	draw() {
 		// 25 = enemy size / 2 (so the sword starts in the center)
-		if (this.counter == 0)
+		if (this.status == "attack")
 			this.sword.draw(this.x + 25, this.y + 25)
 
 		c.fillStyle = "coral"
 		c.frect(this.x, this.y, 50, 50)
 
 		let fontSize = 40
-		c.font = fontSize+ "px monospace"
+		c.font = fontSize + "px monospace"
 		c.fillStyle = "white"
 
 		let text = (this.counter < 10 ? "0" : "") + this.counter
