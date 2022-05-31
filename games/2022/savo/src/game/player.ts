@@ -105,7 +105,9 @@ const player = {
 	},
 
 	move(mode: "fixed" | "overworld", collisions) {
-		let speed = this.keyPressed.shift ? 4 : 8
+		let speed = 8
+		if (this.keyPressed.shift) speed = speed / 2
+		if (this.cooldowns.heal.counter > 0) speed = speed / 2
 
 		if (this.keyPressed.left ) this.x -= speed
 		if (this.keyPressed.right) this.x += speed
