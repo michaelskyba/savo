@@ -40,8 +40,10 @@ const akvedukto = {
 
 		frontinus.draw()
 
-		player.life.draw()
 		player.drawCooldowns()
+
+		frontinus.life.draw()
+		player.life.draw()
 	}
 }
 

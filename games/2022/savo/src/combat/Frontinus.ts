@@ -1,5 +1,7 @@
-import Enemy from "./Enemy"
 import c from "../game/canvas"
+import Enemy from "./Enemy"
+
+import Life from "./Life"
 
 import player from "../game/player"
 
@@ -9,6 +11,9 @@ class Frontinus extends Enemy {
 
 	counter = 5
 	status = "countdown"
+
+	// 1232 = canvas width - textbox width (~88) - padding (5)
+	life = new Life(10, 1232, 5)
 
 	constructor() {
 		super(400, 300)
