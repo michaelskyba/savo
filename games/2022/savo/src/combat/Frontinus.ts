@@ -22,10 +22,12 @@ class Frontinus extends Enemy {
 		if (!this.lastFrame) {
 			this.lastFrame = time
 		}
+
 		this.elapsed += time - this.lastFrame
 
 		// Counting down to the next attack
 		if (this.status == "countdown") {
+
 			let threshold = 500
 
 			while (this.elapsed > threshold) {
@@ -41,6 +43,16 @@ class Frontinus extends Enemy {
 
 		// Executing the attack
 		else {
+			// We want a 180 degree rotation in 200ms, which means 180/200 = 0.9
+			// degrees per millisecond
+			this.sword.rotate((time - this.lastFrame) * 0.9)
+
+			// It's done after 200 ms
+			if (this.elapsed > 200) {
+				this.status = "countdown"
+				this.counter = 5
+				this.elapsed = 0
+			}
 		}
 
 		this.lastFrame = time
