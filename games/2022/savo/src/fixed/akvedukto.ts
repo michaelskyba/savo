@@ -5,7 +5,15 @@ import Frontinus from "../combat/Frontinus"
 
 const frontinus = new Frontinus()
 
+import Scene from "../menus/Scene"
+import dialogue0 from "../events/2"
+
+const scene = new Scene(dialogue0)
+
 const akvedukto = {
+	// Which phase of akvedukto / the tutorial are you on?
+	phase: 0,
+
 	init() {
 		player.x = 500
 		player.y = 600
@@ -18,6 +26,8 @@ const akvedukto = {
 	},
 
 	move(time: number) {
+		if (this.phase == 0) return
+
 		frontinus.move(time)
 
 		player.move("fixed", [{
@@ -51,6 +61,11 @@ const akvedukto = {
 
 		frontinus.life.draw()
 		player.life.draw()
+
+		if (this.phase == 0) {
+			scene.speech.draw()
+			if (scene.speaker) scene.speaker.draw()
+		}
 	}
 }
 
