@@ -12,11 +12,8 @@ class Frontinus extends Enemy {
 	counter = 5
 	status = "countdown"
 
-	// 1232 = canvas width - textbox width (~88) - padding (5)
-	life = new Life(10, 1232, 5)
-
 	constructor() {
-		super(400, 300)
+		super(400, 300, 5)
 	}
 
 	collision(playerX: number, playerY: number): boolean {

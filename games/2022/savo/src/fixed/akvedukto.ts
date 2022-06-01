@@ -10,7 +10,10 @@ const akvedukto = {
 		player.x = 500
 		player.y = 600
 
-		document.onkeydown = event => player.handleKey("keydown", event.code)
+		document.onkeydown = event => {
+			player.fixedKeys(event.code)
+			player.handleKey("keydown", event.code)
+		}
 		document.onkeyup = event => player.handleKey("keyup", event.code)
 	},
 
@@ -27,6 +30,10 @@ const akvedukto = {
 		// Have the player take damage if Frontinus' sword hits them
 		if (frontinus.collision(player.x, player.y))
 			player.receiveDamage()
+
+		// Have Frontinus take damage from the player's hits
+		if (player.status == "attacking")
+			frontinus.receiveDamage()
 
 		player.progressCooldowns(time)
 	},

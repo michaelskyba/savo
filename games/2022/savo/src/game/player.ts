@@ -26,6 +26,7 @@ const player = {
 	y: 200,
 
 	life: new Life(99, 5, 5),
+	status: "prepared",
 
 	cooldowns: {
 		// We need it to decrease by 725 in 0.5s
@@ -50,8 +51,18 @@ const player = {
 	},
 
 	attack() {
-		if (this.cooldowns.action.counter < 1)
-			this.cooldowns.action.start()
+		if (this.cooldowns.action.counter > 1) return
+
+		this.cooldowns.action.start()
+
+		// Only hit if the player is in range of the enemy
+		if (this.status == "prepared")
+			this.status = "attacking"
+
+		// We have to use this status = "attacking" system so that the level can
+		// compare states and administer damage. Trying to create damage in here
+		// would require many imports as the number of possible enemies grows
+		// and create dependency circles.
 	},
 
 	heal() {
@@ -74,24 +85,20 @@ const player = {
 		}
 	},
 
+	fixedKeys(input: string) {
+		// Pressed Z: Dodge roll
+		if (input == "KeyZ") this.dodge()
+
+		// Pressed X: Attack
+		if (input == "KeyX") this.attack()
+
+		// Pressed C: Heal
+		if (input == "KeyC") this.heal()
+	},
+
 	// Used as both onkeydown and onkeyup (specify with inputType)
 	// Sets this.keyPressed accordingly according to keys pressed and released
 	handleKey(inputType: string, input: string) {
-
-		// Clicked instead of pressed
-		if (inputType == "keydown") {
-
-			// Pressed Z: Dodge roll
-			if (input == "KeyZ") this.dodge()
-
-			// Pressed X: Attack
-			if (input == "KeyX") this.attack()
-
-			// Pressed C: Heal
-			if (input == "KeyC") this.heal()
-
-		}
-
 		let keys = {
 			"ArrowLeft" : "left",
 			"ArrowRight": "right",
@@ -191,6 +198,8 @@ const player = {
 			enemyY < this.y + width * 1.5 + range &&
 			this.cooldowns.action.counter < 1) {
 
+			if (this.status == "default") this.status = "prepared"
+
 			c.globalAlpha = 0.3
 			c.fillStyle = "blue"
 
@@ -199,6 +208,7 @@ const player = {
 
 			c.globalAlpha = 1
 		}
+		else this.status = "default"
 	},
 
 	receiveDamage() {

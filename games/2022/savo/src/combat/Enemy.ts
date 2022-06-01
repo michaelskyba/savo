@@ -1,6 +1,8 @@
 import c from "../game/canvas"
 import Sword from "./Sword"
 
+import Life from "./Life"
+
 class Enemy {
 	x: number
 	y: number
@@ -8,17 +10,29 @@ class Enemy {
 	counter: number
 	sword: Sword
 
+	life: Life
+
 	lastFrame: number
 
-	constructor(x: number, y: number) {
+	constructor(x: number, y: number, HP: number) {
 		this.x = x
 		this.y = y
 
 		this.sword = new Sword(200, 0)
+
+		// 1232 = canvas width - textbox width (~88) - padding (5)
+		this.life = new Life(HP, 1232, 5)
 	}
 
 	collision(playerX: number, playerY: number): boolean {
 		return this.sword.collision(this.x + 25, this.y + 25, playerX, playerY)
+	}
+
+	receiveDamage() {
+		this.life.hit()
+
+		// Enemies don't need to heal
+		this.life.threatened = false
 	}
 
 	move(time: number) {
