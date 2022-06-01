@@ -1,5 +1,10 @@
 Malfacile Gajnita Savo
 
+Git
+	Use "git update-index --skip-worktree public/bundle.js" after cloning to
+	tell git not to track public/bundle.js. Putting it in .gitignore is _not_
+	enough.
+
 Building
 	I made a "build" script to avoid having to type something manually and to
 	avoid using node.js. It depends on TypeScript (tsc) for the src/*.ts -->
