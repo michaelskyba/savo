@@ -18,6 +18,8 @@ const akvedukto = {
 		player.x = 500
 		player.y = 600
 
+		player.resetInput()
+
 		document.onkeydown = event => {
 			if (this.phase == 0 && event.code == "KeyZ") {
 				scene.progress()

@@ -3,6 +3,14 @@ import c from "./canvas"
 import Life from "../combat/Life"
 import Cooldown from "../combat/Cooldown"
 
+const defaultKeys = {
+	left : false,
+	right: false,
+	up   : false,
+	down : false,
+	shift: false
+}
+
 let cooldowns = ["damage", "heal", "dodge", "action"]
 
 class HealCooldown extends Cooldown {
@@ -42,12 +50,10 @@ const player = {
 		action: new Cooldown(993.75, 331.25, "#0000ff", 0.725)
 	},
 
-	keyPressed: {
-		left : false,
-		right: false,
-		up   : false,
-		down : false,
-		shift: false
+	keyPressed: defaultKeys,
+
+	resetInput() {
+		this.keyPressed = defaultKeys
 	},
 
 	attack() {
