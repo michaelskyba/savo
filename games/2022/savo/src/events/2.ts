@@ -1,8 +1,8 @@
 // Inside Akvedukto, when Claudia is first meeting Frontinus
 
 const dialogue = [
-	[null, "(In the Soviet Union, telling political jokes could be regarded as a type of extreme sport."],
-	[null, "According to Article 58 (RSFSR Penal Code), 'anti-Soviet propaganda' was a potentially capital offense."],
+	[null, "In the Soviet Union, telling political jokes could be regarded as a type of extreme sport."],
+	[null, "According to Article 58, 'anti-Soviet propaganda' was a potentially capital offense."],
 	[null, "..."],
 	[null, "A judge walks out of his chambers laughing his head off."],
 	[null, "A colleague approaches him and asks why he is laughing."],

@@ -19,10 +19,23 @@ const akvedukto = {
 		player.y = 600
 
 		document.onkeydown = event => {
-			player.fixedKeys(event.code)
-			player.handleKey("keydown", event.code)
+			if (this.phase == 0 && event.code == "KeyZ") {
+				scene.progress()
+
+				// The last frame was finished, so the scene is over
+				if (!scene.playing) this.phase++
+			}
+
+			else {
+				player.fixedKeys(event.code)
+				player.handleKey("keydown", event.code)
+			}
 		}
-		document.onkeyup = event => player.handleKey("keyup", event.code)
+
+		document.onkeyup = event => {
+			if (this.phase != 0)
+				player.handleKey("keyup", event.code)
+		}
 	},
 
 	move(time: number) {
