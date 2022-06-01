@@ -6,9 +6,9 @@ import Frontinus from "../combat/Frontinus"
 const frontinus = new Frontinus()
 
 import Scene from "../menus/Scene"
-import dialogue0 from "../events/2"
+import dialogue from "../events/2"
 
-const scene = new Scene(dialogue0)
+const scene = new Scene(dialogue.introduction)
 
 const akvedukto = {
 	// Which phase of akvedukto / the tutorial are you on?
@@ -28,7 +28,7 @@ const akvedukto = {
 				if (!scene.playing) this.phase++
 			}
 
-			else {
+			else if (this.phase != 0) {
 				player.fixedKeys(event.code)
 				player.handleKey("keydown", event.code)
 			}

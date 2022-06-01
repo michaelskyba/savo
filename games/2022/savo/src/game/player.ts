@@ -3,6 +3,12 @@ import c from "./canvas"
 import Life from "../combat/Life"
 import Cooldown from "../combat/Cooldown"
 
+// We need to convert to JSON and back so that JS clones by value instead of by
+// reference
+function deepClone(obj: any) {
+	return JSON.parse(JSON.stringify(obj))
+}
+
 const defaultKeys = {
 	left : false,
 	right: false,
@@ -50,10 +56,10 @@ const player = {
 		action: new Cooldown(993.75, 331.25, "#0000ff", 0.725)
 	},
 
-	keyPressed: defaultKeys,
-
+	keyPressed: deepClone(defaultKeys),
 	resetInput() {
-		this.keyPressed = defaultKeys
+		this.keyPressed = deepClone(defaultKeys)
+		console.log(defaultKeys)
 	},
 
 	attack() {
