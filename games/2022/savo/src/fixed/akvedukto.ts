@@ -28,20 +28,20 @@ const akvedukto = {
 				if (!scene.playing) {
 					this.phase++
 
-					// Skip attacking explanation for now, which is special
-					// because it's a dialogue phase that follows a dialogue phase
-					if (this.phase == 1) this.phase++
+					// The attacking dialogue is the only one that follows
+					// another dialogue (introduction)
+					if (this.phase == 1) scene = new Scene(dialogue.attacking)
 				}
 			}
 
-			else if (this.phase != 0) {
+			else if (!scene.playing) {
 				player.fixedKeys(event.code)
 				player.handleKey("keydown", event.code)
 			}
 		}
 
 		document.onkeyup = event => {
-			if (this.phase != 0)
+			if (!scene.playing)
 				player.handleKey("keyup", event.code)
 		}
 	},
