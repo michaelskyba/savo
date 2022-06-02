@@ -8,14 +8,30 @@ for now as a placeholder instead of dialogue)
 const dialogue = {
 	// When Claudia first comes in and meets Frontinus
 	introduction: [
-		[null, "In the Soviet Union, telling political jokes could be regarded as a type of extreme sport."],
-		[null, "According to Article 58, 'anti-Soviet propaganda' was a potentially capital offense."],
-		[null, "..."],
-		[null, "A judge walks out of his chambers laughing his head off."],
-		[null, "A colleague approaches him and asks why he is laughing."],
-		["Judge", "I just heard the funniest joke in the world!"],
-		["Judge #2 (Colleague)", "Well, go ahead, tell me!"],
-		["Judge #1", "I can't – I just gave someone ten years for it!"]
+		["???", "Who has entered the Nova Anio-akvedukto?"],
+		["Claudia", "Uh..."],
+		["???", "Oh, it's you!"],
+		["Frontinus", "Greetings, Claudia. My name is Frontinus and I am here to help."],
+		["Claudia", "Is there some kind of door you're supposed to show me?"],
+		["Frontinus", "I see. Of course that's why you're here..."],
+		["Frontinus", "Anyway, before we get to that, there are things you need to learn."],
+		["Frontinus", "Are you really aware of the danger around these parts?"],
+		["Claudia", "Are you aware of the lack of danger?"],
+		["Frontinus", "No, but that's because the lack of danger does not exist."],
+		["Claudia", "Then, what danger could you be referring to?"],
+		["Frontinus", "I mean, of course, the mortal danger!"],
+		["Claudia", "..."],
+
+		["Frontinus", "Now that you're aware, it's time to prepare!"],
+		["Frontinus", "How? Through an interactive tutorial!"],
+		["Claudia", "How is this necessary?"],
+		["Claudia", "If there does turn out to be danger, I'll figure out how to avoid it on my own."],
+		["Frontinus", "You can, but not everybody can."],
+		["Frontinus", "Do you understand?"],
+		["Claudia", "Uh... Maybe?"],
+		["Frontinus", "Now, then, let's begin."],
+		["Frontinus", "Oh, and don't worry. I'll re-explain anything you mess up."],
+		["Claudia", "That won't be necessary either..."]
 	],
 
 	// Frontinus explains how Claudia can use X to attack him
