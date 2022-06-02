@@ -25,7 +25,13 @@ const akvedukto = {
 				scene.progress()
 
 				// The last frame was finished, so the scene is over
-				if (!scene.playing) this.phase++
+				if (!scene.playing) {
+					this.phase++
+
+					// Skip attacking explanation for now, which is special
+					// because it's a dialogue phase that follows a dialogue phase
+					if (this.phase == 1) this.phase++
+				}
 			}
 
 			else if (this.phase != 0) {
@@ -61,9 +67,31 @@ const akvedukto = {
 		if (player.status == "attacking") {
 			frontinus.receiveDamage()
 
+			// Frontinus was temporarily defeated, so we can proceed to the next
+			// stage of the tutorial
 			if (frontinus.life.hp < 1) {
 				this.phase++
-				scene = new Scene(dialogue.attacking)
+
+				// Set the dialogue based on the phase
+				let next: string[][]
+				switch(this.phase) {
+					case 3:
+						next = dialogue.timing
+						break
+
+					case 5:
+						next = dialogue.healing
+						break
+
+					case 7:
+						next = dialogue.dodging
+						break
+
+					case 9:
+						next = dialogue.conclusion
+						break
+				}
+				scene = new Scene(next)
 			}
 		}
 
