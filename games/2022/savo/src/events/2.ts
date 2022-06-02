@@ -55,7 +55,7 @@ const dialogue = {
 		["Claudia", "Who do you take me for? I'm not so easily confused."],
 		["Claudia", "Not on your terms, anyhow."],
 		["Frontinus", "Well, experiment with attacking on your own now."],
-		["Frontinus", "I will explain the next aspect of combat once you deplete my life points."],
+		["Frontinus", "I will explain the next aspect of combat once you deplete my life points."]
 	],
 
 	// Frontinus explains the timing of his attacks (number pattern)
@@ -105,7 +105,7 @@ const dialogue = {
 		["Frontinus", "This is what I was referring to when you first arrived."],
 		["Claudia", "Rewind time? I thought only Tiberius was capable of time travel."],
 		["Frontinus", "Tiberius Claudius Caesar Britannicus? I haven't heard that name in a while."],
-		["Frontinus", "Well then, have a go."],
+		["Frontinus", "Well then, have a go."]
 	],
 
 	// Frontinus explains being hit and healing
@@ -165,7 +165,7 @@ const dialogue = {
 		["Frontinus", "In this case, it works, since I've generously provided you with 99 life points."],
 		["Frontinus", "Usually, however, you'll have far less. You'll quickly die if you waste them."],
 		["Claudia", "That's not true. I could waste all except one and then kill my enemy with one left."],
-		["Frontinus", "Whatever you say. Let's begin."],
+		["Frontinus", "Whatever you say. Let's begin."]
 	],
 
 	// Frontinus explains dodging with Z to avoid damage
@@ -222,7 +222,7 @@ const dialogue = {
 		["Frontinus", "Then, for the duration of the cooldown, you're immune!"],
 		["Frontinus", "This gives you a moment to get back on your feet."],
 		["Claudia", "I was about to sa-"],
-		["Frontinus", "Welp, enough questions! Practice using Z to dodge!"],
+		["Frontinus", "Welp, enough questions! Practice using Z to dodge!"]
 	],
 
 	// Frontinus explains replaying the tutorial and going to Lerwick
