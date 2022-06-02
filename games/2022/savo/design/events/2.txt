@@ -1,0 +1,43 @@
+The Akvedukto tutorial and introduction
+
+1. Introduction
+	(Hello, who are you?, etc.)
+2. Attacking Explanation
+	- You can't attack infinitely because of the cooldown
+	- Explain how the larger square shows your attack range
+3. Attacking practice
+	- You attack him a few times until his HP hits 0
+	- While this is happening, he doesn't attack you
+4. Timing explanation
+	- When the number counts down to 0, the sword will swing, so plan accordingly
+	- In the future, number patterns may be "slightly more difficult" to predict
+	and time
+5. Timing practice
+	- You attack him while he attacks back
+	- You can't heal or dodge, or it's just about moving back and forth in
+	accordance to the timer
+6. Healing explanation
+	- When you get hit, you will lose one HP and become "threatened"
+	- If you are hit while threatened, you will die, so you want to remove this
+	"threatened" state
+	- That is done with healing (C) which slows down your movement temporarily
+	and uses an action (as with your attack)
+7. Healing practice
+	- You are allowed to take damage and heal now
+	- You are blocked in by two walls next to Frontinus, so you can't avoid
+	taking damage (dodging is still disabled)
+	- Set the timer to 10 half-seconds instead of 5 or something like that to
+	make it easier to heal in time for the next attack
+8. Dodging explanation
+	- Invincible during the (green) dodge cooldown but can't dodge again because
+	of the action cooldown
+	- The action cooldown lasts longer than the dodge cooldown so you can't spam
+	Z infinitely to guarantee avoiding damage; you have to time it
+9. Dodging practice
+	- Disable healing to force dodging instead
+	- Use the walls from before again to force Z dodging instead of movement
+	dodging
+10. Conclusion
+	That's about all you need to know, etc.
+	Talk to me again if you want to replay the tutorial, etc.
+	Here's a hole in the wall that lets you progress to Lerwick, etc.
