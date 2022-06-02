@@ -227,6 +227,12 @@ const player = {
 		if (this.cooldowns.damage.counter > 0 ||
 			this.cooldowns.dodge.counter > 0) return
 
+		// You were already threatened before being hit, so you die instantly
+		if (this.life.threatened) {
+			this.life.hp = 0
+			return
+		}
+
 		this.life.hit()
 		this.cooldowns.damage.start()
 	},

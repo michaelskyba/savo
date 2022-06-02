@@ -1,14 +1,46 @@
 import c from "../game/canvas"
+import Life from "../combat/Life"
 
 import player from "../game/player"
 import Frontinus from "../combat/Frontinus"
 
-let frontinus = new Frontinus(5)
-
 import Scene from "../menus/Scene"
 import dialogue from "../events/2"
 
+let frontinus = new Frontinus(5)
 let scene = new Scene(dialogue.introduction)
+
+function resetCombat() {
+	frontinus = new Frontinus(5)
+	player.resetCooldowns()
+
+	player.life = new Life(99, 5, 5)
+	player.x = 500
+	player.y = 600
+}
+
+// Set the dialogue based on the phase
+function setDialogue() {
+	let next: string[][]
+	switch(akvedukto.phase) {
+		case 3:
+			next = dialogue.timing
+			break
+
+		case 5:
+			next = dialogue.healing
+			break
+
+		case 7:
+			next = dialogue.dodging
+			break
+
+		case 9:
+			next = dialogue.conclusion
+			break
+	}
+	scene = new Scene(next)
+}
 
 const akvedukto = {
 	// Which phase of akvedukto / the tutorial are you on?
@@ -75,8 +107,23 @@ const akvedukto = {
 		}])
 
 		// Have the player take damage if Frontinus' sword hits them
-		if (frontinus.collision(player.x, player.y))
+		if (frontinus.collision(player.x, player.y)) {
 			player.receiveDamage()
+
+			// You were hit on a phase besides 6
+			let phaseDefault = player.life.threatened && this.phase != 6
+
+			// You were hit while threatened on phase 6 (bringing hp down to 0)
+			let phaseHealing = player.life.hp == 0 && this.phase == 6
+
+			// The player messed up in following the instructions, so explain it
+			// again for them
+			if (phaseDefault || phaseHealing) {
+				this.phase--
+				setDialogue()
+				resetCombat()
+			}
+		}
 
 		// Have Frontinus take damage from the player's hits
 		if (player.status == "attacking") {
@@ -86,33 +133,8 @@ const akvedukto = {
 			// stage of the tutorial
 			if (frontinus.life.hp < 1) {
 				this.phase++
-
-				// Set the dialogue based on the phase
-				let next: string[][]
-				switch(this.phase) {
-					case 3:
-						next = dialogue.timing
-						break
-
-					case 5:
-						next = dialogue.healing
-						break
-
-					case 7:
-						next = dialogue.dodging
-						break
-
-					case 9:
-						next = dialogue.conclusion
-						break
-				}
-				scene = new Scene(next)
-
-				// Reset combat
-				frontinus = new Frontinus(5)
-				player.resetCooldowns()
-				player.x = 500
-				player.y = 600
+				setDialogue()
+				resetCombat()
 			}
 		}
 
