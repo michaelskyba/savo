@@ -18,8 +18,6 @@ const akvedukto = {
 		player.x = 500
 		player.y = 600
 
-		player.resetInput()
-
 		document.onkeydown = event => {
 			if (scene.playing && event.code == "KeyZ") {
 				scene.progress()
@@ -31,6 +29,8 @@ const akvedukto = {
 					// The attacking dialogue is the only one that follows
 					// another dialogue (introduction)
 					if (this.phase == 1) scene = new Scene(dialogue.attacking)
+
+					player.resetInput()
 				}
 			}
 
