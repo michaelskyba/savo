@@ -1,10 +1,5 @@
 // The Akvedukto tutorial and introduction
 
-/*
-(I just have jokes from https://en.wikipedia.org/wiki/Russian_jokes
-for now as a placeholder instead of dialogue)
-*/
-
 const dialogue = {
 	// When Claudia first comes in and meets Frontinus
 	introduction: [
@@ -115,18 +110,62 @@ const dialogue = {
 
 	// Frontinus explains being hit and healing
 	healing: [
-		[null, "Putin, the Pope and Jesus sit in a boat on the Sea of Galilee."],
-		["Jesus", "I'm hot. I guess I should go get an umbrella."],
-		[null, "Jesus jumps out of the boat, walks across the water, and comes back with an umbrella."],
-		["Putin", "I'm thirsty. Wait folks, I get some."],
-		[null, "Putin jumps out of the boat, walks across the water, comes back with cold drinks."],
-		["Pope", "I'm hungry too!"],
-		[null, "The Pope jumps out of the boat and sinks to the bottom."],
-		[null, "Jesus and Putin lean across the side of the boat and watch him sink."],
-		[null, "Jesus turns to Putin."],
-		["Jesus", "I think we should've told him where the stepping stones are."],
-		[null, "Putin turns to Jesus."],
-		["Putin", "What stones?"]
+		["Frontinus", "Great, your brain is capable of grasping the concept of counting."],
+		["Claudia", "You say that as if your ability to 'grasp concepts' is superior to mine."],
+		["Frontinus", "Is it not?"],
+		["Claudia", "It's not."],
+		["Claudia", "Next time you consider making such a nefarious implication, think again."],
+		["Frontinus", "The next concept you need to grasp is healing."],
+		["Frontinus", "Successful as your timing is, it won't ever be perfect."],
+		["Frontinus", "You're not me, after all."],
+		["Claudia", "..."],
+		["Frontinus", "Thus, it's important to be able to survive being hit."],
+		["Claudia", "Are you going to explain whether or not I have life points now?"],
+		["Frontinus", "You do have life points, Claudia."],
+		["Frontinus", "However, they work slightly differently from that of your enemies."],
+		["Frontinus", "When I hit you, your life points will decrease, but that's not all."],
+		["Frontinus", "Additionally, your life will become 'threatened'."],
+		["Claudia", "Isn't it threatened the second combat starts?"],
+		["Frontinus", "'Threatened' is a specific, identifiable state."],
+		["Frontinus", "You'll know you're threatened because your life points display will turn red."],
+		["Claudia", "Why should I care if it's red or not?"],
+		["Frontinus", "I was about to get to that."],
+		["Frontinus", "The thing is, your life points are effectively reduced to one while threatened."],
+		["Frontinus", "So, if you are hit while threatened, you will die, regardless of how many remain."],
+		["Claudia", "How is that different from having two life points total?"],
+		["Frontinus", "This is where healing comes into play."],
+		["Frontinus", "You're incapable of raising your life points, but you can do something else."],
+		["Claudia", "Unthreaten myself?"],
+		["Frontinus", "That's right. Pressing C will heal you, removing the 'threatened' state."],
+
+		["Claudia", "Hmm..."],
+		["Claudia", "Wait, so does that mean it's optimal to spam C during your attack?"],
+		["Claudia", "That's unfun, annoying, nonsensical, etc."],
+		["Frontinus", "No, that's not a particularly good idea, because you haven't heard the catch."],
+		["Claudia", "What are you talking about?"],
+		["Frontinus", "The catch is that healing is not instant."],
+		["Frontinus", "After pressing C to heal, you will start a healing (and action) cooldown."],
+		["Frontinus", "The healing cooldowns shows up yellow in the second quarter of the screen."],
+		["Frontinus", "Only once it's finished does the heal activate."],
+		["Claudia", "How fast is the healing cooldown compared to the action cooldown?"],
+		["Frontinus", "Figure it out yourself."],
+		["Frontinus", "Also, your movement speed will be halfed while the cooldown is running."],
+		["Claudia", "What if I *want* to move slowly?"],
+		["Frontinus", "In that case, you should hold Shift while moving, but it has nothing to do with healing."],
+
+		["Frontinus", "Alright, it's time for you to try healing on your own."],
+		["Frontinus", "I will cut off your means of escape using some walls, forcing you to take damage."],
+		["Frontinus", "To survive long enough to defeat me, you'll have to heal after every attack."],
+		["Frontinus", "Understand?"],
+		["Claudia", "I understand, yes..."],
+		["Claudia", "...but you wouldn't understand if our roles were switched."],
+		["Claudia", "Your concept comprehension capacity is largely non-existent, after all."],
+		["Frontinus", "..."],
+		["Frontinus", "Another note is that this strategy of sponging damage through healing is generally wrong."],
+		["Frontinus", "In this case, it works, since I've generously provided you with 99 life points."],
+		["Frontinus", "Usually, however, you'll have far less. You'll quickly die if you waste them."],
+		["Claudia", "That's not true. I could waste all except one and then kill my enemy with one left."],
+		["Frontinus", "Whatever you say. Let's begin."],
 	],
 
 	// Frontinus explains dodging with Z to avoid damage
