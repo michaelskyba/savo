@@ -3,7 +3,7 @@ import c from "../game/canvas"
 import player from "../game/player"
 import Frontinus from "../combat/Frontinus"
 
-let frontinus = new Frontinus()
+let frontinus = new Frontinus(5)
 
 import Scene from "../menus/Scene"
 import dialogue from "../events/2"
@@ -29,6 +29,12 @@ const akvedukto = {
 					// The attacking dialogue is the only one that follows
 					// another dialogue (introduction)
 					if (this.phase == 1) scene = new Scene(dialogue.attacking)
+
+					// Have Frontinus use a 10 * 500ms timer to give extra time for healing
+					if (this.phase == 6) {
+						frontinus = new Frontinus(10)
+						frontinus.life.hp = 15
+					}
 
 					player.resetInput()
 				}
@@ -96,7 +102,7 @@ const akvedukto = {
 				scene = new Scene(next)
 
 				// Reset combat
-				frontinus = new Frontinus()
+				frontinus = new Frontinus(5)
 				player.resetCooldowns()
 				player.x = 500
 				player.y = 600

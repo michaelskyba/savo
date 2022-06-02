@@ -9,11 +9,15 @@ class Frontinus extends Enemy {
 	elapsed = 0
 	lastFrame: number
 
-	counter = 5
+	counterInit: number
+	counter: number
 	status = "countdown"
 
-	constructor() {
+	constructor(counterInit: number) {
 		super(400, 300, 5)
+
+		this.counterInit = counterInit
+		this.counter = counterInit
 	}
 
 	collision(playerX: number, playerY: number): boolean {
@@ -66,7 +70,7 @@ class Frontinus extends Enemy {
 			// It's done after 200 ms
 			if (this.elapsed > 200) {
 				this.status = "countdown"
-				this.counter = 5
+				this.counter = this.counterInit
 				this.elapsed = 0
 			}
 		}
