@@ -36,24 +36,24 @@ const dialogue = {
 	timing: [
 		[null, "Gorbachev was being driven around by his driver one day. A new order had been issued..."],
 		[null, "The Soviet police had to give anyone who sped a ticket, even the general secretary."],
-		[null, "One day, Gorbachev’s driver was pulled over."],
-		[null, "As the officer was walking up to the driver’s window..."],
-		["Gorbachev", "Switch with me. They’ll never give me a ticket."],
+		[null, "One day, Gorbachev's driver was pulled over."],
+		[null, "As the officer was walking up to the driver's window..."],
+		["Gorbachev", "Switch with me. They'll never give me a ticket."],
 		[null, "So, they switched."],
 		[null, "The officer went up to the window, and Gorbachev rolled it down."],
 		[null, "The officer looked at Gorbachev, then at the driver. He was shocked."],
 		[null, "After a few moments, he walked back to his fellow officer and the car sped off."],
 		["Other officer", "So, did you give him a ticket?"],
-		["First officer", "No I didn't."],
+		["First officer", "No, I didn't."],
 		["Other officer", "We're supposed to give everyone a ticket. Who was it?"],
-		["First officer", "I’m not sure who he is, but he must be important, Gorbachev is his driver!"]
+		["First officer", "I'm not sure who he is, but he must be important. Gorbachev is his driver!"]
 	],
 
 	// Frontinus explains being hit and healing
 	healing: [
 		[null, "Putin, the Pope and Jesus sit in a boat on the Sea of Galilee."],
 		["Jesus", "I'm hot. I guess I should go get an umbrella."],
-		[null, "Jesus jumps out of the boat, walks across the water, comes back with an umbrella."],
+		[null, "Jesus jumps out of the boat, walks across the water, and comes back with an umbrella."],
 		["Putin", "I'm thirsty. Wait folks, I get some."],
 		[null, "Putin jumps out of the boat, walks across the water, comes back with cold drinks."],
 		["Pope", "I'm hungry too!"],
@@ -81,7 +81,7 @@ const dialogue = {
 		["Brezhnev", "O!"],
 		[null, "(An ovation)"],
 		["Brezhnev", "O!!!"],
-		[null, "The whole audience stands up and applauds."],
+		[null, "(The whole audience stands up and applauds.)"],
 		[null, "An aide comes running to the podium and whispers..."],
 		["Aide", "Leonid Ilyich, those are the Olympic logo rings. You don't need to read all of them!"]
 	]
