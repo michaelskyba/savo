@@ -41,7 +41,14 @@ const akvedukto = {
 			}
 
 			else if (!scene.playing) {
-				player.fixedKeys(event.code)
+				// Only allow dodging in phase 8 (dodging practice)
+				if (event.code == "KeyZ") {
+					if (this.phase == 8) player.fixedKeys(event.code)
+					else return
+				}
+
+				else player.fixedKeys(event.code)
+
 				player.handleKey("keydown", event.code)
 			}
 		}
