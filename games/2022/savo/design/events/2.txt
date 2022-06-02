@@ -1,7 +1,9 @@
 The Akvedukto tutorial and introduction
 
 1. Introduction (phase 0)
-	(Hello, who are you?, etc.)
+	- (Hello, who are you?, etc.)
+	- Explain that there will now be a combat tutorial
+	- If you fail to follow instructions, he will say them again
 2. Attacking Explanation (phase 1)
 	- You can't attack infinitely because of the cooldown
 	- Explain how the larger square shows your attack range
@@ -22,6 +24,9 @@ The Akvedukto tutorial and introduction
 	"threatened" state
 	- That is done with healing (C) which slows down your movement temporarily
 	and uses an action (as with your attack)
+	- Try surviving the attacks while fighting back through healing
+	- But this is a bad strategy in general; don't waste healing, because you
+	usually will have far less HP than 99
 7. Healing practice (phase 6)
 	- You are allowed to take damage and heal now
 	- You are blocked in by two walls next to Frontinus, so you can't avoid
