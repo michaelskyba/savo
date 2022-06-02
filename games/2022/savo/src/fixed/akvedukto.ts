@@ -3,7 +3,7 @@ import c from "../game/canvas"
 import player from "../game/player"
 import Frontinus from "../combat/Frontinus"
 
-const frontinus = new Frontinus()
+let frontinus = new Frontinus()
 
 import Scene from "../menus/Scene"
 import dialogue from "../events/2"
@@ -92,6 +92,12 @@ const akvedukto = {
 						break
 				}
 				scene = new Scene(next)
+
+				// Reset combat
+				frontinus = new Frontinus()
+				player.resetCooldowns()
+				player.x = 500
+				player.y = 600
 			}
 		}
 

@@ -237,6 +237,12 @@ const player = {
 		}
 	},
 
+	resetCooldowns() {
+		for (const cooldown of cooldowns) {
+			this.cooldowns[cooldown].counter = 0
+		}
+	},
+
 	progressCooldowns(time: number) {
 		for (const cooldown of cooldowns) {
 			this.cooldowns[cooldown].progress(time)
