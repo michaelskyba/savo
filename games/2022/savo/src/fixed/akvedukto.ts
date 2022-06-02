@@ -8,7 +8,7 @@ const frontinus = new Frontinus()
 import Scene from "../menus/Scene"
 import dialogue from "../events/2"
 
-const scene = new Scene(dialogue.introduction)
+let scene = new Scene(dialogue.introduction)
 
 const akvedukto = {
 	// Which phase of akvedukto / the tutorial are you on?
@@ -21,7 +21,7 @@ const akvedukto = {
 		player.resetInput()
 
 		document.onkeydown = event => {
-			if (this.phase == 0 && event.code == "KeyZ") {
+			if (scene.playing && event.code == "KeyZ") {
 				scene.progress()
 
 				// The last frame was finished, so the scene is over
@@ -41,7 +41,8 @@ const akvedukto = {
 	},
 
 	move(time: number) {
-		if (this.phase == 0) return
+		// Skip movement during dialogue phases
+		if (scene.playing) return
 
 		frontinus.move(time)
 
@@ -57,8 +58,14 @@ const akvedukto = {
 			player.receiveDamage()
 
 		// Have Frontinus take damage from the player's hits
-		if (player.status == "attacking")
+		if (player.status == "attacking") {
 			frontinus.receiveDamage()
+
+			if (frontinus.life.hp < 1) {
+				this.phase++
+				scene = new Scene(dialogue.attacking)
+			}
+		}
 
 		player.progressCooldowns(time)
 	},
@@ -77,7 +84,7 @@ const akvedukto = {
 		frontinus.life.draw()
 		player.life.draw()
 
-		if (this.phase == 0) {
+		if (scene.playing) {
 			scene.speech.draw()
 			if (scene.speaker) scene.speaker.draw()
 		}

@@ -59,7 +59,6 @@ const player = {
 	keyPressed: deepClone(defaultKeys),
 	resetInput() {
 		this.keyPressed = deepClone(defaultKeys)
-		console.log(defaultKeys)
 	},
 
 	attack() {
