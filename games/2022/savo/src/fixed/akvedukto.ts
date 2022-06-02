@@ -50,7 +50,9 @@ const akvedukto = {
 		// Skip movement during dialogue phases
 		if (scene.playing) return
 
-		frontinus.move(time)
+		// Frontinus doesn't attack you in phase 2, when you're supposed to be
+		// learning the attacking controls
+		if (this.phase != 2) frontinus.move(time)
 
 		player.move("fixed", [{
 			x: frontinus.x,
