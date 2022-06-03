@@ -25,7 +25,7 @@ conviction. Her mother had entered the room.
 
 Claudia: "Hey Mom, I need a new operating system on the laptop you bought me."
 
-Valeria: "Are you sure about this? The path you're speaking about so casually is
+Messalina: "Are you sure about this? The path you're speaking about so casually is
 filled with pain and regret."
 
 Claudia hesitated, but after a couple of minutes of silence, she spoke.
@@ -33,57 +33,57 @@ Claudia hesitated, but after a couple of minutes of silence, she spoke.
 Claudia: "That isn't enough to convince me to back down. I'm tired of my
 experience with this laptop."
 
-Valeria: "Very well. Don't blame me in the future for permitting this."
+Messalina: "Very well. Don't blame me in the future for permitting this."
 
 ...
 
-Valeria: "What you're looking for is Nero Linux, the best Linux
+Messalina: "What you're looking for is Nero Linux, the best Linux
 distribution."
 
 Claudia: "Linux distribution? What's that?"
 
-Valeria: "Don't worry about the details for now. Anyway, there are broadly two
+Messalina: "Don't worry about the details for now. Anyway, there are broadly two
 steps before you have a perfect operating system. First, you need to acquire the
 Nero Linux ROM, which will be used to isntall the operating system."
-Valeria: "This is hidden far away in the land of Lerwick, owned by your
+Messalina: "This is hidden far away in the land of Lerwick, owned by your
 stepbrother."
 
 Claudia: "Stepbrother...? But you haven't died yet, and father hasn't married
 Julia Agrippina yet. I don't have a stepbrother."
 
-Valeria: "Fool! Don't hold any sort of expectations of historical accuracy!"
+Messalina: "Fool! Don't hold any sort of expectations of historical accuracy!"
 
 Claudia: "A-alright, I suppose..."
 
-Valeria: "Once you've acquired the ROM, you have a second problem: no drivers
+Messalina: "Once you've acquired the ROM, you have a second problem: no drivers
 exist for your Kepler GPU."
 
 Claudia: "What's a driver? Cars aren't going exist a while."
 
-Valeria: "Again, disregard the details for the moment. All it means in the
+Messalina: "Again, disregard the details for the moment. All it means in the
 broader sense is that you're going to have to program your own."
 
 Claudia: "Programming? You mean that thing that losers do?"
 
-Valeria: "Hey, I'm trying to help you here."
+Messalina: "Hey, I'm trying to help you here."
 
 Claudia: "Anyway, I haven't been paying attention. Just tell me what I need to
 do first."
 
-Valeria: "That kind of mindset is not ready for success. I suppose I'll have you
+Messalina: "That kind of mindset is not ready for success. I suppose I'll have you
 understand that out on your own... The first step is to head on down to Nova
 Anio-akvedukto."
 
 Claudia: "Hah, you mean Aqua Anio Novus? Esperanto comes right after the drivers
 from earlier."
 
-Valeria: "You've already forgotten what I said a minute ago? Forget your
+Messalina: "You've already forgotten what I said a minute ago? Forget your
 attachment to consistency instead!"
 
-Valeria: "Once you arrive at Nova Anio-akvedukto, talk to Frontinus. Tell him to
+Messalina: "Once you arrive at Nova Anio-akvedukto, talk to Frontinus. Tell him to
 'show you the door'."
 
 Claudia: "Got it: Go to Nova Anio-akvedukto, tell Frontinus to show me the door."
 Claudia: "Thanks, Mom!"
 
-Valeria: "Your gratitude is misplaced."
+Messalina: "Your gratitude is misplaced."
