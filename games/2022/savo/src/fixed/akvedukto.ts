@@ -111,7 +111,7 @@ const akvedukto = {
 		// learning the attacking controls
 		if (this.phase != 2) frontinus.move(time)
 
-		player.move("fixed", [{
+		player.move("fixed", [...walls, {
 			x: frontinus.x,
 			y: frontinus.y,
 			width: 50,
