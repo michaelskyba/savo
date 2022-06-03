@@ -115,7 +115,8 @@ const akvedukto = {
 					else return
 				}
 
-				else player.fixedKeys(event.code)
+				// Other keys are fine as long as the tutorial isn't running
+				else if (this.phase != 10) player.fixedKeys(event.code)
 
 				player.handleKey("keydown", event.code)
 			}
@@ -143,7 +144,8 @@ const akvedukto = {
 
 		// Frontinus doesn't attack you in phase 2, when you're supposed to be
 		// learning the attacking controls
-		if (this.phase != 2) frontinus.move(time)
+		// Frontinus doesn't attack you in phase 10, when you're done the tutorial
+		if (this.phase != 2 && this.phase != 10) frontinus.move(time)
 
 		player.move("fixed", [...walls[wallsIndex()], {
 			x: frontinus.x,
@@ -191,7 +193,10 @@ const akvedukto = {
 		c.fillStyle = "floralwhite"
 		c.frect(0, 0, 1325, 725)
 
-		player.drawRange(frontinus.x, frontinus.y)
+		// Only draw the attack range if you're in combat
+		if (this.phase != 10)
+			player.drawRange(frontinus.x, frontinus.y)
+
 		player.draw("fixed")
 
 		frontinus.draw()
@@ -202,8 +207,11 @@ const akvedukto = {
 
 		player.drawCooldowns()
 
-		frontinus.life.draw()
-		player.life.draw()
+		// Only draw life points if you're in combat (in the tutorial)
+		if (this.phase != 10) {
+			frontinus.life.draw()
+			player.life.draw()
+		}
 
 		if (scene.playing) {
 			scene.speech.draw()
