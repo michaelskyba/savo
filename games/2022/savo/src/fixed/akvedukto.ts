@@ -48,11 +48,38 @@ function setDialogue() {
 
 let wallColour = "#a69583"
 const walls = [
-	new Wall(0, 0, 1325, 25, wallColour),
-	new Wall(0, 0, 25, 1325, wallColour),
-	new Wall(0, 700, 1325, 25, wallColour),
-	new Wall(1300, 0, 25, 725, wallColour),
+	// Initial position with door blocked
+	[
+		new Wall(0, 0, 1325, 25, wallColour),
+		new Wall(0, 0, 25, 1325, wallColour),
+
+		// Bottom with intersection
+		new Wall(0, 700, 512.5, 25, wallColour),
+		new Wall(812.5, 700, 612.5, 25, wallColour),
+
+		// Initially solid right wall
+		new Wall(1300, 0, 25, 725, wallColour)
+	],
+
+	// Door unblocked after tutorial
+	[
+		new Wall(0, 0, 1325, 25, wallColour),
+		new Wall(0, 0, 25, 1325, wallColour),
+
+		// Bottom with intersection
+		new Wall(0, 700, 512.5, 25, wallColour),
+		new Wall(812.5, 700, 612.5, 25, wallColour),
+
+		// Intersection in right wall
+		new Wall(1300, 0, 25, 212.5, wallColour),
+		new Wall(1300, 512.5, 25, 212.5, wallColour)
+	]
 ]
+
+// Which set of walls should we draw/collide?
+function wallsIndex() {
+	return akvedukto.phase == 10 ? 1 : 0
+}
 
 const akvedukto = {
 	// Which phase of akvedukto / the tutorial are you on?
@@ -111,7 +138,7 @@ const akvedukto = {
 		// learning the attacking controls
 		if (this.phase != 2) frontinus.move(time)
 
-		player.move("fixed", [...walls, {
+		player.move("fixed", [...walls[wallsIndex()], {
 			x: frontinus.x,
 			y: frontinus.y,
 			width: 50,
@@ -162,7 +189,7 @@ const akvedukto = {
 
 		frontinus.draw()
 
-		for (const wall of walls) {
+		for (const wall of walls[wallsIndex()]) {
 			wall.draw()
 		}
 
