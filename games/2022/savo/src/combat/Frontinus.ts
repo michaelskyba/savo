@@ -14,7 +14,8 @@ class Frontinus extends Enemy {
 	status = "countdown"
 
 	constructor(counterInit: number) {
-		super(400, 300, 5)
+		// 637.5 = horizontal center
+		super(637.5, 200, 5)
 
 		this.counterInit = counterInit
 		this.counter = counterInit

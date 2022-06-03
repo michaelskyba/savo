@@ -15,8 +15,10 @@ function resetCombat() {
 	player.resetCooldowns()
 
 	player.life = new Life(99, 5, 5)
-	player.x = 500
-	player.y = 600
+
+	// horizontal center based on canvas and player width
+	player.x = 637.5
+	player.y = 625
 }
 
 // Set the dialogue based on the phase
@@ -47,8 +49,8 @@ const akvedukto = {
 	phase: 0,
 
 	init() {
-		player.x = 500
-		player.y = 600
+		player.x = 637.5
+		player.y = 625
 
 		document.onkeydown = event => {
 			if (scene.playing && event.code == "KeyZ") {
