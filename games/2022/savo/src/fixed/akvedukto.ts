@@ -86,9 +86,6 @@ const akvedukto = {
 	phase: 0,
 
 	init() {
-		player.x = 637.5
-		player.y = 625
-
 		document.onkeydown = event => {
 			if (scene.playing && event.code == "KeyZ") {
 				scene.progress()
@@ -128,6 +125,16 @@ const akvedukto = {
 			if (!scene.playing)
 				player.handleKey("keyup", event.code)
 		}
+	},
+
+	transitions(): string {
+		// 675 = canvas height - player size
+		if (player.y > 675) return "Perinthus"
+
+		// 1275 = canvas width - player size
+		if (player.x > 1275) return "Lerwick"
+
+		return null
 	},
 
 	move(time: number) {

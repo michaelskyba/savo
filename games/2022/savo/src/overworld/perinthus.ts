@@ -22,9 +22,6 @@ const doors = [
 
 const perinthus = {
 	init() {
-		player.x = 5
-		player.y = 0
-
 		document.onkeydown = event => player.handleKey("keydown", event.code)
 		document.onkeyup = event => player.handleKey("keyup", event.code)
 	},

@@ -19,6 +19,10 @@ const steps = {
 
 		if (claudiaHouse.transitions()) {
 			perinthus.init()
+
+			player.x = 5
+			player.y = 0
+
 			window.requestAnimationFrame(this.perinthus)
 		}
 
@@ -36,7 +40,7 @@ const steps = {
 				break
 
 			case "claudiaHouse":
-				player.x = 1275
+				player.x = 1270
 				player.y = 337.5
 
 				window.requestAnimationFrame(this.claudiaHouse)
@@ -44,6 +48,9 @@ const steps = {
 
 			case "akvedukto":
 				akvedukto.init()
+				player.x = 637.5
+				player.y = 670
+
 				window.requestAnimationFrame(this.akvedukto)
 				break
 		}
@@ -53,7 +60,30 @@ const steps = {
 		akvedukto.move(time)
 		akvedukto.draw()
 
-		window.requestAnimationFrame(this.akvedukto)
+		switch(akvedukto.transitions()) {
+			case null:
+				window.requestAnimationFrame(this.akvedukto)
+				break
+
+			case "Perinthus":
+				perinthus.init()
+
+				player.x = 200
+				player.y = -870
+
+				window.requestAnimationFrame(this.perinthus)
+				break
+
+			case "Lerwick":
+				window.requestAnimationFrame(this.lerwick)
+				break
+		}
+
+	},
+
+	lerwick() {
+		alert("Lerwick")
+		alert("Done")
 	}
 }
 
