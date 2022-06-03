@@ -145,7 +145,7 @@ const dialogue = {
 		["Claudia", "What are you talking about?"],
 		["Frontinus", "The catch is that healing is not instant."],
 		["Frontinus", "After pressing C to heal, you will start a healing (and action) cooldown."],
-		["Frontinus", "The healing cooldowns shows up yellow in the second quarter of the screen."],
+		["Frontinus", "The healing cooldown shows up yellow in the second quarter of the screen."],
 		["Frontinus", "Only once it's finished does the heal activate."],
 		["Claudia", "How fast is the healing cooldown compared to the action cooldown?"],
 		["Frontinus", "Figure it out yourself."],
