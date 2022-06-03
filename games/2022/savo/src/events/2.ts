@@ -18,7 +18,7 @@ const dialogue = {
 		["Claudia", "..."],
 
 		["Frontinus", "Now that you're aware, it's time to prepare!"],
-		["Frontinus", "How? Through an interactive tutorial!"],
+		["Frontinus", "How? Through a somewhat-interactive tutorial!"],
 		["Claudia", "How is this necessary?"],
 		["Claudia", "If there does turn out to be danger, I'll figure out how to avoid it on my own."],
 		["Frontinus", "You can, but not everybody can."],
@@ -227,15 +227,25 @@ const dialogue = {
 
 	// Frontinus explains replaying the tutorial and going to Lerwick
 	conclusion: [
-		[null, "At the 1980 Olympics, Brezhnev begins his speech."],
-		["Brezhnev", "O!"],
-		[null, "(Applause)"],
-		["Brezhnev", "O!"],
-		[null, "(An ovation)"],
-		["Brezhnev", "O!!!"],
-		[null, "(The whole audience stands up and applauds.)"],
-		[null, "An aide comes running to the podium and whispers..."],
-		["Aide", "Leonid Ilyich, those are the Olympic logo rings. You don't need to read all of them!"]
+		["Frontinus", "Well then... You have completed the tutorial."],
+		["Claudia", "As I expected, I didn't learn anything of value."],
+		["Frontinus", "Or did you just learn nothing? Have you ever learned anything in your life?"],
+		["Claudia", "..."],
+		["Claudia", "What I meant was that I still could have figured it out on my own."],
+		["Frontinus", "Ha ha ha... Soon enough, you will wish you paid more attention."],
+		["Frontinus", "When that time comes, speak to me, and we can re-enact this charade once more."],
+		["Claudia", "I'm not interested."],
+
+		["Frontinus", "In the meantime, I'll show you the door that you came for."],
+		["Frontinus", "When you pass through, you sacrifice your sense of safety."],
+		["Frontinus", "On the other side is Lerwick, a place containing concerns."],
+		["Frontinus", "Unlike me, dwellers *are* capable of hurting."],
+		["Claudia", "I've lost 15% of my brain cells from speaking to you."],
+		["Claudia", "It's safe to say that you're plenty cable of damaging others."],
+		["Frontinus", "I'm not joking."],
+		["Frontinus", "If you go out there, you will experience pain and death."],
+		["Claudia", "Yeah, yeah, okay buddy."],
+		["Claudia", "Hopefully a Nero Linux ROM is around here somewhere..."],
 	]
 }
 
