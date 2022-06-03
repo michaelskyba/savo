@@ -3,18 +3,24 @@ import c from "../game/canvas"
 export default class Wall {
 	x: number
 	y: number
+
 	width: number
 	height: number
 
-	constructor(x: number, y: number, width: number, height: number) {
+	colour: string
+
+	constructor(x: number, y: number, width: number, height: number, colour: string) {
 		this.x = x
 		this.y = y
+
 		this.width = width
 		this.height = height
+
+		this.colour = colour
 	}
 
 	draw() {
-		c.fillStyle = "red"
+		c.fillStyle = this.colour
 		c.frect(this.x, this.y, this.width, this.height)
 	}
 }

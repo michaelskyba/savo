@@ -14,10 +14,10 @@ class Scene {
 		let line = this.dialogue[frame]
 
 		if (line[0])
-			this.speaker = new TextBox(line[0], 50, 550, 30, "serif", "black", "white")
+			this.speaker = new TextBox(line[0], 50, 550, 30, "serif", "#111", "white")
 		else this.speaker = null
 
-		this.speech = new TextBox(line[1], 50, 600, 30, "serif", "white", "black")
+		this.speech = new TextBox(line[1], 50, 600, 30, "serif", "white", "#111")
 	}
 
 	constructor(dialogue: string[][], playing?: boolean) {

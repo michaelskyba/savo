@@ -40,7 +40,7 @@ const dialogue = {
 		["Claudia", "How can I determine whether an attack will be self-defense or not?"],
 		["Frontinus", "Don't worry about that."],
 		["Frontinus", "For now, understand that you attack using the X key."],
-		["Frontinus", "You will see a blue ring around you, which represents your attack range."],
+		["Frontinus", "You will see a maroon ring around you, which represents your attack range."],
 		["Frontinus", "Once I'm in your attack range, using X will successfully deal damage."],
 		["Claudia", "Are you really telling me to kill you?"],
 		["Frontinus", "Don't misunderstand: I am actually invincible."],

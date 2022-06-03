@@ -7,18 +7,20 @@ class Enemy {
 	x: number
 	y: number
 
+	lastFrame: number
 	counter: number
 	sword: Sword
 
 	life: Life
+	colour: string
 
-	lastFrame: number
-
-	constructor(x: number, y: number, HP: number) {
+	constructor(x: number, y: number, HP: number, colour: string) {
 		this.x = x
 		this.y = y
 
-		this.sword = new Sword(200, 0)
+		this.colour = colour
+
+		this.sword = new Sword(200, 0, colour)
 
 		// 1232 = canvas width - textbox width (~88) - padding (5)
 		this.life = new Life(HP, 1232, 5)
@@ -53,7 +55,7 @@ class Enemy {
 	}
 
 	draw() {
-		c.fillStyle = "coral"
+		c.fillStyle = this.colour
 
 		// 25 = enemy size / 2 (so the sword starts in the center)
 		this.sword.draw(this.x + 25, this.y + 25)

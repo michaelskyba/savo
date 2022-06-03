@@ -34,11 +34,11 @@ const mainMenu = {
 		c.fillStyle = "white"
 		c.frect(0, 0, 1325, 325)
 
-		c.fillStyle = "blue"
+		c.fillStyle = "maroon"
 		c.frect(0, 325, 1325, 400)
 
 		c.font = "48px monospace"
-		c.fillStyle = "black"
+		c.fillStyle = "#111"
 		c.text("Malfacile Gajnita Savo", 50, 50)
 
 		c.fillStyle = "white"

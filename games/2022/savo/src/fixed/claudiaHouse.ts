@@ -8,24 +8,25 @@ import TextBox from "../menus/TextBox"
 
 const scene: Scene | null = new Scene(dialogue.main)
 
+let wallColour = "#bf823e"
 const walls = [
 	[
-		new Wall(0, 0, 1325, 25),
-		new Wall(0, 0, 25, 1325),
-		new Wall(0, 700, 1325, 25),
+		new Wall(0, 0, 1325, 25, wallColour),
+		new Wall(0, 0, 25, 1325, wallColour),
+		new Wall(0, 700, 1325, 25, wallColour),
 
-		new Wall(1300, 0, 25, 262.5),
-		new Wall(1300, 462.5, 25, 262.5)
+		new Wall(1300, 0, 25, 262.5, wallColour),
+		new Wall(1300, 462.5, 25, 262.5, wallColour)
 	],
 	[
-		new Wall(0, 0, 1325, 25),
-		new Wall(0, 700, 1325, 25),
+		new Wall(0, 0, 1325, 25, wallColour),
+		new Wall(0, 700, 1325, 25, wallColour),
 
-		new Wall(0, 0, 25, 262.5),
-		new Wall(0, 462.5, 25, 262.5),
+		new Wall(0, 0, 25, 262.5, wallColour),
+		new Wall(0, 462.5, 25, 262.5, wallColour),
 
-		new Wall(1300, 0, 25, 262.5),
-		new Wall(1300, 462.5, 25, 262.5)
+		new Wall(1300, 0, 25, 262.5, wallColour),
+		new Wall(1300, 462.5, 25, 262.5, wallColour)
 	]
 ]
 
@@ -76,11 +77,8 @@ const claudiaHouse = {
 	},
 
 	draw() {
-		c.fillStyle = "white"
+		c.fillStyle = "#f0e68c"
 		c.frect(0, 0, 1325, 725)
-
-		c.fillStyle = "purple"
-		c.frect(400, 0, 925, 725)
 
 		player.draw("fixed")
 

@@ -1,5 +1,7 @@
 import c from "../game/canvas"
+
 import Life from "../combat/Life"
+import Wall from "./Wall"
 
 import player from "../game/player"
 import Frontinus from "../combat/Frontinus"
@@ -43,6 +45,14 @@ function setDialogue() {
 	}
 	scene = new Scene(next)
 }
+
+let wallColour = "#a69583"
+const walls = [
+	new Wall(0, 0, 1325, 25, wallColour),
+	new Wall(0, 0, 25, 1325, wallColour),
+	new Wall(0, 700, 1325, 25, wallColour),
+	new Wall(1300, 0, 25, 725, wallColour),
+]
 
 const akvedukto = {
 	// Which phase of akvedukto / the tutorial are you on?
@@ -151,6 +161,10 @@ const akvedukto = {
 		player.draw("fixed")
 
 		frontinus.draw()
+
+		for (const wall of walls) {
+			wall.draw()
+		}
 
 		player.drawCooldowns()
 

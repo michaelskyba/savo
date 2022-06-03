@@ -6,7 +6,7 @@ import Block from "./Block"
 import claudiaHouse from "../fixed/claudiaHouse"
 
 const buildings = [
-	new Block(-425, -150, 400, 300, "yellow"),
+	new Block(-425, -150, 400, 300, "#bf823e"),
 	new Block(50, -1150, 300, 250, "lightblue")
 ]
 
@@ -45,7 +45,7 @@ const perinthus = {
 	},
 
 	draw() {
-		c.fillStyle = "purple"
+		c.fillStyle = "#8fbc8f"
 		c.frect(0, 0, 1325, 725)
 
 		for (const road of roads) {

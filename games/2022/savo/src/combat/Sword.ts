@@ -2,16 +2,18 @@ import c from "../game/canvas"
 
 class Sword {
 	length: number
-	colour = "coral"
+	colour: string
 
 	angle: number
 
 	offsetX: number
 	offsetY: number
 
-	constructor(length: number, angle: number) {
+	constructor(length: number, angle: number, colour: string) {
 		this.length = length
 		this.angle = angle
+
+		this.colour = colour
 
 		this.genPoints()
 	}

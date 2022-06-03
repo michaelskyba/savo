@@ -184,7 +184,7 @@ const player = {
 	},
 
 	draw(mode: "fixed" | "overworld") {
-		c.fillStyle = "blue"
+		c.fillStyle = "maroon"
 
 		if (mode == "fixed")
 			c.frect(this.x, this.y, 50, 50)
@@ -212,7 +212,7 @@ const player = {
 			if (this.status == "default") this.status = "prepared"
 
 			c.globalAlpha = 0.3
-			c.fillStyle = "blue"
+			c.fillStyle = "maroon"
 
 			let offset = width/2 - range
 			c.frect(this.x + offset, this.y + offset, range * 2, range * 2)

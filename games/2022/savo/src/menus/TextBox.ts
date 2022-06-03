@@ -42,7 +42,7 @@ export default class TextBox {
 	draw() {
 		c.beginPath()
 
-		c.strokeStyle = "black"
+		c.strokeStyle = "#111"
 		c.font = this.font
 		c.lineWidth = 1
 

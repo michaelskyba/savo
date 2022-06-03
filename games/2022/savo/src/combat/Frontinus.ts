@@ -15,7 +15,7 @@ class Frontinus extends Enemy {
 
 	constructor(counterInit: number) {
 		// 637.5 = horizontal center
-		super(637.5, 200, 5)
+		super(637.5, 200, 5, "midnightblue")
 
 		this.counterInit = counterInit
 		this.counter = counterInit
@@ -84,7 +84,7 @@ class Frontinus extends Enemy {
 		if (this.status == "attack")
 			this.sword.draw(this.x + 25, this.y + 25)
 
-		c.fillStyle = "coral"
+		c.fillStyle = this.colour
 		c.frect(this.x, this.y, 50, 50)
 
 		let fontSize = 40
