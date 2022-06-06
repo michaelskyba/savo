@@ -76,6 +76,16 @@ const walls = [
 	]
 ]
 
+// This is the barrier from the tutorial, trapping Claudia into Frontinus's
+// sword's range
+let barrierColour = "midnightblue"
+const barrier = [
+	new Wall(487.5, 50, 350, 50, barrierColour),
+	new Wall(487.5, 50, 50, 350, barrierColour),
+	new Wall(787.5, 50, 50, 350, barrierColour),
+	new Wall(487.5, 350, 350, 50, barrierColour)
+]
+
 // Which set of walls should we draw/collide?
 function wallsIndex() {
 	return akvedukto.phase == 10 ? 1 : 0
@@ -110,7 +120,7 @@ const akvedukto = {
 					// a way that makes it impossible to fully escape, but that
 					// would take a huge amount of extra effort
 					if (this.phase == 6 || this.phase == 8)
-						player.y = 350
+						player.y = 300
 
 					player.resetInput()
 				}
@@ -155,12 +165,19 @@ const akvedukto = {
 		// Frontinus doesn't attack you in phase 10, when you're done the tutorial
 		if (this.phase != 2 && this.phase != 10) frontinus.move(time)
 
-		player.move("fixed", [...walls[wallsIndex()], {
+		let frontinusBlock = {
 			x: frontinus.x,
 			y: frontinus.y,
 			width: 50,
 			height: 50
-		}])
+		}
+
+		// Trapped collision: Frontinus and inner walls
+		if (this.phase == 6 || this.phase == 8)
+			player.move("fixed", [...barrier, frontinusBlock])
+
+		// Regular collision: Frontinus and outer walls
+		else player.move("fixed", [...walls[wallsIndex()], frontinusBlock])
 
 		// Have the player take damage if Frontinus' sword hits them
 		if (frontinus.collision(player.x, player.y)) {
@@ -211,6 +228,13 @@ const akvedukto = {
 
 		for (const wall of walls[wallsIndex()]) {
 			wall.draw()
+		}
+
+		// Draw Claudia barrier if healing or dodging should be required
+		if (this.phase == 6 || this.phase == 8) {
+			for (const wall of barrier) {
+				wall.draw()
+			}
 		}
 
 		player.drawCooldowns()
