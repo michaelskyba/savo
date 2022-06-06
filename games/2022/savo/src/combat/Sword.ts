@@ -60,8 +60,25 @@ class Sword {
 		if (x2 > x3 && x2 < x4 && y2 > y3 && y2 < y4)
 			return true
 
-		// Slope
-		let m = (y2 - y1)/(x2 - x1)
+		// Slope: m = (y2 - y1)/(x2 - x1)
+
+		let dy = y2 - y1
+		let dx = x2 - x1
+
+		// Special case if the sword is straight down or straight up
+		if (dx == 0) {
+			// Player's center point Y
+			let y = y3 + 25
+
+			// If the enemy center point --> play center point distance is less
+			// than the sword length, we know that it's touching. Otherwise, it
+			// can't be. We don't have to worry about the fact that the player is a
+			// square instead of a circle because the x values are aligned.
+
+			return Math.abs(y1 - y) < this.length - 25
+		}
+
+		let m = dy / dx
 
 		/*
 		Y-intercept
