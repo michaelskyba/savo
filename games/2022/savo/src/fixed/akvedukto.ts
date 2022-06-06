@@ -98,11 +98,19 @@ const akvedukto = {
 					// another dialogue (introduction)
 					if (this.phase == 1) scene = new Scene(dialogue.attacking)
 
-					// Have Frontinus use a 10 * 500ms timer to give extra time for healing
 					if (this.phase == 6) {
+						// Have Frontinus use a 10 * 500ms timer to give extra
+						// time for healing
 						frontinus = new Frontinus(10)
 						frontinus.life.hp = 15
 					}
+
+					// Block Claudia in to force healing / dodging
+					// The better option would be to have Frontinus chase you in
+					// a way that makes it impossible to fully escape, but that
+					// would take a huge amount of extra effort
+					if (this.phase == 6 || this.phase == 8)
+						player.y = 350
 
 					player.resetInput()
 				}
