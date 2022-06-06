@@ -1,6 +1,8 @@
 import claudiaHouse from "../fixed/claudiaHouse"
-import perinthus from "../overworld/perinthus"
 import akvedukto from "../fixed/akvedukto"
+
+import perinthus from "../overworld/perinthus"
+import lerwick from "../overworld/lerwick"
 
 import player from "../game/player"
 
@@ -75,6 +77,11 @@ const steps = {
 				break
 
 			case "Lerwick":
+				lerwick.init()
+
+				player.x = 0
+				player.y = 0
+
 				window.requestAnimationFrame(this.lerwick)
 				break
 		}
@@ -82,8 +89,10 @@ const steps = {
 	},
 
 	lerwick() {
-		alert("Lerwick")
-		alert("Done")
+		lerwick.move()
+		lerwick.draw()
+
+		window.requestAnimationFrame(this.lerwick)
 	}
 }
 

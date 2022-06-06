@@ -6,7 +6,10 @@ import Block from "./Block"
 import claudiaHouse from "../fixed/claudiaHouse"
 
 const buildings = [
+	// Claudia's house
 	new Block(-425, -150, 400, 300, "#bf823e"),
+
+	// Akvedukto
 	new Block(50, -1150, 300, 250, "lightblue")
 ]
 
