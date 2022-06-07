@@ -25,6 +25,17 @@ const roads = [
 	new Block(850, -500, 1000, 100, "gray")
 ]
 
+const doors = [
+	// Akvedukto
+	new Block(-55, -50, 25, 100, "brown"),
+
+	// Nero's house
+	new Block(850, -1025, 100, 25, "brown"),
+
+	// Tiberius's house
+	new Block(1850, -500, 25, 100, "brown")
+]
+
 const lerwick = {
 	init() {
 		document.onkeydown = event => player.handleKey("keydown", event.code)
@@ -47,6 +58,10 @@ const lerwick = {
 
 		for (const building of buildings) {
 			building.draw(player.x, player.y)
+		}
+
+		for (const door of doors) {
+			door.draw(player.x, player.y)
 		}
 
 		c.text(`(${player.x}, ${player.y})`, 50, 50)
