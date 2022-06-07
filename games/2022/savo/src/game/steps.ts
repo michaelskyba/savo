@@ -1,5 +1,6 @@
 import claudiaHouse from "../fixed/claudiaHouse"
 import akvedukto from "../fixed/akvedukto"
+import neroHouse from "../fixed/neroHouse"
 
 import perinthus from "../overworld/perinthus"
 import lerwick from "../overworld/lerwick"
@@ -106,6 +107,10 @@ const steps = {
 				break
 
 			case "neroHouse":
+				neroHouse.init()
+				player.x = 637.5
+				player.y = 670
+
 				window.requestAnimationFrame(this.neroHouse)
 				break
 
@@ -116,6 +121,9 @@ const steps = {
 	},
 
 	neroHouse() {
+		neroHouse.draw()
+
+		window.requestAnimationFrame(this.neroHouse)
 	},
 
 	tiberiusHouse() {
