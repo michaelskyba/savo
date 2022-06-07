@@ -92,9 +92,33 @@ const steps = {
 		lerwick.move()
 		lerwick.draw()
 
-		console.log(lerwick.transitions())
+		switch(lerwick.transitions()) {
+			case null:
+				window.requestAnimationFrame(this.lerwick)
+				break
 
-		window.requestAnimationFrame(this.lerwick)
+			case "akvedukto":
+				akvedukto.init()
+				player.x = 1270
+				player.y = 337.5
+
+				window.requestAnimationFrame(this.akvedukto)
+				break
+
+			case "neroHouse":
+				window.requestAnimationFrame(this.neroHouse)
+				break
+
+			case "tiberiusHouse":
+				window.requestAnimationFrame(this.tiberiusHouse)
+				break
+		}
+	},
+
+	neroHouse() {
+	},
+
+	tiberiusHouse() {
 	}
 }
 
