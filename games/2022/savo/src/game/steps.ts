@@ -92,6 +92,8 @@ const steps = {
 		lerwick.move()
 		lerwick.draw()
 
+		console.log(lerwick.transitions())
+
 		window.requestAnimationFrame(this.lerwick)
 	}
 }

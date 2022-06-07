@@ -43,7 +43,19 @@ const lerwick = {
 	},
 
 	transitions(): string | null {
-		return null
+		let x = player.x
+		let y = player.y
+
+		if (y == -975 && x > 825 && x < 975)
+			return "neroHouse"
+
+		if (x == -5 && y > -75 && y < 75)
+			return "akvedukto"
+
+		if (x == 1825 && y > -525 && y < -370)
+			return "tiberiusHouse"
+
+		else return null
 	},
 
 	move: () => player.move("overworld", buildings),
