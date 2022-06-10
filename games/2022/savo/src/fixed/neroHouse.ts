@@ -1,6 +1,10 @@
 import c from "../game/canvas"
-import player from "../game/player"
 import Wall from "./Wall"
+
+import player from "../game/player"
+import Nero from "../combat/Nero"
+
+const nero = new Nero()
 
 let wallColour = "maroon"
 let walls = [
@@ -97,6 +101,12 @@ const neroHouse = {
 	},
 
 	roomTransitions() {
+		// (Temporary) Skip to the encounter
+		if (this.room == 4) {
+			this.room = 5
+			return
+		}
+
 		if (this.room == 0 && player.x > 1275) {
 			this.room = 1
 			player.x = 0
@@ -152,6 +162,10 @@ const neroHouse = {
 
 		for (const wall of walls[this.room]) {
 			wall.draw()
+		}
+
+		if (this.room == 5) {
+			nero.draw()
 		}
 	}
 }
