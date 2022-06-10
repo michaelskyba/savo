@@ -90,6 +90,20 @@ const neroHouse = {
 		document.onkeyup = event => player.handleKey("keyup", event.code)
 	},
 
+	locationTransitions(): boolean {
+		// Claudia left Nero's house back to Lerwick
+		// 675 = canvas height - player height
+		return player.y > 675 && this.room == 0
+	},
+
+	roomTransitions() {
+	},
+
+	move() {
+		player.move("fixed", walls[this.room])
+		this.roomTransitions()
+	},
+
 	draw() {
 		// Background: floor
 		c.fillStyle = "#fcc9b9"

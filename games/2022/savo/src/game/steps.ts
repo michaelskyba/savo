@@ -121,9 +121,18 @@ const steps = {
 	},
 
 	neroHouse() {
+		neroHouse.move()
 		neroHouse.draw()
 
-		window.requestAnimationFrame(this.neroHouse)
+		// Transition back to Lerwick
+		if (neroHouse.locationTransitions()) {
+			player.x = 900
+			player.y = -970
+
+			window.requestAnimationFrame(this.lerwick)
+		}
+
+		else window.requestAnimationFrame(this.neroHouse)
 	},
 
 	tiberiusHouse() {
