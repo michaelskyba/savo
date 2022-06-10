@@ -86,7 +86,6 @@ const steps = {
 				window.requestAnimationFrame(this.lerwick)
 				break
 		}
-
 	},
 
 	lerwick() {

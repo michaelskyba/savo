@@ -97,6 +97,45 @@ const neroHouse = {
 	},
 
 	roomTransitions() {
+		if (this.room == 0 && player.x > 1275) {
+			this.room = 1
+			player.x = 0
+		}
+
+		else if (this.room == 1 && player.x < 0) {
+			this.room = 0
+			player.x = 1275
+		}
+
+		else if (this.room == 1 && player.y < 0) {
+			this.room = 2
+			player.y = 675
+		}
+
+		else if (this.room == 2 && player.x < 0) {
+			this.room = 3
+			player.x = 1275
+		}
+
+		else if (this.room == 2 && player.y > 675) {
+			this.room = 1
+			player.y = 0
+		}
+
+		else if (this.room == 3 && player.y > 675) {
+			this.room = 4
+			player.y = 50
+		}
+
+		else if (this.room == 3 && player.x > 1275) {
+			this.room = 2
+			player.x = 0
+		}
+
+		else if (this.room == 4 && player.y < 0) {
+			this.room = 3
+			player.y = 675
+		}
 	},
 
 	move() {
