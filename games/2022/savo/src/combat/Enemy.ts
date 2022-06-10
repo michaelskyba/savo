@@ -9,6 +9,9 @@ class Enemy {
 
 	lastFrame: number
 	counter: number
+	status = "countdown"
+	elapsed = 0
+
 	sword: Sword
 
 	life: Life
@@ -27,6 +30,9 @@ class Enemy {
 	}
 
 	collision(playerX: number, playerY: number): boolean {
+		// The enemy only attacks when its attack counter is at zero
+		if (this.counter != 0) return false
+
 		return this.sword.collision(this.x + 25, this.y + 25, playerX, playerY)
 	}
 
@@ -35,6 +41,19 @@ class Enemy {
 
 		// Enemies don't need to heal
 		this.life.threatened = false
+	}
+
+	// Count the time
+	timer(status: "start" | "end", time: number) {
+		if (status == "start") {
+			if (!this.lastFrame)
+				this.lastFrame = time
+
+			this.elapsed += time - this.lastFrame
+		}
+
+		// The movement loop is over
+		else this.lastFrame = time
 	}
 
 	move(time: number) {
@@ -58,9 +77,18 @@ class Enemy {
 		c.fillStyle = this.colour
 
 		// 25 = enemy size / 2 (so the sword starts in the center)
-		this.sword.draw(this.x + 25, this.y + 25)
+		if (this.status == "attack")
+			this.sword.draw(this.x + 25, this.y + 25)
 
 		c.frect(this.x, this.y, 50, 50)
+
+		// Drawing the attack counter
+		let fontSize = 40
+		c.font = fontSize + "px monospace"
+		c.fillStyle = "white"
+
+		let text = (this.counter < 10 ? "0" : "") + this.counter
+		c.text(text, this.x, this.y + fontSize)
 	}
 }
 
