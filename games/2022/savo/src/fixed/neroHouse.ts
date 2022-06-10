@@ -149,7 +149,16 @@ const neroHouse = {
 	},
 
 	move() {
-		player.move("fixed", walls[this.room])
+		if (this.room == 4 || this.room == 5)
+			player.move("fixed", [...walls[this.room], {
+				x: nero.x,
+				y: nero.y,
+				width: 50,
+				height: 50
+			}])
+
+		else player.move("fixed", walls[this.room])
+
 		this.roomTransitions()
 	},
 
