@@ -61,6 +61,16 @@ class Nero extends Enemy {
 
 		if (this.y > 650) this.y = 650
 		if (this.y < 25) this.y = 25
+
+		// Teleporting
+		if ((this.x == 25 && this.y == 25) ||
+			(this.x == 25 && this.y == 650) ||
+			(this.x == 1250 && this.y == 650) ||
+			(this.x == 1250 && this.y == 25)) {
+
+			this.x = 637.5
+			this.y = 337.5
+		}
 	}
 
 	move(time: number) {
