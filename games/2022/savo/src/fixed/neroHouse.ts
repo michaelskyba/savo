@@ -94,6 +94,13 @@ const neroHouse = {
 		document.onkeyup = event => player.handleKey("keyup", event.code)
 	},
 
+	neroRoomInit() {
+		document.onkeydown = event => {
+			player.handleKey("keydown", event.code)
+			player.fixedKeys(event.code)
+		}
+	},
+
 	locationTransitions(): boolean {
 		// Claudia left Nero's house back to Lerwick
 		// 675 = canvas height - player height
@@ -156,6 +163,17 @@ const neroHouse = {
 		else player.move("fixed", walls[this.room])
 
 		this.roomTransitions()
+
+		if (this.room == 5)
+			this.moveBattle(time)
+	},
+
+	moveBattle(time: number) {
+		player.progressCooldowns(time)
+
+		if (player.status == "attacking") {
+			nero.receiveDamage()
+		}
 	},
 
 	draw() {
@@ -169,9 +187,18 @@ const neroHouse = {
 			wall.draw()
 		}
 
-		if (this.room == 5) {
-			nero.draw()
-		}
+		if (this.room == 5)
+			this.drawBattle()
+	},
+
+	drawBattle() {
+		nero.draw()
+
+		player.drawRange(nero.x, nero.y)
+		player.drawCooldowns()
+
+		nero.life.draw()
+		player.life.draw()
 	}
 }
 

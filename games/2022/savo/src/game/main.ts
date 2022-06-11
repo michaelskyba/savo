@@ -26,6 +26,7 @@ import steps from "./steps"
 import player from "./player"
 
 neroHouse.init()
+neroHouse.neroRoomInit()
 neroHouse.room = 5
 
 player.x = 637.5
