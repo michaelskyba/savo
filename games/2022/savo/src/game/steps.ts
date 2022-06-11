@@ -119,8 +119,8 @@ const steps = {
 		}
 	},
 
-	neroHouse() {
-		neroHouse.move()
+	neroHouse(time: number) {
+		neroHouse.move(time)
 		neroHouse.draw()
 
 		// Transition back to Lerwick

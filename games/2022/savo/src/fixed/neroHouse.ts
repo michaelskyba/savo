@@ -101,12 +101,6 @@ const neroHouse = {
 	},
 
 	roomTransitions() {
-		// (Temporary) Skip to the encounter
-		if (this.room == 4) {
-			this.room = 5
-			return
-		}
-
 		if (this.room == 0 && player.x > 1275) {
 			this.room = 1
 			player.x = 0
@@ -148,7 +142,9 @@ const neroHouse = {
 		}
 	},
 
-	move() {
+	move(time: number) {
+		nero.move(time)
+
 		if (this.room == 4 || this.room == 5)
 			player.move("fixed", [...walls[this.room], {
 				x: nero.x,

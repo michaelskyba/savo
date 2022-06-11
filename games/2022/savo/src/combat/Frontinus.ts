@@ -21,7 +21,6 @@ class Frontinus extends Enemy {
 
 		// Counting down to the next attack
 		if (this.status == "countdown") {
-
 			let threshold = 500
 
 			while (this.elapsed > threshold) {
