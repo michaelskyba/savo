@@ -2,11 +2,13 @@ import c from "../game/canvas"
 import music from "../game/music"
 
 import player from "../game/player"
+
 import Block from "./Block"
+import Img from "./Img"
 
 const buildings = [
 	// Akvedukto
-	new Block(-330, -100, 300, 200, "lightblue"),
+	new Img("akvedukto_overworld", -330, -125),
 
 	// Nero's house
 	new Block(700, -1300, 400, 300, "maroon"),
@@ -28,7 +30,7 @@ const roads = [
 
 const doors = [
 	// Akvedukto
-	new Block(-55, -50, 25, 100, "brown"),
+	new Block(-55, -50, 25, 100, "black"),
 
 	// Nero's house
 	new Block(850, -1025, 100, 25, "brown"),

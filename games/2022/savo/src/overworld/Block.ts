@@ -1,7 +1,7 @@
 import c from "../game/canvas"
 
 // "Block" is kind of a stupid name for this but I'm not sure what would be
-// better. We can't use "Object".
+// better. We can't use "Object". These Blocks are overworld rectangles.
 
 class Block {
 	x: number

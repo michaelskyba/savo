@@ -4,6 +4,7 @@ import player from "../game/player"
 import music from "../game/music"
 
 import Block from "./Block"
+import Img from "./Img"
 import claudiaHouse from "../fixed/claudiaHouse"
 
 const buildings = [
@@ -11,7 +12,7 @@ const buildings = [
 	new Block(-425, -150, 400, 300, "#bf823e"),
 
 	// Akvedukto
-	new Block(50, -1150, 300, 250, "lightblue")
+	new Img("akvedukto_overworld", 50, -1150)
 ]
 
 const roads = [
@@ -21,7 +22,7 @@ const roads = [
 
 const doors = [
 	new Block(-50, -50, 25, 100, "brown"),
-	new Block(150, -925, 100, 25, "brown")
+	new Block(150, -925, 100, 25, "black")
 ]
 
 const perinthus = {

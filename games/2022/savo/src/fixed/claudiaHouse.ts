@@ -5,10 +5,12 @@ import Wall from "./Wall"
 import dialogue from "../events/1"
 import Scene from "../menus/Scene"
 import TextBox from "../menus/TextBox"
+import Img from "./Img"
 
 import music from "../game/music"
 
 const scene: Scene | null = new Scene(dialogue.main)
+const bindows = new Img("bindows", 0, 0)
 
 let wallColour = "#bf823e"
 const walls = [
@@ -87,20 +89,30 @@ const claudiaHouse = {
 	},
 
 	draw() {
-		c.fillStyle = "#f0e68c"
-		c.frect(0, 0, 1325, 725)
-
-		player.draw("fixed")
-
-		for (const wall of walls[this.room]) {
-			wall.draw()
-		}
-
+		// Special background for scene
 		if (scene.playing) {
-			// Dialogue scene
+			// Draw the Bindows 10 background if it's relevant
+			if (scene.frame > 2 && scene.frame < 12)
+				bindows.draw()
+
+			else {
+				c.fillStyle = "#ddd"
+				c.frect(0, 0, 1325, 725)
+			}
 
 			scene.speech.draw()
 			if (scene.speaker) scene.speaker.draw()
+		}
+
+		else {
+			c.fillStyle = "#f0e68c"
+			c.frect(0, 0, 1325, 725)
+
+			player.draw("fixed")
+
+			for (const wall of walls[this.room]) {
+				wall.draw()
+			}
 		}
 	}
 }

@@ -70,9 +70,9 @@ const mainMenu = {
 	draw() {
 		// Background
 		c.fillStyle = "white"
-		c.frect(0, 0, 600, 725)
+		c.frect(0, 0, 500, 725)
 		c.fillStyle = "maroon"
-		c.frect(600, 0, 725, 725)
+		c.frect(500, 0, 825, 725)
 
 		// Main title text
 		c.font = "48px serif"
@@ -86,7 +86,7 @@ const mainMenu = {
 
 		// Divider
 		c.fillStyle = "white"
-		c.frect(700, 300, 525, 3)
+		c.frect(650, 300, 525, 3)
 
 		// Section title
 		if (this.screen != "Claudia's house") {

@@ -10,8 +10,11 @@ import Frontinus from "../combat/Frontinus"
 import Scene from "../menus/Scene"
 import dialogue from "../events/2"
 
+import Img from "./Img"
+
 let frontinus = new Frontinus(5)
 let scene = new Scene(dialogue.introduction)
+let bg = new Img("akvedukto_fixed", 0, 0)
 
 function resetCombat() {
 	frontinus = new Frontinus(5)
@@ -219,8 +222,12 @@ const akvedukto = {
 	},
 
 	draw() {
+		// Background
 		c.fillStyle = "floralwhite"
 		c.frect(0, 0, 1325, 725)
+		c.globalAlpha = 0.2
+		bg.draw()
+		c.globalAlpha = 1
 
 		// Only draw the attack range if you're in combat
 		if (this.phase != 10)
