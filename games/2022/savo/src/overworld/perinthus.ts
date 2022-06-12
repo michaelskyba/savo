@@ -29,11 +29,15 @@ const perinthus = {
 		document.onkeydown = event => player.handleKey("keydown", event.code)
 		document.onkeyup = event => player.handleKey("keyup", event.code)
 
-		// Reset Summer Salt but not Beautiful Ruin
-		let time = music.beautiful_ruin.currentTime
-		music.reset()
+		/*
+		We shouldn't use music.reset() because there would be an audible cut,
+		even if we play() right after. It's better to manually pause Summer Salt
+		without touching Beautiful Ruin. Furthermore, we do not have to reset
+		Summer Salt's playback position because that would already happen in
+		akvedukto's music.reset() call.
+		*/
+		music.summer_salt.pause()
 		music.beautiful_ruin.play()
-		music.beautiful_ruin.currentTime = time
 	},
 
 	move: () => player.move("overworld", buildings),
