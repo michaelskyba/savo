@@ -1,6 +1,7 @@
 import c from "../game/canvas"
-import player from "../game/player"
+import music from "../game/music"
 
+import player from "../game/player"
 import Block from "./Block"
 
 const buildings = [
@@ -40,6 +41,9 @@ const lerwick = {
 	init() {
 		document.onkeydown = event => player.handleKey("keydown", event.code)
 		document.onkeyup = event => player.handleKey("keyup", event.code)
+
+		music.reset()
+		music.beautiful_dead.play()
 	},
 
 	transitions(): string | null {

@@ -3,6 +3,7 @@ import MenuOption from "./MenuOption"
 import claudiaHouse from "../fixed/claudiaHouse"
 
 import steps from "../game/steps"
+import music from "../game/music"
 
 const mainMenu = {
 	selected: 0,
@@ -12,6 +13,13 @@ const mainMenu = {
 		new MenuOption("Start", 150, 200),
 		new MenuOption("Credits", 150, 260)
 	],
+
+	init() {
+		document.onkeydown = e => this.handleInput(e.code)
+		window.requestAnimationFrame(this.draw)
+
+		music.class_trial.play()
+	},
 
 	handleInput(key: string) {
 		if (key == "ArrowUp" || key == "KeyK") this.selected = 0
@@ -61,6 +69,7 @@ const mainMenu = {
 	}
 }
 
+mainMenu.init = mainMenu.init.bind(mainMenu)
 mainMenu.draw = mainMenu.draw.bind(mainMenu)
 mainMenu.handleInput = mainMenu.handleInput.bind(mainMenu)
 

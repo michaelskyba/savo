@@ -1,8 +1,9 @@
 import c from "../game/canvas"
 import player from "../game/player"
 
-import Block from "./Block"
+import music from "../game/music"
 
+import Block from "./Block"
 import claudiaHouse from "../fixed/claudiaHouse"
 
 const buildings = [
@@ -27,6 +28,12 @@ const perinthus = {
 	init() {
 		document.onkeydown = event => player.handleKey("keydown", event.code)
 		document.onkeyup = event => player.handleKey("keyup", event.code)
+
+		// Reset Summer Salt but not Beautiful Ruin
+		let time = music.beautiful_ruin.currentTime
+		music.reset()
+		music.beautiful_ruin.play()
+		music.beautiful_ruin.currentTime = time
 	},
 
 	move: () => player.move("overworld", buildings),

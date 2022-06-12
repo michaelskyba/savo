@@ -1,10 +1,10 @@
-/*
 // Official start
 import mainMenu from "../menus/mainMenu"
 
-document.onkeydown = e => mainMenu.handleInput(e.code)
-window.requestAnimationFrame(mainMenu.draw)
-*/
+document.getElementById("load").onclick = () => {
+	mainMenu.init()
+	document.getElementById("load").style.display = "none"
+}
 
 // Lerwick start
 /*
@@ -21,6 +21,7 @@ window.requestAnimationFrame(steps.lerwick)
 */
 
 // Nero's room start
+/*
 import neroHouse from "../fixed/neroHouse"
 import steps from "./steps"
 import player from "./player"
@@ -33,3 +34,4 @@ player.x = 637.5
 player.y = 50
 
 window.requestAnimationFrame(steps.neroHouse)
+*/

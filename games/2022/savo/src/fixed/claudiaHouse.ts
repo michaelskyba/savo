@@ -6,6 +6,8 @@ import dialogue from "../events/1"
 import Scene from "../menus/Scene"
 import TextBox from "../menus/TextBox"
 
+import music from "../game/music"
+
 const scene: Scene | null = new Scene(dialogue.main)
 
 let wallColour = "#bf823e"
@@ -47,7 +49,15 @@ const claudiaHouse = {
 	},
 
 	handleInput(key: string) {
-		if (key == "KeyZ") scene.progress()
+		if (key == "KeyZ" && scene.playing) {
+			scene.progress()
+
+			// Start the next track once movement is open
+			if (!scene.playing) {
+				music.reset()
+				music.beautiful_ruin.play()
+			}
+		}
 	},
 
 	move() {

@@ -125,6 +125,8 @@ const steps = {
 
 		// Transition back to Lerwick
 		if (neroHouse.locationTransitions()) {
+			lerwick.init()
+
 			player.x = 900
 			player.y = -970
 

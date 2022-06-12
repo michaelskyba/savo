@@ -1,6 +1,8 @@
 import c from "../game/canvas"
 import Wall from "./Wall"
 
+import music from "../game/music"
+
 import player from "../game/player"
 import Nero from "../combat/Nero"
 
@@ -92,6 +94,9 @@ const neroHouse = {
 	init() {
 		document.onkeydown = event => player.handleKey("keydown", event.code)
 		document.onkeyup = event => player.handleKey("keyup", event.code)
+
+		music.reset()
+		music.box_15.play()
 	},
 
 	neroRoomInit() {

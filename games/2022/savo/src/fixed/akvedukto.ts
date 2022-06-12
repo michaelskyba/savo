@@ -1,4 +1,5 @@
 import c from "../game/canvas"
+import music from "../game/music"
 
 import Life from "../combat/Life"
 import Wall from "./Wall"
@@ -144,6 +145,9 @@ const akvedukto = {
 			if (!scene.playing)
 				player.handleKey("keyup", event.code)
 		}
+
+		music.reset()
+		music.summer_salt.play()
 	},
 
 	transitions(): string {
