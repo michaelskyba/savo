@@ -5,9 +5,22 @@ import neroHouse from "../fixed/neroHouse"
 import perinthus from "../overworld/perinthus"
 import lerwick from "../overworld/lerwick"
 
+import mainMenu from "../menus/mainMenu"
 import player from "../game/player"
 
 const steps = {
+	mainMenu() {
+		mainMenu.draw()
+
+		if (mainMenu.screen == "Main menu")
+			window.requestAnimationFrame(this.mainMenu)
+
+		else {
+			claudiaHouse.init()
+			window.requestAnimationFrame(this.claudiaHouse)
+		}
+	},
+
 	claudiaHouse() {
 		claudiaHouse.move()
 		claudiaHouse.draw()

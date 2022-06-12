@@ -11,7 +11,11 @@ const mainMenu = {
 
 	options: [
 		new MenuOption("Start", 150, 200),
-		new MenuOption("Credits", 150, 260)
+		new MenuOption("Controls", 150, 260),
+		new MenuOption("Credits", 150, 320),
+		new MenuOption("Source code", 150, 380),
+		new MenuOption("Home", 150, 440),
+		new MenuOption("Password", 150, 500),
 	],
 
 	init() {
@@ -22,32 +26,55 @@ const mainMenu = {
 	},
 
 	handleInput(key: string) {
-		if (key == "ArrowUp" || key == "KeyK") this.selected = 0
-		if (key == "ArrowDown" || key == "KeyJ") this.selected = 1
+		// Option hovering
+		if ((key == "ArrowUp" || key == "KeyK") && this.selected > 0)
+			this.selected--
+		if ((key == "ArrowDown" || key == "KeyJ") && this.selected < 5)
+			this.selected++
 
 		// Select option
 		if (key == "KeyZ") {
+			switch(this.selected) {
+				// You pressed start, so enter the claudiaHouse object
+				// steps.ts will react to the "screen" property
+				case 0:
+					this.screen = "Claudia's house"
+					break
 
-			// You pressed start, so enter the claudiaHouse object
-			if (this.selected == 0) {
-				claudiaHouse.init()
+				// "Source code" button
+				case 3:
+					window.open("https://github.com/michaelskyba/michaelskyba.github.io/tree/master/games/2022/savo", "_blank").focus()
+					break
 
-				// Putting this in claudiaHouse.ts would require an additional import
-				this.screen = "Claudia's house"
+				// "Home" button
+				case 4:
+					window.location.href = "../../2022.html"
+					break
 			}
+
 		}
 	},
 
 	draw() {
+		// Background
 		c.fillStyle = "white"
-		c.frect(0, 0, 1325, 325)
-
+		c.frect(0, 0, 600, 725)
 		c.fillStyle = "maroon"
-		c.frect(0, 325, 1325, 400)
+		c.frect(600, 0, 725, 725)
 
-		c.font = "48px monospace"
-		c.fillStyle = "#111"
-		c.text("Malfacile Gajnita Savo", 50, 50)
+		// Main title text
+		c.font = "48px serif"
+		c.fillStyle = "white"
+		c.text("Malfacile", 770, 100)
+		c.fillStyle = "#ddd"
+		c.text("Gajnita Savo", 770, 150)
+		c.fillStyle = "white"
+		c.font = "20px serif"
+		c.text("by Michael Skyba", 770, 250)
+
+		// Divider
+		c.fillStyle = "white"
+		c.frect(700, 300, 525, 3)
 
 		c.fillStyle = "white"
 		c.font = "48px serif"
@@ -60,12 +87,6 @@ const mainMenu = {
 		for (let i = 0; i < this.options.length; i++) {
 			this.options[i].show(this.selected == i)
 		}
-
-		if (this.screen == "Main menu")
-			window.requestAnimationFrame(this.draw)
-
-		// Once the user selects "Start", we need to switch screens
-		else window.requestAnimationFrame(steps.claudiaHouse)
 	}
 }
 
