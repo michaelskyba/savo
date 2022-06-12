@@ -10,19 +10,22 @@ class Enemy {
 	lastFrame: number
 	counter: number
 	status = "countdown"
-	elapsed = 0
+	elapsed: number[]
 
 	sword: Sword
 
 	life: Life
 	colour: string
 
-	constructor(x: number, y: number, HP: number, colour: string) {
+	constructor(x: number, y: number, elapsed: number[], HP: number, colour: string) {
 		this.x = x
 		this.y = y
 
-		this.colour = colour
+		// Different indices can contain different timers, which is why we use
+		// an array of numbers instead of just one
+		this.elapsed = elapsed
 
+		this.colour = colour
 		this.sword = new Sword(200, 0, colour)
 
 		// 1232 = canvas width - textbox width (~88) - padding (5)
@@ -49,7 +52,9 @@ class Enemy {
 			if (!this.lastFrame)
 				this.lastFrame = time
 
-			this.elapsed += time - this.lastFrame
+			// Add to each elapsed value
+			let change = time - this.lastFrame
+			this.elapsed = this.elapsed.map(x => x + change)
 		}
 
 		// The movement loop is over

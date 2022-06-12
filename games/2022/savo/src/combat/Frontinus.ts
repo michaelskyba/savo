@@ -10,7 +10,7 @@ class Frontinus extends Enemy {
 
 	constructor(counterInit: number) {
 		// 637.5 = horizontal center
-		super(637.5, 200, 5, "midnightblue")
+		super(637.5, 200, [0], 5, "midnightblue")
 
 		this.counterInit = counterInit
 		this.counter = counterInit
@@ -23,13 +23,13 @@ class Frontinus extends Enemy {
 		if (this.status == "countdown") {
 			let threshold = 500
 
-			while (this.elapsed > threshold) {
+			while (this.elapsed[0] > threshold) {
 				this.counter--
-				this.elapsed -= threshold
+				this.elapsed[0] -= threshold
 
 				if (this.counter == 0) {
 					this.status = "attack"
-					this.elapsed = 0
+					this.elapsed[0] = 0
 
 					// Math.atan2 gets the angle to the point from the origin.
 					// Since our origin is frontinus's (x, y), we need to
@@ -53,9 +53,9 @@ class Frontinus extends Enemy {
 			this.sword.rotate((time - this.lastFrame) * 0.9)
 
 			// It's done after 200 ms
-			if (this.elapsed > 200) {
+			if (this.elapsed[0] > 200) {
 				this.status = "countdown"
-				this.elapsed = 0
+				this.elapsed[0] = 0
 
 				this.counter = this.counterInit
 			}

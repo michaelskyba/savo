@@ -1,11 +1,18 @@
 import Enemy from "../combat/Enemy"
 import player from "../game/player"
 
+/*
+elapsed {
+	0: timer for movement (x,y manipulatioN)
+	1: timer for countdown (attack counter manipulation)
+}
+*/
+
 class Nero extends Enemy {
 	moveStatus = "approaching"
 
 	constructor() {
-		super(637.5, 445, 50, "maroon")
+		super(637.5, 445, [0, 0], 50, "maroon")
 
 		// Temporary test
 		this.x = 25
@@ -17,15 +24,15 @@ class Nero extends Enemy {
 		// Move backward every 10 ms
 		let threshold = 10
 
-		while (this.elapsed > threshold) {
-			this.elapsed -= threshold
+		while (this.elapsed[0] > threshold) {
+			this.elapsed[0] -= threshold
 
 			let dx = player.x - this.x
 			let dy = player.y - this.y
 
 			if (Math.abs(dx) > 200 || Math.abs(dy) > 200) {
 				this.moveStatus = "waiting"
-				this.elapsed = 0
+				this.elapsed[0] = 0
 				return
 			}
 
@@ -38,15 +45,15 @@ class Nero extends Enemy {
 		// Move forward every 10 ms
 		let threshold = 10
 
-		while (this.elapsed > threshold) {
-			this.elapsed -= threshold
+		while (this.elapsed[0] > threshold) {
+			this.elapsed[0] -= threshold
 
 			let dx = player.x - this.x
 			let dy = player.y - this.y
 
 			if (Math.abs(dx) < 75 && Math.abs(dy) < 75) {
 				this.moveStatus = "retreating"
-				this.elapsed = 0
+				this.elapsed[0] = 0
 				return
 			}
 
@@ -91,9 +98,9 @@ class Nero extends Enemy {
 
 			case "waiting":
 				let threshold = 1000
-				if (this.elapsed > threshold) {
+				if (this.elapsed[0] > threshold) {
 					this.moveStatus = "approaching"
-					this.elapsed = 0
+					this.elapsed[0] = 0
 				}
 				break
 		}
