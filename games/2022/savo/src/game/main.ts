@@ -1,4 +1,5 @@
 // Official start
+/*
 import mainMenu from "../menus/mainMenu"
 import steps from "./steps"
 
@@ -9,8 +10,16 @@ document.getElementById("load").onclick = () => {
 	// Hide load button
 	document.getElementById("load").style.display = "none"
 }
+*/
 
-// Lerwick start
+// Quick main menu
+import mainMenu from "../menus/mainMenu"
+import steps from "./steps"
+mainMenu.init()
+window.requestAnimationFrame(steps.mainMenu)
+document.getElementById("load").style.display = "none"
+
+// Lerwick
 /*
 import lerwick from "../overworld/lerwick"
 import steps from "./steps"
@@ -24,7 +33,7 @@ player.y = 0
 window.requestAnimationFrame(steps.lerwick)
 */
 
-// Nero's room start
+// Nero's room
 /*
 import neroHouse from "../fixed/neroHouse"
 import steps from "./steps"

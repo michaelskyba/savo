@@ -12,13 +12,11 @@ const steps = {
 	mainMenu() {
 		mainMenu.draw()
 
-		if (mainMenu.screen == "Main menu")
-			window.requestAnimationFrame(this.mainMenu)
-
-		else {
+		if (mainMenu.screen == "Claudia's house") {
 			claudiaHouse.init()
 			window.requestAnimationFrame(this.claudiaHouse)
 		}
+		else window.requestAnimationFrame(this.mainMenu)
 	},
 
 	claudiaHouse() {
