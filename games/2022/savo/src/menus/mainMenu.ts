@@ -56,6 +56,12 @@ const mainMenu = {
 				case 4:
 					window.location.href = "../../2022.html"
 					break
+
+				// "Password" button
+				case 5:
+					let code = prompt("Enter your code.")
+					if (code == "11037") alert("11037...? This is so difficult to figure out...")
+					break
 			}
 
 		}
