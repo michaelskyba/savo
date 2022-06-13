@@ -47,4 +47,5 @@ player.x = 637.5
 player.y = 50
 
 window.requestAnimationFrame(steps.neroHouse)
+document.getElementById("load").style.display = "none"
 */

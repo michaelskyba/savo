@@ -15,7 +15,14 @@ class Interactable {
 	}
 
 	// Is the player in range to interact?
-	inRange() {
+	inRange(): boolean {
+		let obj = this.obj
+
+		// Made with the assumption that player is (50, 50) in width and height
+		return (player.x > obj.x - 125 &&
+				player.x < obj.x + obj.width + 75 &&
+				player.y > obj.y - 125 &&
+				player.y < obj.y + obj.height + 75)
 	}
 }
 

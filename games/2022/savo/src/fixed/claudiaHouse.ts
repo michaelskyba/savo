@@ -3,7 +3,7 @@ import player from "../game/player"
 
 import dialogue from "../events/1"
 import Scene from "../menus/Scene"
-import TextBox from "../menus/TextBox"
+import MenuOption from "../menus/MenuOption"
 
 import Block from "./Block"
 import Img from "./Img"
@@ -29,6 +29,14 @@ const interactables = [
 		new Interactable(new Block(200, 75, 50, 50, "#006442"))
 	]
 ]
+
+// Prompt for interacting with an interactable
+// [0][0] is just a default which shouldn't pop up by itself
+let prompt = {
+	int: interactables[0][0],
+	active: false,
+	box: new MenuOption("Press Z to interact.", 50, 50)
+}
 
 let wallColour = "#bf823e"
 const walls = [
@@ -61,8 +69,11 @@ function drawScene(scene: Scene) {
 	if (scene.speaker) scene.speaker.draw()
 }
 
-const claudiaHouse = {
-	room: 1,
+class ClaudiaHouse {
+	room = 1
+
+	constructor() {
+	}
 
 	init() {
 		document.onkeydown = event => {
@@ -77,7 +88,7 @@ const claudiaHouse = {
 		}
 
 		this.genCollision()
-	},
+	}
 
 	genCollision() {
 		collision = [
@@ -86,7 +97,7 @@ const claudiaHouse = {
 			// The Img/Block is stored in the .obj property in the Interactable class
 			...interactables[this.room].map(i => i.obj)
 		]
-	},
+	}
 
 	handleInput(key: string) {
 		// The player has to have pressed Z for anything to happen
@@ -105,12 +116,12 @@ const claudiaHouse = {
 				music.beautiful_ruin.play()
 			}
 		}
-	},
+	}
 
+	// Give input to the player, but only if a dialogue isn't playing
 	move() {
-		if (!scene.playing)
-			player.move("fixed", collision)
-	},
+		if (!scene.playing) player.move("fixed", collision)
+	}
 
 	transitions(): boolean {
 		// 1275 = canvas width - player width
@@ -135,7 +146,7 @@ const claudiaHouse = {
 		}
 
 		return false
-	},
+	}
 
 	draw() {
 		// Special background for scene
@@ -143,7 +154,7 @@ const claudiaHouse = {
 			this.drawIntro()
 
 		else this.drawRoom()
-	},
+	}
 
 	drawIntro() {
 		// Draw the Bindows 10 background if it's relevant
@@ -156,7 +167,7 @@ const claudiaHouse = {
 		}
 
 		drawScene(scene)
-	},
+	}
 
 	drawRoom() {
 		c.fillStyle = "#f0e68c"
@@ -168,14 +179,38 @@ const claudiaHouse = {
 			wall.draw()
 		}
 
+		// Drawing the objects
 		for (const interactable of interactables[this.room]) {
 			interactable.draw()
 		}
+
+		this.checkRanges()
+		if (prompt.active) prompt.box.show(false)
+	}
+
+	checkRanges() {
+		let wasSet = false
+
+		for (const int of interactables[this.room]) {
+			if (int.inRange()) {
+
+				// We only need to update the prompt box if it doesn't exist yet
+				if (!prompt.active)
+					prompt.box = new MenuOption("Press Z to interact.", int.obj.x - 60, int.obj.y - 60)
+
+				prompt.int = int
+				prompt.active = true
+
+				wasSet = true
+			}
+		}
+
+		// If none of them are inRange, make sure that no prompt is open
+		if (!wasSet) prompt.active = false
 	}
 }
 
-claudiaHouse.draw = claudiaHouse.draw.bind(claudiaHouse)
-claudiaHouse.init = claudiaHouse.init.bind(claudiaHouse)
-claudiaHouse.genCollision = claudiaHouse.genCollision.bind(claudiaHouse)
-
+// I'm making a temporary class here to avoid commas after methods, binding
+// "this", etc.
+const claudiaHouse = new ClaudiaHouse()
 export default claudiaHouse
