@@ -60,9 +60,6 @@ const dialogue = {
 		["Claudia", "Got it: Go to Nova Anio-akvedukto, tell Frontinus to show me the door."],
 		["Claudia", "Thanks, Mom!"],
 		["Messalina", "Your gratitude is misplaced."]
-	],
-
-	repeat: [
 	]
 }
 

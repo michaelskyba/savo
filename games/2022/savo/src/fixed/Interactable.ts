@@ -4,9 +4,11 @@ import Img from "./Img"
 import player from "../game/player"
 
 class Interactable {
+	id: string
 	obj: Block | Img
 
-	constructor(obj: Block | Img) {
+	constructor(id: string, obj: Block | Img) {
+		this.id = id
 		this.obj = obj
 	}
 

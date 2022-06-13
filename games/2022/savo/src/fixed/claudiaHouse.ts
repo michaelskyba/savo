@@ -11,6 +11,7 @@ import Img from "./Img"
 import music from "../game/music"
 
 import Interactable from "./Interactable"
+import intDialogue from "../events/3"
 
 const bindows = new Img("bindows", 0, 0)
 const intro = new Scene(dialogue.main)
@@ -19,19 +20,15 @@ let scene = intro
 const interactables = [
 	// Room 0 (left)
 	[
-		new Interactable(new Img("stove", 150, 75)),
-
-		// Claudius
-		new Interactable(new Block(200, 600, 50, 50, "#1d697c"))
+		new Interactable("stove", new Img("stove", 150, 75)),
+		new Interactable("claudius", new Block(200, 600, 50, 50, "#1d697c"))
 	],
 
 	// Room 1 (right)
 	[
-		new Interactable(new Img("bookshelf", 650, 75)),
-		new Interactable(new Img("bed", 150, 550)),
-
-		// Messalina
-		new Interactable(new Block(200, 75, 50, 50, "#006442"))
+		new Interactable("messalina", new Block(200, 75, 50, 50, "#006442")),
+		new Interactable("bookshelf", new Img("bookshelf", 650, 75)),
+		new Interactable("bed", new Img("bed", 150, 550))
 	]
 ]
 
@@ -40,7 +37,7 @@ const interactables = [
 let prompt = {
 	int: interactables[0][0],
 	active: false,
-	box: new MenuOption("Press Z to interact.", 50, 50)
+	box: new MenuOption("=================================================", 0, 0)
 }
 
 let wallColour = "#bf823e"
@@ -105,13 +102,8 @@ class ClaudiaHouse {
 	}
 
 	handleInput(key: string) {
-		// The player has to have pressed Z for anything to happen
-		// I don't know if this structure is idiomatic but it saves an indent,
-		// which seems to look cleaner?
-		if (key != "KeyZ") return
-
 		// The player pressed Z to progress the dialogue
-		if (scene.playing) {
+		if (key == "KeyZ" && scene.playing) {
 			let introPlaying = intro.playing
 			scene.progress()
 
@@ -120,6 +112,12 @@ class ClaudiaHouse {
 				music.reset()
 				music.beautiful_ruin.play()
 			}
+		}
+
+		// The player entered an interaction prompt with X
+		else if (key == "KeyX" && prompt.active) {
+			prompt.active = false
+			scene = new Scene(intDialogue[prompt.int.id])
 		}
 	}
 
@@ -189,8 +187,10 @@ class ClaudiaHouse {
 			interactable.draw()
 		}
 
-		this.checkRanges()
+		if (!scene.playing) this.checkRanges()
 		if (prompt.active) prompt.box.show(false)
+
+		if (scene.playing) drawScene(scene)
 	}
 
 	checkRanges() {
@@ -201,7 +201,7 @@ class ClaudiaHouse {
 
 				// We only need to update the prompt box if it doesn't exist yet
 				if (!prompt.active)
-					prompt.box = new MenuOption("Press Z to interact.", int.obj.x - 60, int.obj.y - 60)
+					prompt.box = new MenuOption("Press X to interact.", int.obj.x - 60, int.obj.y - 60)
 
 				prompt.int = int
 				prompt.active = true
