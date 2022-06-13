@@ -19,12 +19,17 @@ let scene = intro
 const interactables = [
 	// Room 0 (left)
 	[
+		new Interactable(new Img("stove", 150, 75)),
+
 		// Claudius
 		new Interactable(new Block(200, 600, 50, 50, "#1d697c"))
 	],
 
 	// Room 1 (right)
 	[
+		new Interactable(new Img("bookshelf", 650, 75)),
+		new Interactable(new Img("bed", 150, 550)),
+
 		// Messalina
 		new Interactable(new Block(200, 75, 50, 50, "#006442"))
 	]
