@@ -5,6 +5,67 @@ import claudiaHouse from "../fixed/claudiaHouse"
 import steps from "../game/steps"
 import music from "../game/music"
 
+// Return random integer from min to max (inclusive)
+const RNG = (min, max) => {
+	return Math.round(Math.random() * (max - min)) + min
+}
+
+class Particle {
+	id: number
+	active = true
+
+	x: number
+	y: number
+	size: number
+	speed: number
+
+	constructor(id: number) {
+		this.id = id
+
+		this.speed = RNG(1, 5)
+		this.size = RNG(25, 100)
+
+		this.x = 1325
+		this.y = RNG(0 - this.size, 725)
+	}
+
+	draw() {
+		// I can't be bothered to implement a timing system: the movement speed is
+		// just decorative, so having it vary by frame rate is probably OK
+
+		// The split line is at x = 500
+
+		this.x -= this.speed
+
+		// It's a special case: the particle is on the line
+		if (this.x > 500 - this.size && this.x < 500) {
+			let split1 = 500 - this.x
+
+			c.fillStyle = "maroon"
+			c.frect(this.x, this.y, split1, this.size)
+			c.fillStyle = "#111"
+			c.frect(this.x + split1, this.y, this.size - split1, this.size)
+
+			// Slower movement during the split
+			this.x += this.speed / 2
+
+			return
+		}
+
+		// The particle isn't on the line, so we can draw a standard rectangle
+		if (this.x >= 500)
+			c.fillStyle = "#111"
+		else
+			c.fillStyle = "maroon"
+
+		c.frect(this.x, this.y, this.size, this.size)
+	}
+}
+
+let particles = []
+let lastSpawn = 0
+let lastID = -1
+
 const mainMenu = {
 	selected: 0,
 	screen: "Controls",
@@ -73,6 +134,23 @@ const mainMenu = {
 		c.frect(0, 0, 500, 725)
 		c.fillStyle = "maroon"
 		c.frect(500, 0, 825, 725)
+
+		// Background particles spawning
+		let time = Date.now()
+		if (time - lastSpawn > 400) {
+			lastID++
+			particles.push(new Particle(lastID))
+
+			lastSpawn = time
+		}
+
+		// Background particles drawing
+		for (const particle of particles) {
+			particle.draw()
+		}
+
+		// Background particles deletion
+		particles = particles.filter(particle => particle.x > -particle.size)
 
 		// Main title text
 		c.font = "48px serif"
