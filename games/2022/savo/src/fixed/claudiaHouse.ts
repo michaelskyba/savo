@@ -9,11 +9,13 @@ import Img from "./Img"
 
 import music from "../game/music"
 
-const scene: Scene | null = new Scene(dialogue.main)
 const bindows = new Img("bindows", 0, 0)
+const intro = new Scene(dialogue.main)
+let scene = intro
 
 let wallColour = "#bf823e"
 const walls = [
+	// Room 0 (left)
 	[
 		new Wall(0, 0, 1325, 25, wallColour),
 		new Wall(0, 0, 25, 1325, wallColour),
@@ -22,6 +24,8 @@ const walls = [
 		new Wall(1300, 0, 25, 262.5, wallColour),
 		new Wall(1300, 462.5, 25, 262.5, wallColour)
 	],
+
+	// Room 1 (right)
 	[
 		new Wall(0, 0, 1325, 25, wallColour),
 		new Wall(0, 700, 1325, 25, wallColour),
@@ -33,6 +37,11 @@ const walls = [
 		new Wall(1300, 462.5, 25, 262.5, wallColour)
 	]
 ]
+
+function drawScene(scene: Scene) {
+	scene.speech.draw()
+	if (scene.speaker) scene.speaker.draw()
+}
 
 const claudiaHouse = {
 	room: 1,
@@ -51,11 +60,18 @@ const claudiaHouse = {
 	},
 
 	handleInput(key: string) {
-		if (key == "KeyZ" && scene.playing) {
+		// The player has to have pressed Z for anything to happen
+		// I don't know if this structure is idiomatic but it saves an indent,
+		// which seems to look cleaner?
+		if (key != "KeyZ") return
+
+		// The player pressed Z to progress the dialogue
+		if (scene.playing) {
+			let introPlaying = intro.playing
 			scene.progress()
 
-			// Start the next track once movement is open
-			if (!scene.playing) {
+			// Start the next track once movement is open after the intro
+			if (introPlaying && !scene.playing) {
 				music.reset()
 				music.beautiful_ruin.play()
 			}
@@ -90,29 +106,38 @@ const claudiaHouse = {
 
 	draw() {
 		// Special background for scene
-		if (scene.playing) {
-			// Draw the Bindows 10 background if it's relevant
-			if (scene.frame > 2 && scene.frame < 12)
-				bindows.draw()
+		if (intro.playing)
+			this.drawIntro()
 
-			else {
-				c.fillStyle = "#ddd"
-				c.frect(0, 0, 1325, 725)
-			}
+		else this.drawRoom()
+	},
 
-			scene.speech.draw()
-			if (scene.speaker) scene.speaker.draw()
-		}
+	drawIntro() {
+		// Draw the Bindows 10 background if it's relevant
+		if (scene.frame > 2 && scene.frame < 12)
+			bindows.draw()
 
 		else {
-			c.fillStyle = "#f0e68c"
+			c.fillStyle = "#ddd"
 			c.frect(0, 0, 1325, 725)
+		}
 
-			player.draw("fixed")
+		drawScene(scene)
+	},
 
-			for (const wall of walls[this.room]) {
-				wall.draw()
-			}
+	drawRoom() {
+		c.fillStyle = "#f0e68c"
+		c.frect(0, 0, 1325, 725)
+
+		if (this.room == 1) {
+			c.fillStyle = "#006442"
+			c.frect(200, 75, 50, 50)
+		}
+
+		player.draw("fixed")
+
+		for (const wall of walls[this.room]) {
+			wall.draw()
 		}
 	}
 }
