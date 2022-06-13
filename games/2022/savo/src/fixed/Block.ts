@@ -1,5 +1,7 @@
 import c from "../game/canvas"
 
+// This is the fixed location version of overworld/Block.ts.
+
 export default class Wall {
 	x: number
 	y: number

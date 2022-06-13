@@ -1,6 +1,6 @@
 import c from "../game/canvas"
 import player from "../game/player"
-import Wall from "./Wall"
+import Block from "./Block"
 
 import dialogue from "../events/1"
 import Scene from "../menus/Scene"
@@ -17,24 +17,24 @@ let wallColour = "#bf823e"
 const walls = [
 	// Room 0 (left)
 	[
-		new Wall(0, 0, 1325, 25, wallColour),
-		new Wall(0, 0, 25, 1325, wallColour),
-		new Wall(0, 700, 1325, 25, wallColour),
+		new Block(0, 0, 1325, 25, wallColour),
+		new Block(0, 0, 25, 1325, wallColour),
+		new Block(0, 700, 1325, 25, wallColour),
 
-		new Wall(1300, 0, 25, 262.5, wallColour),
-		new Wall(1300, 462.5, 25, 262.5, wallColour)
+		new Block(1300, 0, 25, 262.5, wallColour),
+		new Block(1300, 462.5, 25, 262.5, wallColour)
 	],
 
 	// Room 1 (right)
 	[
-		new Wall(0, 0, 1325, 25, wallColour),
-		new Wall(0, 700, 1325, 25, wallColour),
+		new Block(0, 0, 1325, 25, wallColour),
+		new Block(0, 700, 1325, 25, wallColour),
 
-		new Wall(0, 0, 25, 262.5, wallColour),
-		new Wall(0, 462.5, 25, 262.5, wallColour),
+		new Block(0, 0, 25, 262.5, wallColour),
+		new Block(0, 462.5, 25, 262.5, wallColour),
 
-		new Wall(1300, 0, 25, 262.5, wallColour),
-		new Wall(1300, 462.5, 25, 262.5, wallColour)
+		new Block(1300, 0, 25, 262.5, wallColour),
+		new Block(1300, 462.5, 25, 262.5, wallColour)
 	]
 ]
 

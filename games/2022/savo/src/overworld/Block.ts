@@ -1,7 +1,8 @@
 import c from "../game/canvas"
 
-// "Block" is kind of a stupid name for this but I'm not sure what would be
-// better. We can't use "Object". These Blocks are overworld rectangles.
+// A "Block" is just a coloured rectangle. Since it's in overworld/, it's meant
+// to be placed in the overworld, which is why it keeps scroll(X,Y) in mind.
+// There's also the respective fixed/Block.ts for fixed locations.
 
 class Block {
 	x: number

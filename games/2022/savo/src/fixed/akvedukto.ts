@@ -2,7 +2,7 @@ import c from "../game/canvas"
 import music from "../game/music"
 
 import Life from "../combat/Life"
-import Wall from "./Wall"
+import Block from "./Block"
 
 import player from "../game/player"
 import Frontinus from "../combat/Frontinus"
@@ -54,29 +54,29 @@ let wallColour = "#a69583"
 const walls = [
 	// Initial position with door blocked
 	[
-		new Wall(0, 0, 1325, 25, wallColour),
-		new Wall(0, 0, 25, 1325, wallColour),
+		new Block(0, 0, 1325, 25, wallColour),
+		new Block(0, 0, 25, 1325, wallColour),
 
 		// Bottom with intersection
-		new Wall(0, 700, 512.5, 25, wallColour),
-		new Wall(812.5, 700, 612.5, 25, wallColour),
+		new Block(0, 700, 512.5, 25, wallColour),
+		new Block(812.5, 700, 612.5, 25, wallColour),
 
 		// Initially solid right wall
-		new Wall(1300, 0, 25, 725, wallColour)
+		new Block(1300, 0, 25, 725, wallColour)
 	],
 
 	// Door unblocked after tutorial
 	[
-		new Wall(0, 0, 1325, 25, wallColour),
-		new Wall(0, 0, 25, 1325, wallColour),
+		new Block(0, 0, 1325, 25, wallColour),
+		new Block(0, 0, 25, 1325, wallColour),
 
 		// Bottom with intersection
-		new Wall(0, 700, 512.5, 25, wallColour),
-		new Wall(812.5, 700, 612.5, 25, wallColour),
+		new Block(0, 700, 512.5, 25, wallColour),
+		new Block(812.5, 700, 612.5, 25, wallColour),
 
 		// Intersection in right wall
-		new Wall(1300, 0, 25, 212.5, wallColour),
-		new Wall(1300, 512.5, 25, 212.5, wallColour)
+		new Block(1300, 0, 25, 212.5, wallColour),
+		new Block(1300, 512.5, 25, 212.5, wallColour)
 	]
 ]
 
@@ -84,10 +84,10 @@ const walls = [
 // sword's range
 let barrierColour = "midnightblue"
 const barrier = [
-	new Wall(487.5, 50, 350, 50, barrierColour),
-	new Wall(487.5, 50, 50, 350, barrierColour),
-	new Wall(787.5, 50, 50, 350, barrierColour),
-	new Wall(487.5, 350, 350, 50, barrierColour)
+	new Block(487.5, 50, 350, 50, barrierColour),
+	new Block(487.5, 50, 50, 350, barrierColour),
+	new Block(787.5, 50, 50, 350, barrierColour),
+	new Block(487.5, 350, 350, 50, barrierColour)
 ]
 
 // Which set of walls should we draw/collide?
