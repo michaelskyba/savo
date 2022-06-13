@@ -1,7 +1,7 @@
 // Interaction inside claudiaHouse
 
 const dialogue = {
-	messalina: [
+	Messalina: [
 		["Claudia", "Hey, Mom."],
 		["Messalina", "You've already forgotten my instructions?"],
 		["Claudia", "U-uh..."],
@@ -54,7 +54,7 @@ const dialogue = {
 		["Claudia", "My house has never burned down before, so why would it start now?"]
 	],
 
-	claudius: [
+	Claudius: [
 		["Claudia", "Hey, Dad."],
 		["Claudius", "..."],
 		["Claudia", "No reply? Can you hear me? Or has your deafness worsened?"],

@@ -5,7 +5,12 @@ import music from "../game/music"
 
 import Block from "./Block"
 import Img from "./Img"
-import claudiaHouse from "../fixed/claudiaHouse"
+
+import Interactable from "./Interactable"
+import MenuOption from "../menus/MenuOption"
+
+import dialogue from "../events/4"
+import Scene from "../menus/Scene"
 
 const buildings = [
 	// Claudia's house
@@ -15,8 +20,26 @@ const buildings = [
 	new Img("akvedukto_overworld", 50, -1150)
 ]
 
+const interactables = [
+	new Interactable("Ovicula", new Block(550, -550, 50, 50, "#f3c13a")),
+	new Interactable("Dorus", new Block(175, 1100, 50, 50, "#763568")),
+	new Interactable("Palinurus", new Block(-300, 700, 50, 50, "#ebf6f7"))
+]
+
+let prompt = {
+	int: interactables[0],
+	active: false,
+	box: new MenuOption("=================================================", 0, 0)
+}
+
+let scene = new Scene(dialogue.Ovicula)
+scene.playing = false
+
 const roads = [
+	// To claudiaHouse
 	new Block(-50, -50, 155, 100, "gray"),
+
+	// Main vertical
 	new Block(100, -1000, 200, 2000, "gray")
 ]
 
@@ -25,9 +48,28 @@ const doors = [
 	new Block(150, -925, 100, 25, "black")
 ]
 
+const collision = [
+	...buildings,
+	...interactables.map(i => i.obj)
+]
+
 const perinthus = {
 	init() {
-		document.onkeydown = event => player.handleKey("keydown", event.code)
+		document.onkeydown = event => {
+			let key = event.code
+
+			// The player pressed Z to progress the dialogue
+			if (key == "KeyZ" && scene.playing)
+				scene.progress()
+
+			// The player entered an interaction prompt with X
+			else if (key == "KeyX" && prompt.active) {
+				prompt.active = false
+				scene = new Scene(dialogue[prompt.int.id])
+			}
+
+			player.handleKey("keydown", key)
+		}
 		document.onkeyup = event => player.handleKey("keyup", event.code)
 
 		/*
@@ -41,7 +83,9 @@ const perinthus = {
 		music.beautiful_ruin.play()
 	},
 
-	move: () => player.move("overworld", buildings),
+	move() {
+		if (!scene.playing) player.move("overworld", collision)
+	},
 
 	transitions(): string | null {
 		let x = player.x
@@ -68,11 +112,46 @@ const perinthus = {
 			building.draw(player.x, player.y)
 		}
 
+		for (const int of interactables) {
+			int.draw()
+		}
+
 		for (const door of doors) {
 			door.draw(player.x, player.y)
 		}
 
 		player.draw("overworld")
+
+		// Check if the player went into any prompt ranges
+		if (!scene.playing) {
+			let wasSet = false
+
+			for (const int of interactables) {
+				if (int.inRange()) {
+
+					// We only need to update the prompt box if it doesn't exist yet
+					if (!prompt.active)
+						prompt.box = new MenuOption("Press X to interact.", 120, 550)
+
+					prompt.int = int
+					prompt.active = true
+
+					wasSet = true
+				}
+			}
+
+			// If none of them are inRange, make sure that no prompt is open
+			if (!wasSet) prompt.active = false
+		}
+
+		// Show the prompt box if in range
+		if (prompt.active) prompt.box.show(false)
+
+		// Show the scene text if it's playing
+		if (scene.playing) {
+			scene.speech.draw()
+			if (scene.speaker) scene.speaker.draw()
+		}
 	}
 }
 

@@ -21,12 +21,12 @@ const interactables = [
 	// Room 0 (left)
 	[
 		new Interactable("stove", new Img("stove", 150, 75)),
-		new Interactable("claudius", new Block(200, 600, 50, 50, "#1d697c"))
+		new Interactable("Claudius", new Block(200, 600, 50, 50, "#1d697c"))
 	],
 
 	// Room 1 (right)
 	[
-		new Interactable("messalina", new Block(200, 75, 50, 50, "#006442")),
+		new Interactable("Messalina", new Block(200, 75, 50, 50, "#006442")),
 		new Interactable("bookshelf", new Img("bookshelf", 650, 75)),
 		new Interactable("bed", new Img("bed", 150, 550))
 	]

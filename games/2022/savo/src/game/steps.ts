@@ -54,6 +54,7 @@ const steps = {
 				break
 
 			case "claudiaHouse":
+				claudiaHouse.init()
 				player.x = 1270
 				player.y = 337.5
 
