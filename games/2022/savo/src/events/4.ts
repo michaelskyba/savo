@@ -1,11 +1,11 @@
 // Interactions in Perinthus
 const dialogue = {
-	"Ovicula": [
+	Ovicula: [
 		["Claudia", "Hey, want to know what my position on the theory of mind is?"],
 		["Ovicula", "I don't care. Go away!"]
 	],
 
-	"Dorus": [
+	Dorus: [
 		["Claudia", "Hey Dorus, how's it going?"],
 		["Dorus", "Greetings, Claudia. I figured something pretty important out recently."],
 		["Claudia", "Important in what context and for whom?"],
@@ -101,7 +101,7 @@ const dialogue = {
 		["Dorus", "Farewell, Claudia. Remember: I wasn't joking."],
  	],
 
- 	"Palinurus": [
+	Palinurus: [
 	 	["Claudia", "Hey Palinurus. What are you doing?"],
 	 	["Claudia", "Wait, are you watching... TikTok?"],
 	 	["Claudia", "Hah, what an awful waste of time."],
