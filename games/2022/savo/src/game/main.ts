@@ -13,14 +13,15 @@ document.getElementById("load").onclick = () => {
 */
 
 // Quick main menu
+/*
 import mainMenu from "../menus/mainMenu"
 import steps from "./steps"
 mainMenu.init()
 window.requestAnimationFrame(steps.mainMenu)
 document.getElementById("load").style.display = "none"
+*/
 
 // Lerwick
-/*
 import lerwick from "../overworld/lerwick"
 import steps from "./steps"
 import player from "./player"
@@ -31,7 +32,7 @@ player.x = 0
 player.y = 0
 
 window.requestAnimationFrame(steps.lerwick)
-*/
+document.getElementById("load").style.display = "none"
 
 // Nero's room
 /*
