@@ -17,10 +17,14 @@ html {
 }
 
 input {
-	width: 100px;
 	margin-top: 20px;
 }
 
-img {
+#help {
+	margin-left: 50px;
+	margin-top: 50px;
+}
+
+img, #load {
 	display: none;
 }
