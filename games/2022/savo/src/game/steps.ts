@@ -43,8 +43,8 @@ const steps = {
 		else window.requestAnimationFrame(this.claudiaHouse)
 	},
 
-	perinthus() {
-		perinthus.move()
+	perinthus(time: number) {
+		perinthus.move(time)
 		perinthus.draw()
 
 		switch(perinthus.transitions()) {
@@ -100,8 +100,8 @@ const steps = {
 		}
 	},
 
-	lerwick() {
-		lerwick.move()
+	lerwick(time: number) {
+		lerwick.move(time)
 		lerwick.draw()
 
 		switch(lerwick.transitions()) {

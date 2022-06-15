@@ -22,7 +22,6 @@ document.getElementById("load").style.display = "none"
 */
 
 // Lerwick
-/*
 import lerwick from "../overworld/lerwick"
 import steps from "./steps"
 import player from "./player"
@@ -34,22 +33,21 @@ player.y = 0
 
 window.requestAnimationFrame(steps.lerwick)
 document.getElementById("load").style.display = "none"
-*/
 
 // Nero's house/room
+/*
 import neroHouse from "../fixed/neroHouse"
 import steps from "./steps"
 import player from "./player"
 
 neroHouse.init()
 
-/*
 neroHouse.neroRoomInit()
 neroHouse.room = 5
-*/
 
 player.x = 637.5
 player.y = 50
 
 window.requestAnimationFrame(steps.neroHouse)
 document.getElementById("load").style.display = "none"
+*/

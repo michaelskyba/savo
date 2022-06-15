@@ -5,6 +5,7 @@ import player from "../game/player"
 
 import Block from "./Block"
 import Img from "./Img"
+import Grass from "./Grass"
 
 import Interactable from "./Interactable"
 import Scene from "../menus/Scene"
@@ -66,6 +67,13 @@ const collision = [
 	...buildings
 ]
 
+const grass = [
+	new Grass(430, 215),
+	new Grass(710, -640),
+	new Grass(1420, -745),
+	new Grass(1710, -300)
+]
+
 const lerwick = {
 	init() {
 		document.onkeydown = event => {
@@ -107,8 +115,12 @@ const lerwick = {
 		else return null
 	},
 
-	move() {
+	move(time: number) {
 		if (!scene.playing) player.move("overworld", collision)
+
+		for (const g of grass) {
+			g.move(time)
+		}
 	},
 
 	draw() {
@@ -129,6 +141,10 @@ const lerwick = {
 
 		for (const int of interactables) {
 			int.draw()
+		}
+
+		for (const g of grass) {
+			g.draw()
 		}
 
 		player.draw("overworld")

@@ -5,6 +5,7 @@ import music from "../game/music"
 
 import Block from "./Block"
 import Img from "./Img"
+import Grass from "./Grass"
 
 import Interactable from "./Interactable"
 import MenuOption from "../menus/MenuOption"
@@ -53,6 +54,13 @@ const collision = [
 	...interactables.map(i => i.obj)
 ]
 
+const grass = [
+	new Grass(-11, -500),
+	new Grass(525, -72),
+	new Grass(500, 500),
+	new Grass(-100, 1000)
+]
+
 const perinthus = {
 	init() {
 		document.onkeydown = event => {
@@ -83,8 +91,13 @@ const perinthus = {
 		music.beautiful_ruin.play()
 	},
 
-	move() {
+	move(time: number) {
 		if (!scene.playing) player.move("overworld", collision)
+
+		// Progress each grass animation
+		for (const g of grass) {
+			g.move(time)
+		}
 	},
 
 	transitions(): string | null {
@@ -118,6 +131,10 @@ const perinthus = {
 
 		for (const door of doors) {
 			door.draw(player.x, player.y)
+		}
+
+		for (const g of grass) {
+			g.draw()
 		}
 
 		player.draw("overworld")
