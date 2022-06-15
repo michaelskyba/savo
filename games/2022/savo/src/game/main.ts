@@ -13,11 +13,13 @@ document.getElementById("load").onclick = () => {
 */
 
 // Quick main menu
+/*
 import mainMenu from "../menus/mainMenu"
 import steps from "./steps"
 mainMenu.init()
 window.requestAnimationFrame(steps.mainMenu)
 document.getElementById("load").style.display = "none"
+*/
 
 // Lerwick
 /*
@@ -35,19 +37,15 @@ document.getElementById("load").style.display = "none"
 */
 
 // Nero's house/room
-/*
 import neroHouse from "../fixed/neroHouse"
 import steps from "./steps"
 import player from "./player"
 
 neroHouse.init()
-
 neroHouse.neroRoomInit()
-neroHouse.room = 5
 
 player.x = 637.5
 player.y = 50
 
 window.requestAnimationFrame(steps.neroHouse)
 document.getElementById("load").style.display = "none"
-*/

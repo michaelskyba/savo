@@ -12,7 +12,8 @@ class Nero extends Enemy {
 	moveStatus = "approaching"
 
 	constructor() {
-		super(637.5, 445, [0, 0], 50, "maroon")
+		// super(637.5, 445, [0, 0], 50, "maroon")
+		super(637.5, 445, [0, 0], 3, "maroon")
 		this.counter = 5
 	}
 

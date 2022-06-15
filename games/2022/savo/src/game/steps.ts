@@ -124,15 +124,13 @@ const steps = {
 
 				window.requestAnimationFrame(this.neroHouse)
 				break
-
-			case "tiberiusHouse":
-				window.requestAnimationFrame(this.tiberiusHouse)
-				break
 		}
 	},
 
 	neroHouse(time: number) {
 		neroHouse.move(time)
+		if (neroHouse.gameState == "win") return
+
 		neroHouse.draw()
 
 		// Transition back to Lerwick
@@ -146,9 +144,6 @@ const steps = {
 		}
 
 		else window.requestAnimationFrame(this.neroHouse)
-	},
-
-	tiberiusHouse() {
 	}
 }
 

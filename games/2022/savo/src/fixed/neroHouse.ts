@@ -139,6 +139,7 @@ function genCollisions() {
 
 const neroHouse = {
 	room: 0,
+	gameState: "playing",
 
 	init() {
 		document.onkeydown = event => {
@@ -149,11 +150,8 @@ const neroHouse = {
 				scene.progress()
 
 				// Progress to fake battle room (5) after fight intro dialogue
-				if (!scene.playing && neroHouse.room == 4) {
-					neroHouse.room = 5
+				if (!scene.playing && neroHouse.room == 4)
 					neroHouse.neroRoomInit()
-					collisions = genCollisions()
-				}
 			}
 
 			// The player entered an interaction prompt with X
@@ -175,6 +173,9 @@ const neroHouse = {
 			player.handleKey("keydown", event.code)
 			player.fixedKeys(event.code)
 		}
+
+		neroHouse.room = 5
+		collisions = genCollisions()
 	},
 
 	locationTransitions(): boolean {
@@ -267,6 +268,29 @@ const neroHouse = {
 
 		if (player.status == "attacking") {
 			nero.receiveDamage()
+
+			// You won the game
+			if (nero.life.hp < 1) {
+				neroHouse.gameState = "win"
+
+				// One-time drawing
+				c.fillStyle = "#fff"
+				c.frect(0, 0, 1325, 725)
+				c.fillStyle = "#000"
+				c.font = "48px serif"
+				c.text("You win!", 100, 100)
+				c.font = "20px serif"
+				c.text("You have successfully killed Nero.", 100, 300)
+				c.text("But, will you be able to sucessfully burn his body and generate the Linux CD-ROM?", 100, 330)
+				c.text("Will you be able to program your GPU driver?", 100, 360)
+				c.text("Where was Tiberius? What is moral relativism?", 100, 390)
+				c.text("How come the pause key (Backspace) wasn't working?", 100, 420)
+				c.text("How come Frontinus said you could replay the tutorial but you actually couldn't without restarting?", 100, 450)
+				c.text("Find the answer to these questions in the full version of the game!", 100, 480)
+				c.text("Available now! To access, send your parents' credit card numbers to nop04824@xcoxc.com!", 100, 550)
+				c.text("Don't forget the expiration date and the three numbers on the back!", 100, 580)
+				c.text("I definitely won't make any bank transactions! The game is free!", 100, 610)
+			}
 		}
 
 		player.move("fixed", collisions)
