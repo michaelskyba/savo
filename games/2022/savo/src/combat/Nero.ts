@@ -1,5 +1,8 @@
-import Enemy from "../combat/Enemy"
+import Enemy from "./Enemy"
 import player from "../game/player"
+import Powerup from "./Powerup"
+
+const powerup = new Powerup()
 
 /*
 elapsed {
@@ -12,8 +15,7 @@ class Nero extends Enemy {
 	moveStatus = "approaching"
 
 	constructor() {
-		// super(637.5, 445, [0, 0], 50, "maroon")
-		super(637.5, 445, [0, 0], 3, "maroon")
+		super(637.5, 445, [0, 0], 50, "maroon")
 		this.counter = 5
 	}
 
@@ -104,6 +106,27 @@ class Nero extends Enemy {
 
 		this.constraints()
 		this.timer("end", time)
+
+		// Check for Powerup collision
+		if (!powerup.activated && powerup.doesCollide())
+			powerup.activated = true
+	}
+
+	draw() {
+		powerup.draw()
+		super.draw()
+	}
+
+	receiveDamage() {
+		super.receiveDamage()
+
+		// Double damage with a powerup
+		if (powerup.activated) {
+			super.receiveDamage()
+
+			powerup.activated = false
+			powerup.newPos()
+		}
 	}
 }
 
