@@ -121,6 +121,12 @@ const lerwick = {
 		for (const g of grass) {
 			g.move(time)
 		}
+
+		// Looping
+		if (player.y > 730) player.y = -1880
+		if (player.y < -1880) player.y = 730
+		if (player.x < -1020) player.x = 2950
+		if (player.x > 2950) player.x = -1020
 	},
 
 	draw() {

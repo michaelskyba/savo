@@ -98,6 +98,12 @@ const perinthus = {
 		for (const g of grass) {
 			g.move(time)
 		}
+
+		// Looping
+		if (player.y > 1610) player.y = -1640
+		if (player.y < -1640) player.y = 1610
+		if (player.x < -1150) player.x = 1350
+		if (player.x > 1350) player.x = -1150
 	},
 
 	transitions(): string | null {
