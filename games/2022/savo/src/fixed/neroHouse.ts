@@ -1,5 +1,6 @@
 import c from "../game/canvas"
 import Block from "./Block"
+import Img from "./Img"
 
 import music from "../game/music"
 
@@ -56,7 +57,9 @@ let objects = [
 		new Block(0, 700, 512.5, 25, wallColour),
 		new Block(812.5, 700, 612.5, 25, wallColour),
 
-		new Block(1300, 0, 25, 725, wallColour)
+		new Block(1300, 0, 25, 725, wallColour),
+
+		new Img("armour", 1075, 60)
 	],
 
 	// Fourth room - entered through the left of third room
