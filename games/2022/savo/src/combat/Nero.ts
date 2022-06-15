@@ -11,6 +11,10 @@ elapsed {
 }
 */
 
+const RNG = (min, max) => {
+	return Math.round(Math.random() * (max - min)) + min
+}
+
 class Nero extends Enemy {
 	moveStatus = "approaching"
 
@@ -95,7 +99,18 @@ class Nero extends Enemy {
 				this.status = "countdown"
 				this.elapsed[1] = 0
 
-				this.counter = 10
+				this.counter = 99
+				this.pattern = Math.round(RNG(0, 200) / 100)
+
+				switch(this.pattern) {
+					case 2:
+						this.counter = 99
+						break
+
+					default:
+						this.counter = 10
+						break
+				}
 			}
 		}
 		else this.attackCounter()
@@ -134,7 +149,33 @@ class Nero extends Enemy {
 					this.counter -= 2
 					this.elapsed[1] = 0
 
-					if (this.counter == 0) {
+					if (this.counter == 0) this.startSwing()
+				}
+				break
+
+			case 1:
+				if (this.counter >= 10 && this.elapsed[1] > 100) {
+					this.elapsed[1] = 0
+
+					this.counter += 9
+					if (this.counter > 90) this.counter = 3
+				}
+
+				else if (this.counter < 10 && this.elapsed[1] > 250) {
+					this.elapsed[1] = 0
+					this.counter--
+
+					if (this.counter < 1) this.startSwing()
+				}
+				break
+
+			case 2:
+				if (this.elapsed[1] > 150) {
+					this.elapsed[1] = 0
+
+					this.counter -= 9
+					if (this.counter < 1) {
+						this.counter = 0
 						this.startSwing()
 					}
 				}

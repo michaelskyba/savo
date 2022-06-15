@@ -178,7 +178,8 @@ const neroHouse = {
 			player.fixedKeys(event.code)
 		}
 
-		player.life.hp = 5
+		player.life.hp = 10
+		player.life.threatened = false
 
 		neroHouse.room = 5
 		collisions = genCollisions()
