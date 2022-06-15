@@ -109,7 +109,8 @@ const dialogue = {
 		["Nero", "...That you want an apple?"],
 		["Claudia", "Yes, but you missed the point."],
 		["Claudia", "I'm implying that you, Nero, are responsible for answering."],
-		["Claudia", "You wouldn't then say 'Oh, how narrow-minded of me to assume that the question is intended for me.'"],
+		["Claudia", "You wouldn't then say..."],
+		["Claudia", "'Oh, how narrow-minded of me to assume that the question is intended for me.'"],
 		["Nero", "H-huh?"],
 
 		["Claudia", "Whatever, I don't care about that anymore."],
@@ -134,12 +135,20 @@ const dialogue = {
 
 		["Claudia", "Oh, that reminds me... how does this room exist?"],
 		["Claudia", "Shouldn't it be geometrically impossible?"],
-		["Nero", "Hah. I have no sympathy for fools like you who allow themselves to be governed by the laws of geometry..."],
+		["Nero", "Hah. I have no sympathy for fools like you...."],
+		["Nero", "Allowing yourself to be governed by the laws of geometry? PATHETIC"],
 		["Nero", "I've transcended such formalities. I can teleport."],
 		["Nero", "So, the more important discussion is *whether* you can kill me."],
 		["Claudia", "That won't be a problem."],
 		["Claudia", "Nero Claudius Caesar Augustus Germanicus! Prepare for the end of your short life."],
-		["Nero", "Ha ha ha... fool..."]
+		["Nero", "Ha ha ha... fool..."],
+
+		["Nero", "I'm so overflowingly confident in myself that I'll give you a tip."],
+		["Nero", "Around the room, you will encounter purple (#2B193D) squares."],
+		["Nero", "If you pick one up, your next attack will do more damage."],
+		["Nero", "This encourages you to move around the room while fighting instead of staying in the same spot."],
+		["Nero", "It's peak game design, okay?."],
+		["Claudia", "Thanks for making it even easier to kill you, idiot."]
 	]
 }
 

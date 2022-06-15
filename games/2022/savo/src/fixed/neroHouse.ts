@@ -98,6 +98,7 @@ const interactables = [
 	[],
 	[new Interactable("Hector", new Block(935, 80, 50, 50, "#16db93"))],
 	[new Interactable("Serapio", new Block(1100, 600, 50, 50, "#20063b"))],
+	[],
 	[]
 ]
 
@@ -141,8 +142,16 @@ const neroHouse = {
 			let key = event.code
 
 			// The player pressed Z to progress the dialogue
-			if (key == "KeyZ" && scene.playing)
+			if (key == "KeyZ" && scene.playing) {
 				scene.progress()
+
+				// Progress to fake battle room (5) after fight intro dialogue
+				if (!scene.playing && neroHouse.room == 4) {
+					neroHouse.room = 5
+					neroHouse.neroRoomInit()
+					collisions = genCollisions()
+				}
+			}
 
 			// The player entered an interaction prompt with X
 			else if (key == "KeyX" && prompt.active) {
@@ -202,6 +211,8 @@ const neroHouse = {
 		else if (this.room == 3 && player.y > 675) {
 			this.room = 4
 			player.y = 50
+
+			scene = new Scene(dialogue.Nero)
 		}
 
 		else if (this.room == 3 && player.x > 1275) {
@@ -270,7 +281,7 @@ const neroHouse = {
 		}
 
 		// Only worry about interactables outside of the Nero fight
-		if (this.room < 4) {
+		if (this.room < 5) {
 			for (const int of interactables[this.room]) {
 				int.draw()
 			}
@@ -304,6 +315,10 @@ const neroHouse = {
 				scene.speech.draw()
 				if (scene.speaker) scene.speaker.draw()
 			}
+
+			// Don't worry about the battle besides the Nero placement, so it
+			// doesn't look like Claudia is talking to nothing
+			if (this.room == 4) nero.draw()
 		}
 
 		if (this.room == 5)

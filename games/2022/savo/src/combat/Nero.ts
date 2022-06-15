@@ -13,10 +13,6 @@ class Nero extends Enemy {
 
 	constructor() {
 		super(637.5, 445, [0, 0], 50, "maroon")
-
-		// Temporary test
-		this.x = 25
-
 		this.counter = 5
 	}
 

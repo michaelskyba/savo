@@ -131,8 +131,6 @@ const lerwick = {
 			int.draw()
 		}
 
-		c.text(`(${player.x}, ${player.y})`, 50, 50)
-
 		player.draw("overworld")
 
 		if (!scene.playing) {
