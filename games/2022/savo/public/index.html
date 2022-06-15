@@ -5,8 +5,20 @@
 
 		<title>Malfacile Gajnita Savo</title>
 		<link href="main.css" rel="stylesheet">
+
+		<style>
+			#load {
+				display: none;
+			}
+		</style>
 	</head>
 	<body>
+		<div id="help">
+			<p>Tip: Zoom out (in your browser) to 90% instead of 100%. This way,
+			there won't be a scroll bar.</p>
+			<input id="ok" type="button" value="Understood">
+		</div>
+
 		<!-- Require user input before starting (music) so that we don't get a
 		DOMException -->
 		<input id="load" type="button" value="Load">
@@ -40,5 +52,12 @@
 		public/bundle.js
 		-->
 		<script src="bundle.js"></script>
+
+		<script>
+			document.getElementById("ok").onclick = function() {
+				document.getElementById("load").click()
+				document.getElementById("help").style.display = "none";
+			}
+		</script>
 	</body>
 </html>
