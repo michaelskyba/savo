@@ -170,6 +170,11 @@ const steps = {
 				}
 			}
 
+			// Reset cooldowns - this is important so that the healing cooldown
+			// isn't active. Otherwise, after pressing Space to return to the game,
+			// you'll be stuck with slower movement speed
+			player.resetCooldowns()
+
 			return
 		}
 
