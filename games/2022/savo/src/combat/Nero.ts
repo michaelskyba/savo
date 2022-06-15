@@ -142,9 +142,8 @@ class Nero extends Enemy {
 		}
 	}
 
-	draw() {
+	drawPowerup() {
 		powerup.draw()
-		super.draw()
 	}
 
 	receiveDamage() {

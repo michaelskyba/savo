@@ -12,7 +12,7 @@ import Scene from "../menus/Scene"
 import MenuOption from "../menus/MenuOption"
 import dialogue from "../events/6"
 
-const nero = new Nero()
+let nero = new Nero()
 
 let wallColour = "maroon"
 let objects = [
@@ -166,6 +166,10 @@ const neroHouse = {
 
 		music.reset()
 		music.box_15.play()
+
+		// Important resets after a game over
+		collisions = genCollisions()
+		nero = new Nero()
 	},
 
 	neroRoomInit() {
@@ -364,6 +368,7 @@ const neroHouse = {
 
 	drawBattle() {
 		nero.draw()
+		nero.drawPowerup()
 
 		player.drawRange(nero.x, nero.y)
 		player.drawCooldowns()

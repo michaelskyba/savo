@@ -8,6 +8,8 @@ import lerwick from "../overworld/lerwick"
 import mainMenu from "../menus/mainMenu"
 import player from "../game/player"
 
+import c from "../game/canvas"
+
 const steps = {
 	mainMenu() {
 		mainMenu.draw()
@@ -127,9 +129,49 @@ const steps = {
 		}
 	},
 
+	gameOver() {
+		if (neroHouse.gameState == "playing") return
+
+		c.fillStyle = "#000"
+		c.frect(0, 0, 1325, 725)
+
+		c.font = "48px serif"
+		c.fillStyle = "red"
+		c.text("YOU DIED", 100, 100)
+
+		c.font = "20px serif"
+		c.fillStyle = "white"
+
+		c.text("Nero has killed you! Are you this bad at video games?", 100, 200)
+		c.text("Just log off if you're not even going to try.", 100, 230)
+		c.text("Installing Linux is only for real gamers.", 100, 260)
+
+		c.text("Press Space to reset back before the fight to try again...", 100, 350)
+	},
+
 	neroHouse(time: number) {
 		neroHouse.move(time)
+
 		if (neroHouse.gameState == "win") return
+		if (neroHouse.gameState == "lose") {
+			window.requestAnimationFrame(this.gameOver)
+
+			// Space to try again
+			document.onkeydown = function(event) {
+				if (event.code == "Space") {
+					neroHouse.gameState = "playing"
+					neroHouse.room = 3
+					neroHouse.init()
+
+					player.x = 637.5
+					player.y = 670
+
+					window.requestAnimationFrame(steps.neroHouse)
+				}
+			}
+
+			return
+		}
 
 		neroHouse.draw()
 
