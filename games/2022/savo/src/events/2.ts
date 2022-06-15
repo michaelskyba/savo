@@ -149,7 +149,7 @@ const dialogue = {
 		["Frontinus", "Only once it's finished does the heal activate."],
 		["Claudia", "How fast is the healing cooldown compared to the action cooldown?"],
 		["Frontinus", "Figure it out yourself."],
-		["Frontinus", "Also, your movement speed will be halfed while the cooldown is running."],
+		["Frontinus", "Also, your movement speed will be halved while the cooldown is running."],
 		["Claudia", "What if I *want* to move slowly?"],
 		["Frontinus", "In that case, you should hold Shift while moving, but it has nothing to do with healing."],
 

@@ -32,7 +32,7 @@ const dialogue = {
 		["Dorus", "It's something almost anybody 'wishes', isn't it?"],
 		["Claudia", "Sure...?"],
 		["Dorus", "Well, why do they actually want to get rich?"],
-		["Dorus", "It's because they believe that being rich will make them more happy and more satisfied."],
+		["Dorus", "It's because they believe that being rich will make them happier and more satisfied."],
 		["Dorus", "Right?"],
 		["Claudia", "I can agree that the state of wealth isn't inherently desirable, if that's what you mean."],
 		["Dorus", "Exactly! It's only a means to the actual end of happiness."],
@@ -46,7 +46,7 @@ const dialogue = {
 
 		["Claudia", "And therefore, if you're 'happy', it means you can levitate? Hold on... I object."],
 		["Claudia", "Let's go back to the wealth example."],
-		["Claudia", "Wanting be rich doesn't mean that your 'happy' state is identical to your 'rich' state."],
+		["Claudia", "Wanting to be rich doesn't mean that your 'happy' state is identical to your 'rich' state."],
 		["Claudia", "I might be a generally happy person, but I could still want to pursue wealth."],
 		["Claudia", "In that case, the wealth isn't necessary for happiness, but it's still a goal."],
 		["Claudia", "One that is *not* met."],
@@ -55,7 +55,7 @@ const dialogue = {
 		["Dorus", "Oh ho! I was actually trying to simplify the idea for you."],
 		["Dorus", "You've exceeded my expectations, however. So, let us drop the useless, regressive abstraction."],
 		["Dorus", "Here's the jump:"],
-		["Dorus", "The state's existence is equal to your desire of it, not to your happiness overall."],
+		["Dorus", "The state's existence is equal to your desire for it, not to your happiness overall."],
 		["Claudia", "So..."],
 		["Dorus", "If I want to be rich, I'm not rich. If I don't care, then I might as well already be rich."],
 		["Claudia", "Then, applied back..."],
@@ -73,7 +73,7 @@ const dialogue = {
 		["Dorus", "And I've figured out *how* to control my psychology."],
 		["Dorus", "So, I know how to stop caring about levitating, which means that I've figured out how to levitate."],
 		["Claudia", "And you can apply the same method anywhere?"],
-		["Dorus", "Yes. Take the aversion of death, for example."],
+		["Dorus", "Yes. Take the aversion to death, for example."],
 		["Dorus", "Currently, I fear death, but I'm capable of modifying my psychology in a way that changes that."],
 		["Dorus", "At that point, I'm content no matter if I live or die."],
 
@@ -97,7 +97,7 @@ const dialogue = {
 		["Dorus", "Yes, there are more than two letters."],
 		["Dorus", "Well, go figure it out."],
 		[null, "Claudia sighs deeply."],
-		["Claudia", "Goodye, Dorus."],
+		["Claudia", "Goodbye, Dorus."],
 		["Dorus", "Farewell, Claudia. Remember: I wasn't joking."],
  	],
 
@@ -111,7 +111,7 @@ const dialogue = {
 	 	["Palinurus", "Shut up! I enjoy it, so I'm going to do it!"],
 	 	[null, "Claudia shakes her head."],
 	 	["Claudia", "You don't. That's the thing."],
-	 	["Claudia", "Just delete it alread. You will feel better."],
+		["Claudia", "Just delete it already. You will feel better."],
 	 	["палинурус", "перестань уже беспокоить меня!"],
 	 	["Claudia", "Switching languages doesn't change reality."],
 	 	["Claudia", "Whatever. I have better things to do."]
