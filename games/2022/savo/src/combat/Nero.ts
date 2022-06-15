@@ -14,9 +14,12 @@ elapsed {
 class Nero extends Enemy {
 	moveStatus = "approaching"
 
+	// Different attack / counter patterns
+	pattern = 0
+
 	constructor() {
 		super(637.5, 445, [0, 0], 50, "maroon")
-		this.counter = 5
+		this.counter = 10
 	}
 
 	retreat() {
@@ -83,8 +86,19 @@ class Nero extends Enemy {
 		this.timer("start", time)
 
 		if (this.status == "attack") {
-			return
+			// We want a 180 degree rotation in 200ms, which means 180/200 = 0.9
+			// degrees per millisecond
+			this.sword.rotate((time - this.lastFrame) * 0.9)
+
+			// It's done after 200 ms
+			if (this.elapsed[1] > 200) {
+				this.status = "countdown"
+				this.elapsed[1] = 0
+
+				this.counter = 10
+			}
 		}
+		else this.attackCounter()
 
 		switch(this.moveStatus) {
 			case "approaching":
@@ -110,6 +124,22 @@ class Nero extends Enemy {
 		// Check for Powerup collision
 		if (!powerup.activated && powerup.doesCollide())
 			powerup.activated = true
+	}
+
+	// Progress attack coutner
+	attackCounter() {
+		switch(this.pattern) {
+			case 0:
+				if (this.elapsed[1] > 200) {
+					this.counter -= 2
+					this.elapsed[1] = 0
+
+					if (this.counter == 0) {
+						this.startSwing()
+					}
+				}
+				break
+		}
 	}
 
 	draw() {

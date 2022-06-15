@@ -3,8 +3,6 @@ import Enemy from "./Enemy"
 
 import Life from "./Life"
 
-import player from "../game/player"
-
 class Frontinus extends Enemy {
 	counterInit: number
 
@@ -28,20 +26,8 @@ class Frontinus extends Enemy {
 				this.elapsed[0] -= threshold
 
 				if (this.counter == 0) {
-					this.status = "attack"
 					this.elapsed[0] = 0
-
-					// Math.atan2 gets the angle to the point from the origin.
-					// Since our origin is frontinus's (x, y), we need to
-					// subtract each from the player's corresponding value.
-					// https://stackoverflow.com/a/28227643
-
-					let x = player.x - this.x
-					let y = player.y - this.y
-					let angle = Math.atan2(y, x) * 180 / Math.PI
-
-					this.sword.angle = angle
-					this.sword.rotate(-90)
+					this.startSwing()
 				}
 			}
 		}

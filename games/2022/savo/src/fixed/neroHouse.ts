@@ -174,6 +174,8 @@ const neroHouse = {
 			player.fixedKeys(event.code)
 		}
 
+		player.life.hp = 5
+
 		neroHouse.room = 5
 		collisions = genCollisions()
 	},
@@ -294,6 +296,14 @@ const neroHouse = {
 		}
 
 		player.move("fixed", collisions)
+
+		// Have the player take damage if Frontinus' sword hits them
+		if (nero.collision(player.x, player.y)) {
+			player.receiveDamage()
+
+			// Tell steps.ts to render the lose screen
+			if (player.life.hp < 1) neroHouse.gameState = "lose"
+		}
 	},
 
 	draw() {

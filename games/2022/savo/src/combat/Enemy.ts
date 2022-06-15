@@ -1,7 +1,9 @@
 import c from "../game/canvas"
-import Sword from "./Sword"
 
+import Sword from "./Sword"
 import Life from "./Life"
+
+import player from "../game/player"
 
 class Enemy {
 	x: number
@@ -76,6 +78,22 @@ class Enemy {
 		this.lastFrame = time
 
 		this.sword.rotate(move)
+	}
+
+	startSwing() {
+		this.status = "attack"
+
+		// Math.atan2 gets the angle to the point from the origin.
+		// Since our origin is frontinus's (x, y), we need to
+		// subtract each from the player's corresponding value.
+		// https://stackoverflow.com/a/28227643
+
+		let x = player.x - this.x
+		let y = player.y - this.y
+		let angle = Math.atan2(y, x) * 180 / Math.PI
+
+		this.sword.angle = angle
+		this.sword.rotate(-90)
 	}
 
 	draw() {
