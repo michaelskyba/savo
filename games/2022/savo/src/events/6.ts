@@ -70,7 +70,7 @@ const dialogue = {
 		["Serapio", "B-but, Wikipedia isn't a trusted source! My English teacher said it was bad!"],
 		["Claudia", "Do you blindly take the word of supposed authority as fact?"],
 		["Claudia", "What justification did this teacher have for slandering Wikipedia?"],
-		["Serapio", "Well, a-anybody can edit, right? So there's no credibility!"],
+		["Serapio", "Well, a-anybody can edit, right? So there's no c-credibility!"],
 		["Serapio", "I could write blatantly false information myself, and nobody w-would know, r-right?"],
 		["Claudia", "First of all, calm down."],
 		["Claudia", "Second, vandalizing Wikipedia isn't as simple as you describe."],

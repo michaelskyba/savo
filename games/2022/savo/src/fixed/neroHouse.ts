@@ -6,10 +6,15 @@ import music from "../game/music"
 import player from "../game/player"
 import Nero from "../combat/Nero"
 
+import Interactable from "./Interactable"
+import Scene from "../menus/Scene"
+import MenuOption from "../menus/MenuOption"
+import dialogue from "../events/6"
+
 const nero = new Nero()
 
 let wallColour = "maroon"
-let walls = [
+let objects = [
 	// First room
 	[
 		new Block(0, 0, 1325, 25, wallColour),
@@ -88,11 +93,65 @@ let walls = [
 	]
 ]
 
+const interactables = [
+	[new Interactable("Mercury", new Block(637.5, 337.5, 50, 50, "#776d5a"))],
+	[],
+	[new Interactable("Hector", new Block(935, 80, 50, 50, "#16db93"))],
+	[new Interactable("Serapio", new Block(1100, 600, 50, 50, "#20063b"))],
+	[]
+]
+
+let prompt = {
+	int: interactables[0][0],
+	active: false,
+	box: new MenuOption("=================================================", 0, 0)
+}
+
+let scene = new Scene(dialogue.Nero)
+scene.playing = false
+
+// Generate the collisions array - what physical objects can Claudia collide
+// with in the current room?
+function genCollisions() {
+	let room = neroHouse.room
+
+	let collisions = [
+		...objects[room],
+		...interactables[room].map(int => int.obj)
+	]
+
+	if (room == 5)
+		return [
+			{
+				x: nero.x,
+				y: nero.y,
+				width: 50,
+				height: 50
+			},
+			...collisions
+		]
+	else return collisions
+}
+
 const neroHouse = {
 	room: 0,
 
 	init() {
-		document.onkeydown = event => player.handleKey("keydown", event.code)
+		document.onkeydown = event => {
+			let key = event.code
+
+			// The player pressed Z to progress the dialogue
+			if (key == "KeyZ" && scene.playing)
+				scene.progress()
+
+			// The player entered an interaction prompt with X
+			else if (key == "KeyX" && prompt.active) {
+				prompt.active = false
+				scene = new Scene(dialogue[prompt.int.id])
+			}
+
+			player.handleKey("keydown", key)
+		}
 		document.onkeyup = event => player.handleKey("keyup", event.code)
 
 		music.reset()
@@ -113,6 +172,8 @@ const neroHouse = {
 	},
 
 	roomTransitions() {
+		let oldRoom = this.room
+
 		if (this.room == 0 && player.x > 1275) {
 			this.room = 1
 			player.x = 0
@@ -152,33 +213,49 @@ const neroHouse = {
 			this.room = 3
 			player.y = 675
 		}
+
+		// There was a room switch, so let's update the collisions
+		if (oldRoom != this.room)
+			collisions = genCollisions()
 	},
 
 	move(time: number) {
-		nero.move(time)
-
-		if (this.room == 4 || this.room == 5)
-			player.move("fixed", [...walls[this.room], {
-				x: nero.x,
-				y: nero.y,
-				width: 50,
-				height: 50
-			}])
-
-		else player.move("fixed", walls[this.room])
-
-		this.roomTransitions()
-
 		if (this.room == 5)
 			this.moveBattle(time)
+
+		else {
+			// Only check for scenes outside of battle
+			if (!scene.playing) player.move("fixed", collisions)
+			this.roomTransitions()
+		}
+
 	},
 
 	moveBattle(time: number) {
 		player.progressCooldowns(time)
+		nero.move(time)
+
+		// The first collision is Nero, but the collisions array doesn't keep
+		// track of his movement
+
+		/*
+		TypeScript isn't smart enough to figure out that if this block is
+		running, collisions[0] has to have a .x and .y. But, I don't know how to
+		tell it that. Since I'm running out of time, it's easier to just ingore
+		these.
+		*/
+
+		// @ts-ignore
+		collisions[0].x = nero.x
+
+		// @ts-ignore
+		collisions[0].y = nero.y
 
 		if (player.status == "attacking") {
 			nero.receiveDamage()
 		}
+
+		player.move("fixed", collisions)
 	},
 
 	draw() {
@@ -188,8 +265,45 @@ const neroHouse = {
 
 		player.draw("fixed")
 
-		for (const wall of walls[this.room]) {
+		for (const wall of objects[this.room]) {
 			wall.draw()
+		}
+
+		// Only worry about interactables outside of the Nero fight
+		if (this.room < 4) {
+			for (const int of interactables[this.room]) {
+				int.draw()
+			}
+
+			if (!scene.playing) {
+				let wasSet = false
+
+				for (const int of interactables[this.room]) {
+					if (int.inRange()) {
+
+						// We only need to update the prompt box if it doesn't exist yet
+						if (!prompt.active)
+							prompt.box = new MenuOption("Press X to interact.", int.obj.x - 60, int.obj.y - 60)
+
+						prompt.int = int
+						prompt.active = true
+
+						wasSet = true
+					}
+				}
+
+				// If none of them are inRange, make sure that no prompt is open
+				if (!wasSet) prompt.active = false
+			}
+
+			// Show the prompt box if in range
+			if (prompt.active) prompt.box.show(false)
+
+			// Show the scene text if it's playing
+			if (scene.playing) {
+				scene.speech.draw()
+				if (scene.speaker) scene.speaker.draw()
+			}
 		}
 
 		if (this.room == 5)
@@ -206,5 +320,7 @@ const neroHouse = {
 		player.life.draw()
 	}
 }
+
+let collisions = genCollisions()
 
 export default neroHouse
