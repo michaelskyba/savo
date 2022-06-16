@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+
+		<title>Malfacile Gajnita Savo</title>
+		<link href="main.css" rel="stylesheet">
+	</head>
+	<body>
+		<div id="help">
+			<p>Tip: Press F11 to enter fullscreen on your browser. This way,
+			there won't be a scroll bar when the game starts.</p>
+			<p>If you can't, try zooming out (in your browser) to 90% instead of 100%.</p>
+			<input id="ok" type="button" value="Understood. Start the game">
+		</div>
+
+		<!-- Require user input before starting (music) so that we don't get a
+		DOMException -->
+		<input id="load" type="button" value="Load">
+		<canvas id="canvas" width="1325" height="725"></canvas>
+
+		<img id="akvedukto_fixed" src="images/akvedukto_fixed.png">
+		<img id="akvedukto_overworld" src="images/akvedukto_overworld.png">
+		<img id="bindows" src="images/bindows.png">
+		<img id="stove" src="images/stove.png">
+		<img id="bookshelf" src="images/bookshelf.png">
+		<img id="bed" src="images/bed.png">
+		<img id="armour" src="images/armour.png">
+
+		<!-- Grass animation -->
+		<img id="grass_0" src="images/grass/frame0.png">
+		<img id="grass_1" src="images/grass/frame1.png">
+		<img id="grass_2" src="images/grass/frame2.png">
+		<img id="grass_3" src="images/grass/frame3.png">
+		<img id="grass_4" src="images/grass/frame4.png">
+		<img id="grass_5" src="images/grass/frame5.png">
+
+		<audio id="class_trial" src="audio/class_trial.m4a"></audio>
+		<audio id="beautiful_ruin" src="audio/beautiful_ruin.m4a"></audio>
+		<audio id="summer_salt" src="audio/summer_salt.m4a"></audio>
+		<audio id="beautiful_dead" src="audio/beautiful_dead.m4a"></audio>
+		<audio id="box_15" src="audio/box_15.m4a"></audio>
+
+		<!--
+		1. src/ gets compiled from TypeScript to JavaScript into out-ts/
+		2. rollup bundles the modules, starting from out-ts/main.js into
+		public/bundle.js
+		-->
+		<script defer src="hz_test.js"></script>
+
+		<script>
+			document.getElementById("ok").onclick = function() {
+				document.getElementById("load").click()
+				document.getElementById("help").style.display = "none";
+			}
+		</script>
+	</body>
+</html>
