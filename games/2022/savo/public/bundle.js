@@ -2960,7 +2960,8 @@ const interactables = [
     new Interactable("Musawer", new Block(550, -1200, 50, 50, "#c91f37")),
     new Interactable("Daria", new Block(1100, -275, 50, 50, "#817b69")),
     new Interactable("Althea", new Block(1725, -600, 50, 50, "#374231")),
-    new Interactable("Corculum", new Block(910, -1400, 50, 50, "#d9b611"))
+    new Interactable("Corculum", new Block(910, -1400, 50, 50, "#d9b611")),
+    new Interactable("Calypso", new Block(315, -500, 50, 50, "#fff"))
 ];
 let prompt$1 = {
     int: interactables[0],
