@@ -247,7 +247,7 @@ const neroHouse = {
 
 		else {
 			// Only check for scenes outside of battle
-			if (!scene.playing) player.move("fixed", collisions)
+			if (!scene.playing) player.move(time, "fixed", collisions)
 			this.roomTransitions()
 		}
 
@@ -300,7 +300,7 @@ const neroHouse = {
 			}
 		}
 
-		player.move("fixed", collisions)
+		player.move(time, "fixed", collisions)
 
 		// Have the player take damage if Frontinus' sword hits them
 		if (nero.collision(player.x, player.y)) {

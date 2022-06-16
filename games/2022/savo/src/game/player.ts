@@ -42,6 +42,9 @@ const player = {
 	life: new Life(99, 5, 5),
 	status: "prepared",
 
+	// Used for timing movement
+	lastMove: 0,
+
 	cooldowns: {
 		// We need it to decrease by 725 in 0.5s
 		// So, that's (725/0.5)/1000 = 1.45 per millisecond
@@ -122,7 +125,16 @@ const player = {
 		if (key) this.keyPressed[key] = inputType == "keydown"
 	},
 
-	move(mode: "fixed" | "overworld", collisions) {
+	move(time: number, mode: "fixed" | "overworld", collisions) {
+		/*
+		Player movement, like enemy movement, has to be time-based. Otherwise,
+		somebody with a high refresh rate would move far too quickly. Mine, which
+		the game is based on, is ~60, so we can use 1000/60 ~= 16 as the ms
+		threshold.
+		*/
+		if (time - this.lastMove < 16) return
+		else this.lastMove = time
+
 		let speed = 8
 		if (this.keyPressed.shift) speed = speed / 2
 		if (this.cooldowns.heal.counter > 0) speed = speed / 2

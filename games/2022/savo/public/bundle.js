@@ -318,6 +318,8 @@ const player = {
     y: 200,
     life: new Life(99, 5, 5),
     status: "prepared",
+    // Used for timing movement
+    lastMove: 0,
     cooldowns: {
         // We need it to decrease by 725 in 0.5s
         // So, that's (725/0.5)/1000 = 1.45 per millisecond
@@ -385,7 +387,17 @@ const player = {
         if (key)
             this.keyPressed[key] = inputType == "keydown";
     },
-    move(mode, collisions) {
+    move(time, mode, collisions) {
+        /*
+        Player movement, like enemy movement, has to be time-based. Otherwise,
+        somebody with a high refresh rate would move far too quickly. Mine, which
+        the game is based on, is ~60, so we can use 1000/60 ~= 16 as the ms
+        threshold.
+        */
+        if (time - this.lastMove < 16)
+            return;
+        else
+            this.lastMove = time;
         let speed = 8;
         if (this.keyPressed.shift)
             speed = speed / 2;
@@ -787,9 +799,9 @@ class ClaudiaHouse {
         }
     }
     // Give input to the player, but only if a dialogue isn't playing
-    move() {
+    move(time) {
         if (!scene$4.playing)
-            player.move("fixed", collision$2);
+            player.move(time, "fixed", collision$2);
     }
     transitions() {
         // 1275 = canvas width - player width
@@ -1458,10 +1470,10 @@ const akvedukto = {
         };
         // Trapped collision: Frontinus and inner walls
         if (this.phase == 6 || this.phase == 8)
-            player.move("fixed", [...barrier, frontinusBlock]);
+            player.move(time, "fixed", [...barrier, frontinusBlock]);
         // Regular collision: Frontinus and outer walls
         else
-            player.move("fixed", [...walls[wallsIndex()], frontinusBlock]);
+            player.move(time, "fixed", [...walls[wallsIndex()], frontinusBlock]);
         // Have the player take damage if Frontinus' sword hits them
         if (frontinus.collision(player.x, player.y)) {
             player.receiveDamage();
@@ -2056,7 +2068,7 @@ const neroHouse = {
         else {
             // Only check for scenes outside of battle
             if (!scene$2.playing)
-                player.move("fixed", collisions);
+                player.move(time, "fixed", collisions);
             this.roomTransitions();
         }
     },
@@ -2099,7 +2111,7 @@ const neroHouse = {
                 c.text("I definitely won't make any bank transactions! The game is free!", 100, 610);
             }
         }
-        player.move("fixed", collisions);
+        player.move(time, "fixed", collisions);
         // Have the player take damage if Frontinus' sword hits them
         if (nero.collision(player.x, player.y)) {
             player.receiveDamage();
@@ -2428,7 +2440,7 @@ const perinthus = {
     },
     move(time) {
         if (!scene$1.playing)
-            player.move("overworld", collision$1);
+            player.move(time, "overworld", collision$1);
         // Progress each grass animation
         for (const g of grass$1) {
             g.move(time);
@@ -3014,7 +3026,7 @@ const lerwick = {
     },
     move(time) {
         if (!scene.playing)
-            player.move("overworld", collision);
+            player.move(time, "overworld", collision);
         for (const g of grass) {
             g.move(time);
         }
@@ -3085,8 +3097,8 @@ const steps = {
         else
             window.requestAnimationFrame(this.mainMenu);
     },
-    claudiaHouse() {
-        claudiaHouse.move();
+    claudiaHouse(time) {
+        claudiaHouse.move(time);
         claudiaHouse.draw();
         // If the transitions function determines that we can transition to
         // perinthus, we should do so here. We can't run perinthus.init() inside

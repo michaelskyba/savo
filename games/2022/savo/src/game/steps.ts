@@ -21,8 +21,8 @@ const steps = {
 		else window.requestAnimationFrame(this.mainMenu)
 	},
 
-	claudiaHouse() {
-		claudiaHouse.move()
+	claudiaHouse(time: number) {
+		claudiaHouse.move(time)
 		claudiaHouse.draw()
 
 		// If the transitions function determines that we can transition to

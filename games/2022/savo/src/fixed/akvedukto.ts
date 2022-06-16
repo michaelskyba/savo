@@ -181,10 +181,10 @@ const akvedukto = {
 
 		// Trapped collision: Frontinus and inner walls
 		if (this.phase == 6 || this.phase == 8)
-			player.move("fixed", [...barrier, frontinusBlock])
+			player.move(time, "fixed", [...barrier, frontinusBlock])
 
 		// Regular collision: Frontinus and outer walls
-		else player.move("fixed", [...walls[wallsIndex()], frontinusBlock])
+		else player.move(time, "fixed", [...walls[wallsIndex()], frontinusBlock])
 
 		// Have the player take damage if Frontinus' sword hits them
 		if (frontinus.collision(player.x, player.y)) {

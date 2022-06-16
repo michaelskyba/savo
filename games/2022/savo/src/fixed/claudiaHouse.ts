@@ -122,8 +122,8 @@ class ClaudiaHouse {
 	}
 
 	// Give input to the player, but only if a dialogue isn't playing
-	move() {
-		if (!scene.playing) player.move("fixed", collision)
+	move(time: number) {
+		if (!scene.playing) player.move(time, "fixed", collision)
 	}
 
 	transitions(): boolean {

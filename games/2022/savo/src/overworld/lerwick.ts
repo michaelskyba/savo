@@ -117,7 +117,7 @@ const lerwick = {
 	},
 
 	move(time: number) {
-		if (!scene.playing) player.move("overworld", collision)
+		if (!scene.playing) player.move(time, "overworld", collision)
 
 		for (const g of grass) {
 			g.move(time)
