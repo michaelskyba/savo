@@ -120,7 +120,7 @@ const dialogue = {
 		["Nero", "Well, don't get your hopes up."],
 		["Nero", "What you may not be aware of is that the Nero Linux ROM does not exist as you believe it does."],
 		["Claudia", "Uh, yes it does. My mom said th-"],
-		["Nero", "Wrong! Only I, Nero, exist. To construct the CD-ROM, you would need to burn me alive."],
+		["Nero", "Wrong! Only I, Nero, exist. To construct the CD-ROM, you would need to burn my body."],
 		["Claudia", "So your melted organs would turn into data? Why?"],
 		["Nero", "Those are the rules, fool. Therefore, your journey ends here. Be on your way."],
 		["Claudia", "Are you under the impression that I'm under a moral dilemma right now?"],
