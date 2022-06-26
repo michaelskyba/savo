@@ -1,6 +1,7 @@
 import claudiaHouse from "../fixed/claudiaHouse"
 import akvedukto from "../fixed/akvedukto"
 import neroHouse from "../fixed/neroHouse"
+import tiberiusHouse from "../fixed/tiberiusHouse"
 
 import perinthus from "../overworld/perinthus"
 import lerwick from "../overworld/lerwick"
@@ -191,6 +192,13 @@ const steps = {
 		}
 
 		else window.requestAnimationFrame(this.neroHouse)
+	},
+
+	tiberiusHouse(time: number) {
+		tiberiusHouse.move(time)
+		tiberiusHouse.draw()
+
+		window.requestAnimationFrame(this.tiberiusHouse)
 	}
 }
 
