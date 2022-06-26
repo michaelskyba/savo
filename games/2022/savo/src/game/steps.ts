@@ -2,6 +2,7 @@ import claudiaHouse from "../fixed/claudiaHouse"
 import akvedukto from "../fixed/akvedukto"
 import neroHouse from "../fixed/neroHouse"
 import tiberiusHouse from "../fixed/tiberiusHouse"
+import augustusRoom from "../fixed/augustusRoom"
 
 import perinthus from "../overworld/perinthus"
 import lerwick from "../overworld/lerwick"
@@ -127,6 +128,13 @@ const steps = {
 
 				window.requestAnimationFrame(this.neroHouse)
 				break
+
+			case "tiberiusHouse":
+				tiberiusHouse.init()
+				player.x = 0
+				player.y = 337.5
+
+				window.requestAnimationFrame(this.tiberiusHouse)
 		}
 	},
 
@@ -198,7 +206,26 @@ const steps = {
 		tiberiusHouse.move(time)
 		tiberiusHouse.draw()
 
-		window.requestAnimationFrame(this.tiberiusHouse)
+		switch(tiberiusHouse.transitions()) {
+			case null:
+				window.requestAnimationFrame(this.tiberiusHouse)
+				break
+
+			case "Lerwick":
+				lerwick.init()
+				player.x = 1825
+				player.y = -447.5
+
+				window.requestAnimationFrame(this.lerwick)
+				break
+
+			case "augustusRoom":
+				augustusRoom.init()
+				player.y = 0
+
+				window.requestAnimationFrame(this.augustusRoom)
+				break
+		}
 	}
 }
 

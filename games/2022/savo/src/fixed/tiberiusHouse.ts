@@ -25,7 +25,9 @@ const claudius = new Interactable("Claudius", new Block(200, 600, 50, 50, "#1d69
 let scene = new Scene(dialogue.Claudius)
 scene.playing = false
 
-class TiberiusHouse {
+class House {
+	room = 0
+
 	init() {
 		document.onkeydown = event => {
 			let code = event.code
@@ -46,8 +48,17 @@ class TiberiusHouse {
 		music.climactic_return.play()
 	}
 
+	transitions(): string | null {
+		if (this.room == 0 && player.x < 0)
+			return "Lerwick"
+
+		else if (this.room == 1 && player.y > 675)
+			return "MessalinaRoom"
+
+		else return null
+	}
+
 	move(time: number) {
-		console.log("moving")
 		if (!scene.playing) player.move(time, "fixed", walls)
 	}
 
@@ -65,5 +76,5 @@ class TiberiusHouse {
 	}
 }
 
-const tiberiusHouse = new TiberiusHouse()
-export default tiberiusHouse
+const house = new House()
+export default house

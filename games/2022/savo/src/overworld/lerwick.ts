@@ -108,10 +108,8 @@ const lerwick = {
 		if (x == -5 && y > -75 && y < 75)
 			return "akvedukto"
 
-		/*
 		if (x == 1825 && y > -525 && y < -370)
 			return "tiberiusHouse"
-		*/
 
 		else return null
 	},
