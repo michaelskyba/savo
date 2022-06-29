@@ -4,6 +4,7 @@ import c from "../game/canvas"
 
 import Scene from "../menus/Scene"
 import dialogue from "../events/7"
+import MenuOption from "../menus/MenuOption"
 
 import Block from "./Block"
 import Interactable from "./Interactable"
@@ -72,6 +73,12 @@ const tiberius = new Interactable("Tiberius", new Block(1000, 600, 50, 50, "#489
 
 let scene = new Scene(dialogue.Claudius)
 scene.playing = false
+
+let prompt = {
+	int: claudius,
+	active: false,
+	box: new MenuOption("=================================================", 0, 0)
+}
 
 class House {
 	room = 0
@@ -174,11 +181,23 @@ class House {
 
 		player.draw("fixed")
 
-		/*
-		if (!scene.playing) this.checkRanges()
+		if (!scene.playing && (this.room == 0 || this.room == 1)) {
+			// int: Interactable
+			const int = this.room == 0 ? claudius : tiberius
+
+			if (int.inRange()) {
+				// Create a prompt box if it hasn't been set
+				if (!prompt.active)
+					prompt.box = new MenuOption("Press X to interact.", int.obj.x - 60, int.obj.y - 60)
+
+				prompt.int = int
+				prompt.active = true
+			}
+			else prompt.active = false
+		}
+
 		if (prompt.active) prompt.box.show(false)
 		scene.draw()
-		*/
 	}
 }
 
