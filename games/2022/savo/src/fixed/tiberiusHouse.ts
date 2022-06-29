@@ -173,6 +173,12 @@ class House {
 		}
 
 		player.draw("fixed")
+
+		/*
+		if (!scene.playing) this.checkRanges()
+		if (prompt.active) prompt.box.show(false)
+		scene.draw()
+		*/
 	}
 }
 

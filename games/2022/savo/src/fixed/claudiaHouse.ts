@@ -66,11 +66,6 @@ const walls = [
 ]
 let collision
 
-function drawScene(scene: Scene) {
-	scene.speech.draw()
-	if (scene.speaker) scene.speaker.draw()
-}
-
 class ClaudiaHouse {
 	room = 1
 
@@ -169,7 +164,7 @@ class ClaudiaHouse {
 			c.frect(0, 0, 1325, 725)
 		}
 
-		drawScene(scene)
+		scene.draw()
 	}
 
 	drawRoom() {
@@ -190,7 +185,7 @@ class ClaudiaHouse {
 		if (!scene.playing) this.checkRanges()
 		if (prompt.active) prompt.box.show(false)
 
-		if (scene.playing) drawScene(scene)
+		scene.draw()
 	}
 
 	checkRanges() {

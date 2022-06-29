@@ -171,10 +171,7 @@ const perinthus = {
 		if (prompt.active) prompt.box.show(false)
 
 		// Show the scene text if it's playing
-		if (scene.playing) {
-			scene.speech.draw()
-			if (scene.speaker) scene.speaker.draw()
-		}
+		scene.draw()
 	}
 }
 

@@ -9,6 +9,11 @@ class Scene {
 	speaker: TextBox | null
 	speech: TextBox
 
+	constructor(dialogue: string[][], playing?: boolean) {
+		this.dialogue = dialogue
+		this.setBoxes(this.frame)
+	}
+
 	// Create text boxes for the current frame
 	setBoxes(frame: number) {
 		let line = this.dialogue[frame]
@@ -20,11 +25,6 @@ class Scene {
 		this.speech = new TextBox(line[1], 50, 600, 30, "serif", "white", "#111")
 	}
 
-	constructor(dialogue: string[][], playing?: boolean) {
-		this.dialogue = dialogue
-		this.setBoxes(this.frame)
-	}
-
 	progress() {
 		if (this.frame <= this.dialogue.length - 2) {
 			this.frame++
@@ -33,6 +33,13 @@ class Scene {
 
 		// e.g. pressed z, frame = 5 (fifth frame), six total frames
 		else this.playing = false
+	}
+
+	draw() {
+		if (!this.playing) return
+
+		this.speech.draw()
+		if (this.speaker) this.speaker.draw()
 	}
 }
 

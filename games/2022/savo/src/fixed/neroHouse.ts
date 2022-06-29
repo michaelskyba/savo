@@ -353,10 +353,7 @@ const neroHouse = {
 			if (prompt.active) prompt.box.show(false)
 
 			// Show the scene text if it's playing
-			if (scene.playing) {
-				scene.speech.draw()
-				if (scene.speaker) scene.speaker.draw()
-			}
+			scene.draw()
 
 			// Don't worry about the battle besides the Nero placement, so it
 			// doesn't look like Claudia is talking to nothing

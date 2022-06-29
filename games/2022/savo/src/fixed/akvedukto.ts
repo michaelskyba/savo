@@ -256,10 +256,7 @@ const akvedukto = {
 			player.life.draw()
 		}
 
-		if (scene.playing) {
-			scene.speech.draw()
-			if (scene.speaker) scene.speaker.draw()
-		}
+		scene.draw()
 	}
 }
 
