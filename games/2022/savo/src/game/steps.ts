@@ -219,13 +219,16 @@ const steps = {
 				window.requestAnimationFrame(this.lerwick)
 				break
 
-			case "augustusRoom":
+			case "AugustusRoom":
 				augustusRoom.init()
 				player.y = 0
 
 				window.requestAnimationFrame(this.augustusRoom)
 				break
 		}
+	},
+
+	augustusRoom(time: number) {
 	}
 }
 
