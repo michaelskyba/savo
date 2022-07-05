@@ -91,13 +91,17 @@ class House {
 			if (scene.playing && code == "KeyZ")
 				scene.progress()
 
+			else if (code == "KeyX" && prompt.active) {
+				prompt.active = false
+				scene = new Scene(dialogue[prompt.int.id])
+			}
+
 			else if (!scene.playing)
 				player.handleKey("keydown", code)
 		}
 
 		document.onkeyup = event => {
-			if (!scene.playing)
-				player.handleKey("keyup", event.code)
+			player.handleKey("keyup", event.code)
 		}
 
 		this.genCollisions()
@@ -265,7 +269,8 @@ class House {
 
 			My thought process for solving it:
 
-			The .5s are sort of annoying, so I'd find it simpler to first factor them out.
+			The .5s are sort of annoying, so I'd find it simpler to first factor
+			them out.
 			52.5 + 53 + ... + 144.5 + 155
 			= 0.5(105) + 0.5(106) + ... + 0.5(289) + 0.5(290)
 			= 0.5(105 + 106 + ... + 289 + 290)
