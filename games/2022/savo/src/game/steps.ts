@@ -230,7 +230,16 @@ const steps = {
 		augustusRoom.move(time)
 		augustusRoom.draw()
 
-		window.requestAnimationFrame(this.augustusRoom)
+		switch(augustusRoom.transitions()) {
+			case null:
+				window.requestAnimationFrame(this.augustusRoom)
+				break
+
+			case "TiberiusHouse":
+				window.requestAnimationFrame(this.tiberiusHouse)
+				player.x = 1220
+				break
+		}
 	}
 }
 
