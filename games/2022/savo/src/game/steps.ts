@@ -221,14 +221,16 @@ const steps = {
 
 			case "AugustusRoom":
 				augustusRoom.init()
-				player.y = 0
-
 				window.requestAnimationFrame(this.augustusRoom)
 				break
 		}
 	},
 
 	augustusRoom(time: number) {
+		augustusRoom.move(time)
+		augustusRoom.draw()
+
+		window.requestAnimationFrame(this.augustusRoom)
 	}
 }
 

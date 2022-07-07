@@ -175,7 +175,7 @@ class House {
 
 		// Black entrance floor to Augustus's room
 		if (this.room == 1) {
-			c.fillStyle = "#111"
+			c.fillStyle = "#000"
 			c.frect(1312.5, 262.5, 12.5, 200)
 		}
 
