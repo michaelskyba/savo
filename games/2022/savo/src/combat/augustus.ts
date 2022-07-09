@@ -1,12 +1,14 @@
 import c from "../game/canvas"
+import Enemy from "../combat/Enemy"
 
-class Augustus {
-	x = 993.75
-	y = 337.5
+class Augustus extends Enemy {
+	constructor() {
+		super(993.75, 337.5, [], 100, "#eee", "#111")
+		this.counter = 63
+	}
 
-	draw() {
-		c.fillStyle = "#eee"
-		c.frect(this.x, this.y, 50, 50)
+	move() {
+		this.x -= 5
 	}
 }
 

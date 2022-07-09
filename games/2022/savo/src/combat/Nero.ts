@@ -22,7 +22,7 @@ class Nero extends Enemy {
 	pattern = 0
 
 	constructor() {
-		super(637.5, 445, [0, 0], 50, "maroon")
+		super(637.5, 445, [0, 0], 50, "maroon", "#ffb5b5")
 		this.counter = 10
 	}
 

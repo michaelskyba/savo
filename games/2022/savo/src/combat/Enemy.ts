@@ -9,6 +9,9 @@ class Enemy {
 	x: number
 	y: number
 
+	bgColour: string
+	fgColour: string
+
 	lastFrame: number
 	counter: number
 	status = "countdown"
@@ -17,9 +20,10 @@ class Enemy {
 	sword: Sword
 
 	life: Life
-	colour: string
 
-	constructor(x: number, y: number, elapsed: number[], HP: number, colour: string) {
+	constructor(x: number, y: number, elapsed: number[], HP: number, bgColour: string, fgColour) {
+		this.sword = new Sword(200, 0, bgColour)
+
 		this.x = x
 		this.y = y
 
@@ -27,8 +31,8 @@ class Enemy {
 		// an array of numbers instead of just one
 		this.elapsed = elapsed
 
-		this.colour = colour
-		this.sword = new Sword(200, 0, colour)
+		this.bgColour = bgColour
+		this.fgColour = fgColour
 
 		// 1232 = canvas width - textbox width (~88) - padding (5)
 		this.life = new Life(HP, 1232, 5)
@@ -97,7 +101,7 @@ class Enemy {
 	}
 
 	draw() {
-		c.fillStyle = this.colour
+		c.fillStyle = this.bgColour
 
 		// 25 = enemy size / 2 (so the sword starts in the center)
 		if (this.status == "attack")
@@ -108,7 +112,7 @@ class Enemy {
 		// Drawing the attack counter
 		let fontSize = 40
 		c.font = fontSize + "px monospace"
-		c.fillStyle = "white"
+		c.fillStyle = this.fgColour
 
 		let text = (this.counter < 10 ? "0" : "") + this.counter
 		c.text(text, this.x, this.y + fontSize)

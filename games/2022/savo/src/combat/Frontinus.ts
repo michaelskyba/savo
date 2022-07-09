@@ -8,7 +8,7 @@ class Frontinus extends Enemy {
 
 	constructor(counterInit: number) {
 		// 637.5 = horizontal center
-		super(637.5, 200, [0], 5, "midnightblue")
+		super(637.5, 200, [0], 5, "midnightblue", "#c9c9f3")
 
 		this.counterInit = counterInit
 		this.counter = counterInit
