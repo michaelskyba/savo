@@ -57,6 +57,28 @@ class Room {
 		}
 	}
 
+	fightInit() {
+		this.status = "fighting"
+		document.onkeydown = this.inputFight
+
+		player.life.hp = 10
+		player.life.threatened = false
+
+		music.reset()
+		music.climax_reasoning.play()
+
+		walls = closedWalls
+		this.collisions = [...walls, {
+			x: augustus.x,
+			y: augustus.y,
+			width: 50,
+			height: 50
+		}]
+
+		// In case the player thinks that they're smart
+		if (player.x < 25) player.x = 25
+	}
+
 	inputInit(event: KeyboardEvent) {
 		let code = event.code
 
@@ -68,24 +90,7 @@ class Room {
 					this.status = "waiting"
 
 				// i.e. this.status == "dialogue_1"
-				else {
-					this.status = "fighting"
-					document.onkeydown = this.inputFight
-
-					player.life.hp = 10
-					player.life.threatened = false
-
-					music.reset()
-					music.climax_reasoning.play()
-
-					walls = closedWalls
-					this.collisions = [...walls, {
-						x: augustus.x,
-						y: augustus.y,
-						width: 50,
-						height: 50
-					}]
-				}
+				else this.fightInit()
 			}
 		}
 
