@@ -7,6 +7,7 @@ import augustus from "../combat/augustus"
 
 import dialogue from "../events/8"
 import Scene from "../menus/Scene"
+import password from "../events/password"
 
 let scene = new Scene(dialogue[0])
 
@@ -93,9 +94,13 @@ class Room {
 				else this.fightInit()
 			}
 		}
+		else if (scene.playing) return
 
-		else if (!scene.playing)
-			player.handleKey("keydown", code)
+		// Skip wait if you have the time machine
+		else if (code == "Space" && password.timeMachine)
+			this.initTime = -180000
+
+		else player.handleKey("keydown", code)
 	}
 
 	inputFight(event: KeyboardEvent) {
@@ -157,8 +162,12 @@ class Room {
 		c.fillStyle = "#000"
 		c.frect(0, 0, 1325, 725)
 
-		if (this.status == "waiting")
+		if (this.status == "waiting") {
 			this.drawTimer()
+
+			if (password.timeMachine)
+				c.text("Press 𝗦𝗽𝗮𝗰𝗲 to use your time machine.", 100, 625)
+		}
 
 		for (const wall of walls) {
 			wall.draw()

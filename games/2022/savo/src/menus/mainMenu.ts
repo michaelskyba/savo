@@ -5,6 +5,8 @@ import claudiaHouse from "../fixed/claudiaHouse"
 import steps from "../game/steps"
 import music from "../game/music"
 
+import password from "../events/password"
+
 // Return random integer from min to max (inclusive)
 const RNG = (min, max) => {
 	return Math.round(Math.random() * (max - min)) + min
@@ -129,7 +131,7 @@ const mainMenu = {
 					*/
 
 					switch(code) {
-						case "11037:"
+						case "11037":
 							alert("Wait... useless!? (But no)")
 							break
 
@@ -142,9 +144,8 @@ const mainMenu = {
 							break
 
 						case "#@9819265.5$&":
-							alert("[Claudius]\nYes, you are correct. The puzzle was probably too easy to be interesting... I wonder how you solved it, though.")
-
-							// TODO: Save the fact that it's a correct input for later
+							alert("Correct! You have now obtained a pack of 𝗽𝗲𝗮𝗻𝘂𝘁𝘀.")
+							password.peanuts = true
 							break
 
 						default:
