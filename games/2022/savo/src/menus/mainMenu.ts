@@ -121,8 +121,36 @@ const mainMenu = {
 				// "Password" button
 				case 5:
 					let code = prompt("Enter your code.")
-					if (code == "11037") alert("11037...? This is so difficult to figure out...")
-					break
+
+					/*
+					If you're reading this, there's a high probability that
+					you're cheating. If that's the case, you should feel
+					immensely ashamed of yourself. You're ruining the puzzle.
+					*/
+
+					switch(code) {
+						case "11037:"
+							alert("Wait... useless!? (But no)")
+							break
+
+						case "#@abc$&":
+							alert("[Claudius]\nI already said that it's not the literal string, idiot.")
+							break
+
+						case "#@549.918367.5$&":
+							alert("[Claudius]\nYou misunderstood the format! How can you be so competent and incompetent at the same time?")
+							break
+
+						case "#@9819265.5$&":
+							alert("[Claudius]\nYes, you are correct. The puzzle was probably too easy to be interesting... I wonder how you solved it, though.")
+
+							// TODO: Save the fact that it's a correct input for later
+							break
+
+						default:
+							alert("[Claudius]\nNo...? Think about it more before making such awful guesses.")
+							break
+					}
 			}
 
 		}
