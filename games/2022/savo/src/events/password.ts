@@ -1,5 +1,5 @@
 let password = {
-	peanuts: true,
+	peanuts: false,
 	timeMachine: false
 }
 

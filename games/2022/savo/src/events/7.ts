@@ -186,12 +186,30 @@ const dialogue = {
 		["Claudia", "But you're only willing to give it up if somebody beats you in an argument?"],
 		["Tiberius", "lol whu told u that"],
 		["Claudia", "Does it matter?"],
-		// etc.
+		["Tiberius", "idk guess not"],
+		["Claudia", "Well, there's a change of plans."],
+		["Tiberius", "wdym"],
+		["Claudia", "Take a look at this..."],
+		[null, "Claudia takes a pack of peanuts out of her pocket."],
+		["Tiberius", "wwwhatt! no!"],
+		["Tiberius", "im allergic to peanuts! get rid of those! wtf"],
+		["Claudia", "I'm aware. Why do you think I brought this?"],
+		["Claudia", "Considering the severity of your allergy, this should be enough to kill you."],
+		["Tiberius", "wtf ru doing!!?"],
+		["Claudia", "Oh, but there is one thing that could make me reconsider."],
+		["Tiberius", "u want my time machine? fine! just throw those away!"],
+		[null, "Tiberius frantically hands Claudia the time machine."],
+		[null, "Claudia puts the peanuts back in her pocket."],
+		["Claudia", "That wasn't so hard, now, was it?"],
+		["Tiberius", "..."],
+		["Tiberius", "tf is wrong with u"]
 	],
 
 	TiberiusAftermath: [
-		["e", "f"],
-		["g", "h"]
+		["Tiberius", "...tf is wrong with u"],
+		["Tiberius", "ur so bad at arguing that you had to resort to threatening me..."],
+		["Tiberius", "howd u even know that im allergic? u a stalker r somting?"],
+		["Claudia", "Say whatever you want. I'm still the winner."]
 	]
 }
 
