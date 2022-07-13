@@ -2,9 +2,10 @@ import player from "../game/player"
 import music from "../game/music"
 import c from "../game/canvas"
 
+import MenuOption from "../menus/MenuOption"
 import Scene from "../menus/Scene"
 import dialogue from "../events/7"
-import MenuOption from "../menus/MenuOption"
+import password from "../events/password"
 
 import Block from "./Block"
 import Interactable from "./Interactable"
@@ -93,7 +94,27 @@ class House {
 
 			else if (code == "KeyX" && prompt.active) {
 				prompt.active = false
-				scene = new Scene(dialogue[prompt.int.id])
+
+				// Set the dialogue option based on the password
+				let speech: string
+
+				if (prompt.int.id == "Claudius") speech = "Claudius"
+
+				// The right password was not entered
+				else if (!password.peanuts) speech = "TiberiusBase"
+
+				// The right password was entered, and this is the first time
+				// Claudia speaks to Tiberius
+				else if (!password.timeMachine) {
+					speech = "TiberiusTransact"
+					password.timeMachine = true
+				}
+
+				// The right password was entered and Claudia already recevied
+				// the time machine from Tiberius
+				else speech = "TiberiusAftermath"
+
+				scene = new Scene(dialogue[speech])
 			}
 
 			else if (!scene.playing)
@@ -105,9 +126,6 @@ class House {
 		}
 
 		this.genCollisions()
-
-		music.reset()
-		music.climactic_return.play()
 	}
 
 	genCollisions() {

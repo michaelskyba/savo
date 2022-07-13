@@ -1,6 +1,6 @@
 let password = {
 	peanuts: true,
-	timeMachine: true
+	timeMachine: false
 }
 
 export default password

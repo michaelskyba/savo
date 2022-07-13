@@ -20,7 +20,7 @@ const dialogue = {
 		["Claudia", "Hmm... I wonder if this is necessary..."]
 	],
 
-	Tiberius: [
+	TiberiusBase: [
 		["Tiberius", "ayyyyyyy :D"],
 		["Claudia", "Oh, it's you."],
 		["Tiberius", "hows it goin bro!"],
@@ -177,6 +177,21 @@ const dialogue = {
 
 		["Claudia", "I've had enough of this. But I still don't have the time machine..."],
 		["Claudia", "Maybe there's a different way of getting it from him..."]
+	],
+
+	TiberiusTransact: [
+		["Claudia", "Hey, Tiberius."],
+		["Tiberius", "wh-"],
+		["Claudia", "You have a time machine, don't you?"],
+		["Claudia", "But you're only willing to give it up if somebody beats you in an argument?"],
+		["Tiberius", "lol whu told u that"],
+		["Claudia", "Does it matter?"],
+		// etc.
+	],
+
+	TiberiusAftermath: [
+		["e", "f"],
+		["g", "h"]
 	]
 }
 

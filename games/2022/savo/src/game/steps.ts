@@ -9,6 +9,7 @@ import lerwick from "../overworld/lerwick"
 
 import mainMenu from "../menus/mainMenu"
 import player from "../game/player"
+import music from "../game/music"
 
 import c from "../game/canvas"
 
@@ -134,6 +135,11 @@ const steps = {
 				player.x = 0
 				player.y = 337.5
 
+				// We can't have the music operations in tiberiusHouse.init() or
+				// else it will have to run when coming back from augustusRoom
+				music.reset()
+				music.climactic_return.play()
+
 				window.requestAnimationFrame(this.tiberiusHouse)
 		}
 	},
@@ -236,8 +242,9 @@ const steps = {
 				break
 
 			case "TiberiusHouse":
-				window.requestAnimationFrame(this.tiberiusHouse)
+				tiberiusHouse.init()
 				player.x = 1220
+				window.requestAnimationFrame(this.tiberiusHouse)
 				break
 		}
 	}
