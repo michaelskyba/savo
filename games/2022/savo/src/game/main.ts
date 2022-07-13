@@ -1,5 +1,4 @@
 // Official start
-/*
 import mainMenu from "../menus/mainMenu"
 import steps from "./steps"
 
@@ -10,8 +9,8 @@ document.getElementById("load").onclick = () => {
 	// Hide load button
 	document.getElementById("load").style.display = "none"
 }
-*/
 
+/*
 import steps from "./steps"
 import tiberiusHouse from "../fixed/tiberiusHouse"
 
@@ -22,3 +21,4 @@ document.getElementById("load").onclick = () => {
 	// Hide load button
 	document.getElementById("load").style.display = "none"
 }
+*/
