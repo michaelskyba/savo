@@ -38,13 +38,6 @@ class Room {
 	// How many ms have passed since the timer started
 	time = 0
 
-	collisions = [...walls, {
-		x: augustus.x,
-		y: augustus.y,
-		width: 50,
-		height: 50
-	}]
-
 	init() {
 		player.x = 30
 
@@ -69,12 +62,6 @@ class Room {
 		music.climax_reasoning.play()
 
 		walls = closedWalls
-		this.collisions = [...walls, {
-			x: augustus.x,
-			y: augustus.y,
-			width: 50,
-			height: 50
-		}]
 
 		// In case the player thinks that they're smart
 		if (player.x < 25) player.x = 25
@@ -111,7 +98,7 @@ class Room {
 
 	move(time: number) {
 		if (this.status == "waiting") {
-			player.move(time, "fixed", this.collisions)
+			player.move(time, "fixed", walls)
 
 			// Set the starting time
 			if (!scene.playing && this.initTime == 0)
@@ -130,10 +117,7 @@ class Room {
 			player.progressCooldowns(time)
 
 			augustus.move()
-			this.collisions[4].x = augustus.x
-			this.collisions[4].y = augustus.y
-
-			player.move(time, "fixed", this.collisions)
+			player.move(time, "fixed", walls)
 
 			if (player.status == "attacking")
 				augustus.receiveDamage()
