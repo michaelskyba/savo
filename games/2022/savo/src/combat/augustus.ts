@@ -5,13 +5,20 @@ const RNG = (min, max) => {
 	return Math.round(Math.random() * (max - min)) + min
 }
 
+/*
+elapsed {
+	0: timer for movement (x,y manipulation)
+	1: timer for countdown (attack counter manipulation)
+}
+*/
+
 class Augustus extends Enemy {
 	origin = {
 		x: 993.75,
 		y: 337.5
 	}
 	angle = 0
-	radius = 300
+	radius = 200
 
 	status = "circling"
 
@@ -31,14 +38,21 @@ class Augustus extends Enemy {
 	// 19, 37, 54.5, 1:12
 
 	circle() {
-		this.angle++
-		if (this.angle > 360) this.angle = this.angle % 360
-		let radian = Math.round(this.angle) * Math.PI / 180
+		// Move every 100 ms
+		let threshold = 16.66
 
-		this.x = this.origin.x + this.radius * Math.cos(radian)
-		this.y = this.origin.y + this.radius * Math.sin(radian)
+		while (this.elapsed[0] > threshold) {
+			this.elapsed[0] -= threshold
 
-		this.constraints()
+			this.angle++
+			if (this.angle > 360) this.angle = this.angle % 360
+			let radian = Math.round(this.angle) * Math.PI / 180
+
+			this.x = this.origin.x + this.radius * Math.cos(radian)
+			this.y = this.origin.y + this.radius * Math.sin(radian)
+
+			this.constraints()
+		}
 	}
 
 	move(time: number) {
