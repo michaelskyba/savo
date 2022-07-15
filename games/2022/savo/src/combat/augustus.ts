@@ -21,6 +21,12 @@ class Augustus extends Enemy {
 
 		this.x = this.origin.x + this.radius * Math.cos(radian)
 		this.y = this.origin.y + this.radius * Math.sin(radian)
+
+		// Don't move through walls
+		if (this.x > 1250) this.x = 1250
+		if (this.y > 650) this.y = 650
+		if (this.x < 25) this.x = 25
+		if (this.y < 25) this.y = 25
 	}
 }
 
