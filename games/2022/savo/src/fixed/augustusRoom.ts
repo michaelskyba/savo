@@ -116,7 +116,7 @@ class Room {
 		else if (this.status == "fighting") {
 			player.progressCooldowns(time)
 
-			augustus.move()
+			augustus.move(time)
 			player.move(time, "fixed", walls)
 
 			if (player.status == "attacking")

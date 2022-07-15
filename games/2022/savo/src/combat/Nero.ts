@@ -6,7 +6,7 @@ const powerup = new Powerup()
 
 /*
 elapsed {
-	0: timer for movement (x,y manipulatioN)
+	0: timer for movement (x,y manipulation)
 	1: timer for countdown (attack counter manipulation)
 }
 */
