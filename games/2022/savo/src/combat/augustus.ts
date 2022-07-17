@@ -84,12 +84,11 @@ class Augustus extends Enemy {
 	// Decide on a radius and origin point
 	glideInit() {
 		this.status = "glide"
+		let radius = RNG(100, 300)
 
 		// We just twisted clockwise and are now at the bottom of the previous
 		// origin point. So, we're moving to the left.
 		if (this.angle.change == 1) {
-			let radius = RNG(100, 300)
-
 			this.origin = {
 				x: RNG(25 + radius, this.x - radius),
 				y: RNG(25 + radius, 650 - radius)
@@ -101,8 +100,6 @@ class Augustus extends Enemy {
 		// We just twisted counterclockwise and are now at the bottom of the
 		// previous origin point. So, we're moving to the right.
 		else {
-			let radius = RNG(100, 300)
-
 			this.origin = {
 				x: RNG(this.x + radius, 1250 - radius),
 				y: RNG(25 + radius, 650 - radius)
@@ -111,6 +108,7 @@ class Augustus extends Enemy {
 			this.dir = "right"
 		}
 
+		this.radius = radius
 		this.genGlide()
 	}
 
