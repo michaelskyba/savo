@@ -91,8 +91,8 @@ class Augustus extends Enemy {
 			let radius = RNG(100, 300)
 
 			this.origin = {
-				x: RNG(25, this.x),
-				y: RNG(25, 650)
+				x: RNG(25 + radius, this.x - radius),
+				y: RNG(25 + radius, 650 - radius)
 			}
 
 			this.dir = "left"
@@ -104,8 +104,8 @@ class Augustus extends Enemy {
 			let radius = RNG(100, 300)
 
 			this.origin = {
-				x: RNG(this.x, 1250),
-				y: RNG(25, 650)
+				x: RNG(this.x + radius, 1250 - radius),
+				y: RNG(25 + radius, 650 - radius)
 			}
 
 			this.dir = "right"
