@@ -24,7 +24,12 @@ Times
 */
 
 class Augustus extends Enemy {
-	angle = 270
+	angle = {
+		degrees: 0,
+		change: 0
+	}
+
+	// Radius of rotation circle
 	radius = 200
 
 	origin = {
@@ -39,14 +44,13 @@ class Augustus extends Enemy {
 	}
 
 	status = "glide"
-	dir = "up"
+	dir = "right"
 
 	constructor() {
 		super(993.75, 337.5, [0, 0], 99, "#eee", "#111")
 
 		this.counter = 63
-		// this.radius = RNG(100, 250)
-		this.radius = RNG(10, 250)
+		this.radius = RNG(100, 250)
 
 		this.genGlide()
 	}
@@ -59,13 +63,10 @@ class Augustus extends Enemy {
 		if (this.y < 25) this.y = 25
 	}
 
+	// Generate the gliding destination and appropriate (x,y) movement speed
 	genGlide() {
 		let x = this.origin.x
-
-		// If we're going up, the glide point should start above
-		// Otherwise, it should start below
-		let offset = this.radius * (this.dir == "up" ? -1 : 1)
-		let y = this.origin.y + offset
+		let y = this.origin.y - this.radius
 
 		let cx = (x - this.x) / 100
 		let cy = (y - this.y) / 100
@@ -80,6 +81,39 @@ class Augustus extends Enemy {
 		}
 	}
 
+	// Decide on a radius and origin point
+	glideInit() {
+		this.status = "glide"
+
+		// We just twisted clockwise and are now at the bottom of the previous
+		// origin point. So, we're moving to the left.
+		if (this.angle.change == 1) {
+			let radius = RNG(100, 300)
+
+			this.origin = {
+				x: RNG(25, this.x),
+				y: RNG(25, 650)
+			}
+
+			this.dir = "left"
+		}
+
+		// We just twisted counterclockwise and are now at the bottom of the
+		// previous origin point. So, we're moving to the right.
+		else {
+			let radius = RNG(100, 300)
+
+			this.origin = {
+				x: RNG(this.x, 1250),
+				y: RNG(25, 650)
+			}
+
+			this.dir = "right"
+		}
+
+		this.genGlide()
+	}
+
 	glide() {
 		while (this.elapsed[0] > threshold) {
 			this.elapsed[0] -= threshold
@@ -91,20 +125,38 @@ class Augustus extends Enemy {
 			if (this.x >= glide.x[0] &&
 				this.x <= glide.x[1] &&
 				this.y >= glide.y[0] &&
-				this.y <= glide.y[1]) this.status = "circle"
+				this.y <= glide.y[1]) this.circleInit()
+		}
+	}
+
+	circleInit() {
+		this.status = "circle"
+		this.angle.degrees = 270
+
+		if (this.dir == "right") {
+			this.angle.change = 1
+			this.dir = "left"
+		}
+
+		else {
+			this.angle.change = -1
+			this.dir = "right"
 		}
 	}
 
 	circle() {
 		while (this.elapsed[0] > threshold) {
 			this.elapsed[0] -= threshold
-			this.angle++
+			this.angle.degrees += this.angle.change
 
-			// if (this.angle == 90 && this.dir == "down")
-				// this.glideInit()
+			// We've rotated to the bottom of the circle
+			if (this.angle.degrees == 90) {
+				this.glideInit()
+				return
+			}
 
-			if (this.angle > 360) this.angle = this.angle % 360
-			let radian = Math.round(this.angle) * Math.PI / 180
+			if (this.angle.degrees > 360) this.angle.degrees = this.angle.degrees % 360
+			let radian = Math.round(this.angle.degrees) * Math.PI / 180
 
 			this.x = this.origin.x + this.radius * Math.cos(radian)
 			this.y = this.origin.y + this.radius * Math.sin(radian)
