@@ -126,6 +126,8 @@ class Augustus extends Enemy {
 				this.x <= glide.x[1] &&
 				this.y >= glide.y[0] &&
 				this.y <= glide.y[1]) this.circleInit()
+
+			this.constraints()
 		}
 	}
 
@@ -172,6 +174,16 @@ class Augustus extends Enemy {
 		this[this.status]()
 
 		this.timer("end", time)
+	}
+
+	draw() {
+		super.draw()
+
+		// Show origin
+		c.beginPath()
+		c.rect(this.origin.x, this.origin.y, 50, 50)
+		c.strokeStyle = "#eee"
+		c.stroke()
 	}
 }
 
