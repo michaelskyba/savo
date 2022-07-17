@@ -32,8 +32,8 @@ class Augustus extends Enemy {
 		y: 337.5
 	}
 	glideValues = {
-		x: 0,
-		y: 0,
+		x: [0, 1],
+		y: [0, 1],
 		cy: 0,
 		cx: 0
 	}
@@ -46,7 +46,7 @@ class Augustus extends Enemy {
 
 		this.counter = 63
 		// this.radius = RNG(100, 250)
-		this.radius = 200
+		this.radius = RNG(10, 250)
 
 		this.genGlide()
 	}
@@ -71,8 +71,10 @@ class Augustus extends Enemy {
 		let cy = (y - this.y) / 100
 
 		this.glideValues = {
-			x: x,
-			y: y,
+			// We use a small range instead of literal this.x == glideValue.x
+			// because JavaScript messes up arithmetic with decimals
+			x: [x - Math.abs(cx), x + Math.abs(cx)],
+			y: [y - Math.abs(cy), y + Math.abs(cy)],
 			cx: cx,
 			cy: cy
 		}
@@ -86,8 +88,10 @@ class Augustus extends Enemy {
 			this.x += glide.cx
 			this.y += glide.cy
 
-			if (this.x == glide.x && this.y == glide.y)
-				this.status = "circle"
+			if (this.x >= glide.x[0] &&
+				this.x <= glide.x[1] &&
+				this.y >= glide.y[0] &&
+				this.y <= glide.y[1]) this.status = "circle"
 		}
 	}
 
