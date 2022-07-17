@@ -1,7 +1,7 @@
 // Interactions in Perinthus
 const dialogue = {
 	Ovicula: [
-		["Claudia", "Hey, want to know what my position on the theory of mind is?"],
+		["Claudia", "Hey, want to know what my position on the philosophy of mind is?"],
 		["Ovicula", "I don't care. Go away!"]
 	],
 
