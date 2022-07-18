@@ -214,11 +214,12 @@ const player = {
 	drawRange(enemyX, enemyY) {
 		let range = 100
 		let width = 50
+		let widthOffset = width/2
 
-		if (enemyX + width > this.x + width/2 - range &&
-			enemyY + width > this.y + width/2 - range &&
-			enemyX < this.x + width * 1.5 + range &&
-			enemyY < this.y + width * 1.5 + range &&
+		if (enemyX + width > this.x + widthOffset - range &&
+			enemyY + width > this.y + widthOffset - range &&
+			enemyX < this.x + widthOffset + range &&
+			enemyY < this.y + widthOffset + range &&
 			this.cooldowns.action.counter < 1) {
 
 			if (this.status == "default") this.status = "prepared"
@@ -226,7 +227,7 @@ const player = {
 			c.globalAlpha = 0.3
 			c.fillStyle = "maroon"
 
-			let offset = width/2 - range
+			let offset = widthOffset - range
 			c.frect(this.x + offset, this.y + offset, range * 2, range * 2)
 
 			c.globalAlpha = 1
