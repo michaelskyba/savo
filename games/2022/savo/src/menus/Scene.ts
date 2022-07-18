@@ -65,7 +65,6 @@ class Scene {
 
 			case "Daria":
 				bg = "#817b69"
-				fg = "#111"
 				break
 
 			case "Althea":

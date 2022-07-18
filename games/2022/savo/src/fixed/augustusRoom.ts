@@ -31,6 +31,7 @@ let walls = openWalls
 
 class Room {
 	status = "dialogue_0"
+	gameState = "playing"
 
 	// The timestamp of the timer starting
 	initTime = 0
@@ -121,6 +122,14 @@ class Room {
 
 			if (player.status == "attacking")
 				augustus.receiveDamage()
+
+			// Have the player take damage if Augustus hits (sword) or overlaps
+			if (augustus.collision(player.x, player.y)) {
+				player.receiveDamage()
+
+				// Tell steps.ts to render the lose screen
+				if (player.life.hp < 1) this.gameState = "lose"
+			}
 		}
 	}
 

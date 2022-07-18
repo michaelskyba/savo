@@ -174,6 +174,16 @@ class Augustus extends Enemy {
 		this.timer("end", time)
 	}
 
+	collision(playerX: number, playerY: number): boolean {
+		// Augustus is physically overlapping Claudia
+		if (this.x + 50 > playerX &&
+			this.y + 50 > playerY &&
+			playerX + 50 > this.x &&
+			playerY + 50 > this.y) return true
+
+		return super.collision(playerX, playerY)
+	}
+
 	draw() {
 		super.draw()
 
