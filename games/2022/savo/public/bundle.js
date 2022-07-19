@@ -57,6 +57,8 @@ const music = {
     summer_salt: document.getElementById("summer_salt"),
     box_15: document.getElementById("box_15"),
     beautiful_dead: document.getElementById("beautiful_dead"),
+    climactic_return: document.getElementById("climactic_return"),
+    climax_reasoning: document.getElementById("climax_reasoning"),
     reset() {
         Object.keys(music).forEach(name => {
             if (name == "reset")
@@ -71,18 +73,23 @@ const music = {
 // Make all tracks loop
 Object.keys(music).forEach(name => music[name].loop = true);
 
+let password = {
+    peanuts: false,
+    timeMachine: false
+};
+
 // Return random integer from min to max (inclusive)
-const RNG$3 = (min, max) => {
+const RNG$4 = (min, max) => {
     return Math.round(Math.random() * (max - min)) + min;
 };
 class Particle {
     constructor(id) {
         this.active = true;
         this.id = id;
-        this.speed = RNG$3(1, 5);
-        this.size = RNG$3(25, 100);
+        this.speed = RNG$4(1, 5);
+        this.size = RNG$4(25, 100);
         this.x = 1325;
-        this.y = RNG$3(0 - this.size, 725);
+        this.y = RNG$4(0 - this.size, 725);
     }
     draw() {
         // I can't be bothered to implement a timing system: the movement speed is
@@ -157,9 +164,29 @@ const mainMenu = {
                 // "Password" button
                 case 5:
                     let code = prompt("Enter your code.");
-                    if (code == "11037")
-                        alert("11037...? This is so difficult to figure out...");
-                    break;
+                    /*
+                    If you're reading this, there's a high probability that
+                    you're cheating. If that's the case, you should feel
+                    immensely ashamed of yourself. You're ruining the puzzle.
+                    */
+                    switch (code) {
+                        case "11037":
+                            alert("Wait... useless!? (But no)");
+                            break;
+                        case "#@abc$&":
+                            alert("[Claudius]\nI already said that it's not the literal string, idiot.");
+                            break;
+                        case "#@549.918367.5$&":
+                            alert("[Claudius]\nYou misunderstood the format! How can you be so competent and incompetent at the same time?");
+                            break;
+                        case "#@9819265.5$&":
+                            alert("Correct! You have now obtained a pack of 𝗽𝗲𝗮𝗻𝘂𝘁𝘀.");
+                            password.peanuts = true;
+                            break;
+                        default:
+                            alert("[Claudius]\nNo...? Think about it more before making such awful guesses.");
+                            break;
+                    }
             }
         }
     },
@@ -465,16 +492,17 @@ const player = {
     drawRange(enemyX, enemyY) {
         let range = 100;
         let width = 50;
-        if (enemyX + width > this.x + width / 2 - range &&
-            enemyY + width > this.y + width / 2 - range &&
-            enemyX < this.x + width * 1.5 + range &&
-            enemyY < this.y + width * 1.5 + range &&
+        let widthOffset = width / 2;
+        if (enemyX + width > this.x + widthOffset - range &&
+            enemyY + width > this.y + widthOffset - range &&
+            enemyX < this.x + widthOffset + range &&
+            enemyY < this.y + widthOffset + range &&
             this.cooldowns.action.counter < 1) {
             if (this.status == "default")
                 this.status = "prepared";
             c.globalAlpha = 0.3;
             c.fillStyle = "maroon";
-            let offset = width / 2 - range;
+            let offset = widthOffset - range;
             c.frect(this.x + offset, this.y + offset, range * 2, range * 2);
             c.globalAlpha = 1;
         }
@@ -516,7 +544,7 @@ damage.getY = (counter) => 725 - counter;
 player.cooldowns.dodge.getY = damage.getY;
 
 // Inside Claudia's house at the start of the game
-const dialogue$5 = {
+const dialogue$7 = {
     main: [
         [null, "In the middle of one seemingly normal night, Claudia woke up to go to the bathroom."],
         [null, "On her way back, she was curious about what time it was."],
@@ -583,8 +611,75 @@ class Scene {
     // Create text boxes for the current frame
     setBoxes(frame) {
         let line = this.dialogue[frame];
+        let fg = "white";
+        let bg = "#111";
+        switch (line[0]) {
+            // Copy-pasting is bad but I just want to be done with this
+            // It's not like it's an important project
+            case "Claudia":
+                bg = "maroon";
+                break;
+            case "Claudius":
+                bg = "#1d697c";
+                break;
+            case "Messalina":
+                bg = "#006442";
+                break;
+            case "Palinurus":
+                bg = "#ebf6f7";
+                fg = "#111";
+                break;
+            case "Dorus":
+                bg = "#763568";
+                break;
+            case "Ovicula":
+                bg = "#f3c13a";
+                fg = "#111";
+                break;
+            case "Frontinus":
+                bg = "midnightblue";
+                break;
+            case "Hera":
+                bg = "#171412";
+                break;
+            case "Musawer":
+                bg = "#c91f37";
+                break;
+            case "Daria":
+                bg = "#817b69";
+                break;
+            case "Althea":
+                bg = "#374231";
+                break;
+            case "Corculum":
+                bg = "#d9b611";
+                fg = "#111";
+                break;
+            case "Calypso":
+                bg = "#fff";
+                fg = "#111";
+                break;
+            case "Mercury":
+                bg = "#776d5a";
+                break;
+            case "Hector":
+                bg = "#16db93";
+                break;
+            case "Serapio":
+                bg = "#20063b";
+                break;
+            case "Nero":
+                bg = "maroon";
+                break;
+            case "Tiberius":
+                bg = "#48929b";
+                break;
+            case "Augustus":
+                bg = "#eee";
+                fg = "#111";
+        }
         if (line[0])
-            this.speaker = new TextBox(line[0], 50, 550, 30, "serif", "#111", "white");
+            this.speaker = new TextBox(line[0], 50, 550, 30, "serif", bg, fg);
         else
             this.speaker = null;
         this.speech = new TextBox(line[1], 50, 600, 30, "serif", "white", "#111");
@@ -597,6 +692,13 @@ class Scene {
         // e.g. pressed z, frame = 5 (fifth frame), six total frames
         else
             this.playing = false;
+    }
+    draw() {
+        if (!this.playing)
+            return;
+        this.speech.draw();
+        if (this.speaker)
+            this.speaker.draw();
     }
 }
 
@@ -648,7 +750,7 @@ class Interactable$1 {
 }
 
 // Interaction inside claudiaHouse
-const dialogue$4 = {
+const dialogue$6 = {
     Messalina: [
         ["Claudia", "Hey, Mom."],
         ["Messalina", "You've already forgotten my instructions?"],
@@ -711,8 +813,8 @@ const dialogue$4 = {
 };
 
 const bindows = new Img$1("bindows", 0, 0);
-const intro = new Scene(dialogue$5.main);
-let scene$4 = intro;
+const intro = new Scene(dialogue$7.main);
+let scene$6 = intro;
 const interactables$3 = [
     // Room 0 (left)
     [
@@ -728,37 +830,32 @@ const interactables$3 = [
 ];
 // Prompt for interacting with an interactable
 // [0][0] is just a default which shouldn't pop up by itself
-let prompt$4 = {
+let prompt$5 = {
     int: interactables$3[0][0],
     active: false,
     box: new MenuOption("=================================================", 0, 0)
 };
-let wallColour$2 = "#bf823e";
-const walls$1 = [
+let wallColour$4 = "#bf823e";
+const walls$3 = [
     // Room 0 (left)
     [
-        new Wall(0, 0, 1325, 25, wallColour$2),
-        new Wall(0, 0, 25, 1325, wallColour$2),
-        new Wall(0, 700, 1325, 25, wallColour$2),
-        new Wall(1300, 0, 25, 262.5, wallColour$2),
-        new Wall(1300, 462.5, 25, 262.5, wallColour$2)
+        new Wall(0, 0, 1325, 25, wallColour$4),
+        new Wall(0, 0, 25, 1325, wallColour$4),
+        new Wall(0, 700, 1325, 25, wallColour$4),
+        new Wall(1300, 0, 25, 262.5, wallColour$4),
+        new Wall(1300, 462.5, 25, 262.5, wallColour$4)
     ],
     // Room 1 (right)
     [
-        new Wall(0, 0, 1325, 25, wallColour$2),
-        new Wall(0, 700, 1325, 25, wallColour$2),
-        new Wall(0, 0, 25, 262.5, wallColour$2),
-        new Wall(0, 462.5, 25, 262.5, wallColour$2),
-        new Wall(1300, 0, 25, 262.5, wallColour$2),
-        new Wall(1300, 462.5, 25, 262.5, wallColour$2)
+        new Wall(0, 0, 1325, 25, wallColour$4),
+        new Wall(0, 700, 1325, 25, wallColour$4),
+        new Wall(0, 0, 25, 262.5, wallColour$4),
+        new Wall(0, 462.5, 25, 262.5, wallColour$4),
+        new Wall(1300, 0, 25, 262.5, wallColour$4),
+        new Wall(1300, 462.5, 25, 262.5, wallColour$4)
     ]
 ];
 let collision$2;
-function drawScene(scene) {
-    scene.speech.draw();
-    if (scene.speaker)
-        scene.speaker.draw();
-}
 class ClaudiaHouse {
     constructor() {
         this.room = 1;
@@ -776,31 +873,31 @@ class ClaudiaHouse {
     }
     genCollision() {
         collision$2 = [
-            ...walls$1[this.room],
+            ...walls$3[this.room],
             // The Img/Block is stored in the .obj property in the Interactable class
             ...interactables$3[this.room].map(i => i.obj)
         ];
     }
     handleInput(key) {
         // The player pressed Z to progress the dialogue
-        if (key == "KeyZ" && scene$4.playing) {
+        if (key == "KeyZ" && scene$6.playing) {
             let introPlaying = intro.playing;
-            scene$4.progress();
+            scene$6.progress();
             // Start the next track once movement is open after the intro
-            if (introPlaying && !scene$4.playing) {
+            if (introPlaying && !scene$6.playing) {
                 music.reset();
                 music.beautiful_ruin.play();
             }
         }
         // The player entered an interaction prompt with X
-        else if (key == "KeyX" && prompt$4.active) {
-            prompt$4.active = false;
-            scene$4 = new Scene(dialogue$4[prompt$4.int.id]);
+        else if (key == "KeyX" && prompt$5.active) {
+            prompt$5.active = false;
+            scene$6 = new Scene(dialogue$6[prompt$5.int.id]);
         }
     }
     // Give input to the player, but only if a dialogue isn't playing
     move(time) {
-        if (!scene$4.playing)
+        if (!scene$6.playing)
             player.move(time, "fixed", collision$2);
     }
     transitions() {
@@ -831,47 +928,46 @@ class ClaudiaHouse {
     }
     drawIntro() {
         // Draw the Bindows 10 background if it's relevant
-        if (scene$4.frame > 2 && scene$4.frame < 12)
+        if (scene$6.frame > 2 && scene$6.frame < 12)
             bindows.draw();
         else {
             c.fillStyle = "#ddd";
             c.frect(0, 0, 1325, 725);
         }
-        drawScene(scene$4);
+        scene$6.draw();
     }
     drawRoom() {
         c.fillStyle = "#f0e68c";
         c.frect(0, 0, 1325, 725);
         player.draw("fixed");
-        for (const wall of walls$1[this.room]) {
+        for (const wall of walls$3[this.room]) {
             wall.draw();
         }
         // Drawing the objects
         for (const interactable of interactables$3[this.room]) {
             interactable.draw();
         }
-        if (!scene$4.playing)
+        if (!scene$6.playing)
             this.checkRanges();
-        if (prompt$4.active)
-            prompt$4.box.show(false);
-        if (scene$4.playing)
-            drawScene(scene$4);
+        if (prompt$5.active)
+            prompt$5.box.show(false);
+        scene$6.draw();
     }
     checkRanges() {
         let wasSet = false;
         for (const int of interactables$3[this.room]) {
             if (int.inRange()) {
                 // We only need to update the prompt box if it doesn't exist yet
-                if (!prompt$4.active)
-                    prompt$4.box = new MenuOption("Press X to interact.", int.obj.x - 60, int.obj.y - 60);
-                prompt$4.int = int;
-                prompt$4.active = true;
+                if (!prompt$5.active)
+                    prompt$5.box = new MenuOption("Press X to interact.", int.obj.x - 60, int.obj.y - 60);
+                prompt$5.int = int;
+                prompt$5.active = true;
                 wasSet = true;
             }
         }
         // If none of them are inRange, make sure that no prompt is open
         if (!wasSet)
-            prompt$4.active = false;
+            prompt$5.active = false;
     }
 }
 // I'm making a temporary class here to avoid commas after methods, binding
@@ -978,15 +1074,16 @@ class Sword {
 }
 
 class Enemy {
-    constructor(x, y, elapsed, HP, colour) {
+    constructor(x, y, elapsed, HP, bgColour, fgColour) {
         this.status = "countdown";
+        this.sword = new Sword(200, 0, bgColour);
         this.x = x;
         this.y = y;
         // Different indices can contain different timers, which is why we use
         // an array of numbers instead of just one
         this.elapsed = elapsed;
-        this.colour = colour;
-        this.sword = new Sword(200, 0, colour);
+        this.bgColour = bgColour;
+        this.fgColour = fgColour;
         // 1232 = canvas width - textbox width (~88) - padding (5)
         this.life = new Life(HP, 1232, 5);
     }
@@ -1040,7 +1137,7 @@ class Enemy {
         this.sword.rotate(-90);
     }
     draw() {
-        c.fillStyle = this.colour;
+        c.fillStyle = this.bgColour;
         // 25 = enemy size / 2 (so the sword starts in the center)
         if (this.status == "attack")
             this.sword.draw(this.x + 25, this.y + 25);
@@ -1048,7 +1145,7 @@ class Enemy {
         // Drawing the attack counter
         let fontSize = 40;
         c.font = fontSize + "px monospace";
-        c.fillStyle = "white";
+        c.fillStyle = this.fgColour;
         let text = (this.counter < 10 ? "0" : "") + this.counter;
         c.text(text, this.x, this.y + fontSize);
     }
@@ -1057,7 +1154,7 @@ class Enemy {
 class Frontinus extends Enemy {
     constructor(counterInit) {
         // 637.5 = horizontal center
-        super(637.5, 200, [0], 5, "midnightblue");
+        super(637.5, 200, [0], 5, "midnightblue", "#c9c9f3");
         this.counterInit = counterInit;
         this.counter = counterInit;
     }
@@ -1092,7 +1189,7 @@ class Frontinus extends Enemy {
 }
 
 // The Akvedukto tutorial and introduction
-const dialogue$3 = {
+const dialogue$5 = {
     // When Claudia first comes in and meets Frontinus
     introduction: [
         ["???", "Who has entered the Nova Anio-akvedukto?"],
@@ -1328,7 +1425,7 @@ const dialogue$3 = {
 };
 
 let frontinus = new Frontinus(5);
-let scene$3 = new Scene(dialogue$3.introduction);
+let scene$5 = new Scene(dialogue$5.introduction);
 let bg = new Img$1("akvedukto_fixed", 0, 0);
 function resetCombat() {
     frontinus = new Frontinus(5);
@@ -1343,42 +1440,42 @@ function setDialogue() {
     let next;
     switch (akvedukto.phase) {
         case 3:
-            next = dialogue$3.timing;
+            next = dialogue$5.timing;
             break;
         case 5:
-            next = dialogue$3.healing;
+            next = dialogue$5.healing;
             break;
         case 7:
-            next = dialogue$3.dodging;
+            next = dialogue$5.dodging;
             break;
         case 9:
-            next = dialogue$3.conclusion;
+            next = dialogue$5.conclusion;
             break;
     }
-    scene$3 = new Scene(next);
+    scene$5 = new Scene(next);
 }
-let wallColour$1 = "#a69583";
-const walls = [
+let wallColour$3 = "#a69583";
+const walls$2 = [
     // Initial position with door blocked
     [
-        new Wall(0, 0, 1325, 25, wallColour$1),
-        new Wall(0, 0, 25, 1325, wallColour$1),
+        new Wall(0, 0, 1325, 25, wallColour$3),
+        new Wall(0, 0, 25, 1325, wallColour$3),
         // Bottom with intersection
-        new Wall(0, 700, 512.5, 25, wallColour$1),
-        new Wall(812.5, 700, 612.5, 25, wallColour$1),
+        new Wall(0, 700, 512.5, 25, wallColour$3),
+        new Wall(812.5, 700, 612.5, 25, wallColour$3),
         // Initially solid right wall
-        new Wall(1300, 0, 25, 725, wallColour$1)
+        new Wall(1300, 0, 25, 725, wallColour$3)
     ],
     // Door unblocked after tutorial
     [
-        new Wall(0, 0, 1325, 25, wallColour$1),
-        new Wall(0, 0, 25, 1325, wallColour$1),
+        new Wall(0, 0, 1325, 25, wallColour$3),
+        new Wall(0, 0, 25, 1325, wallColour$3),
         // Bottom with intersection
-        new Wall(0, 700, 512.5, 25, wallColour$1),
-        new Wall(812.5, 700, 612.5, 25, wallColour$1),
+        new Wall(0, 700, 512.5, 25, wallColour$3),
+        new Wall(812.5, 700, 612.5, 25, wallColour$3),
         // Intersection in right wall
-        new Wall(1300, 0, 25, 212.5, wallColour$1),
-        new Wall(1300, 512.5, 25, 212.5, wallColour$1)
+        new Wall(1300, 0, 25, 212.5, wallColour$3),
+        new Wall(1300, 512.5, 25, 212.5, wallColour$3)
     ]
 ];
 // This is the barrier from the tutorial, trapping Claudia into Frontinus's
@@ -1399,15 +1496,15 @@ const akvedukto = {
     phase: 0,
     init() {
         document.onkeydown = event => {
-            if (scene$3.playing && event.code == "KeyZ") {
-                scene$3.progress();
+            if (scene$5.playing && event.code == "KeyZ") {
+                scene$5.progress();
                 // The last frame was finished, so the scene is over
-                if (!scene$3.playing) {
+                if (!scene$5.playing) {
                     this.phase++;
                     // The attacking dialogue is the only one that follows
                     // another dialogue (introduction)
                     if (this.phase == 1)
-                        scene$3 = new Scene(dialogue$3.attacking);
+                        scene$5 = new Scene(dialogue$5.attacking);
                     if (this.phase == 6) {
                         // Have Frontinus use a 10 * 500ms timer to give extra
                         // time for healing
@@ -1423,7 +1520,7 @@ const akvedukto = {
                     player.resetInput();
                 }
             }
-            else if (!scene$3.playing) {
+            else if (!scene$5.playing) {
                 // Only allow dodging in phase 8 (dodging practice)
                 if (event.code == "KeyZ") {
                     if (this.phase == 8)
@@ -1438,7 +1535,7 @@ const akvedukto = {
             }
         };
         document.onkeyup = event => {
-            if (!scene$3.playing)
+            if (!scene$5.playing)
                 player.handleKey("keyup", event.code);
         };
         music.reset();
@@ -1455,7 +1552,7 @@ const akvedukto = {
     },
     move(time) {
         // Skip movement during dialogue phases
-        if (scene$3.playing)
+        if (scene$5.playing)
             return;
         // Frontinus doesn't attack you in phase 2, when you're supposed to be
         // learning the attacking controls
@@ -1473,7 +1570,7 @@ const akvedukto = {
             player.move(time, "fixed", [...barrier, frontinusBlock]);
         // Regular collision: Frontinus and outer walls
         else
-            player.move(time, "fixed", [...walls[wallsIndex()], frontinusBlock]);
+            player.move(time, "fixed", [...walls$2[wallsIndex()], frontinusBlock]);
         // Have the player take damage if Frontinus' sword hits them
         if (frontinus.collision(player.x, player.y)) {
             player.receiveDamage();
@@ -1514,7 +1611,7 @@ const akvedukto = {
             player.drawRange(frontinus.x, frontinus.y);
         player.draw("fixed");
         frontinus.draw();
-        for (const wall of walls[wallsIndex()]) {
+        for (const wall of walls$2[wallsIndex()]) {
             wall.draw();
         }
         // Draw Claudia barrier if healing or dodging should be required
@@ -1529,15 +1626,11 @@ const akvedukto = {
             frontinus.life.draw();
             player.life.draw();
         }
-        if (scene$3.playing) {
-            scene$3.speech.draw();
-            if (scene$3.speaker)
-                scene$3.speaker.draw();
-        }
+        scene$5.draw();
     }
 };
 
-const RNG$2 = (min, max) => {
+const RNG$3 = (min, max) => {
     return Math.round(Math.random() * (max - min)) + min;
 };
 class Powerup {
@@ -1548,8 +1641,8 @@ class Powerup {
         this.newPos();
     }
     newPos() {
-        this.x = [220, 662.5, 1100][RNG$2(0, 2)];
-        this.y = [120, 362.5, 600][RNG$2(0, 2)];
+        this.x = [220, 662.5, 1100][RNG$3(0, 2)];
+        this.y = [120, 362.5, 600][RNG$3(0, 2)];
     }
     draw() {
         // Don't draw if already activated
@@ -1573,16 +1666,16 @@ class Powerup {
 const powerup = new Powerup();
 /*
 elapsed {
-    0: timer for movement (x,y manipulatioN)
+    0: timer for movement (x,y manipulation)
     1: timer for countdown (attack counter manipulation)
 }
 */
-const RNG$1 = (min, max) => {
+const RNG$2 = (min, max) => {
     return Math.round(Math.random() * (max - min)) + min;
 };
 class Nero extends Enemy {
     constructor() {
-        super(637.5, 445, [0, 0], 50, "maroon");
+        super(637.5, 445, [0, 0], 50, "maroon", "#ffb5b5");
         this.moveStatus = "approaching";
         // Different attack / counter patterns
         this.pattern = 0;
@@ -1648,8 +1741,7 @@ class Nero extends Enemy {
             if (this.elapsed[1] > 200) {
                 this.status = "countdown";
                 this.elapsed[1] = 0;
-                this.counter = 99;
-                this.pattern = Math.round(RNG$1(0, 200) / 100);
+                this.pattern = Math.round(RNG$2(0, 200) / 100);
                 switch (this.pattern) {
                     case 2:
                         this.counter = 99;
@@ -1735,7 +1827,7 @@ class Nero extends Enemy {
 }
 
 // Dialogue inside Nero's house
-const dialogue$2 = {
+const dialogue$4 = {
     Mercury: [
         ["Mercury", "Halt!"],
         ["Mercury", "Who dares disturb the slumber of the emperor!"],
@@ -1850,7 +1942,7 @@ const dialogue$2 = {
         ["Nero", "Well, don't get your hopes up."],
         ["Nero", "What you may not be aware of is that the Nero Linux ROM does not exist as you believe it does."],
         ["Claudia", "Uh, yes it does. My mom said th-"],
-        ["Nero", "Wrong! Only I, Nero, exist. To construct the CD-ROM, you would need to burn me alive."],
+        ["Nero", "Wrong! Only I, Nero, exist. To construct the CD-ROM, you would need to burn my body."],
         ["Claudia", "So your melted organs would turn into data? Why?"],
         ["Nero", "Those are the rules, fool. Therefore, your journey ends here. Be on your way."],
         ["Claudia", "Are you under the impression that I'm under a moral dilemma right now?"],
@@ -1881,68 +1973,68 @@ const dialogue$2 = {
 };
 
 let nero = new Nero();
-let wallColour = "maroon";
+let wallColour$2 = "maroon";
 let objects = [
     // First room
     [
-        new Wall(0, 0, 1325, 25, wallColour),
-        new Wall(0, 0, 25, 1325, wallColour),
+        new Wall(0, 0, 1325, 25, wallColour$2),
+        new Wall(0, 0, 25, 1325, wallColour$2),
         // Bottom intersection
-        new Wall(0, 700, 512.5, 25, wallColour),
-        new Wall(812.5, 700, 612.5, 25, wallColour),
+        new Wall(0, 700, 512.5, 25, wallColour$2),
+        new Wall(812.5, 700, 612.5, 25, wallColour$2),
         // Right intersection
-        new Wall(1300, 0, 25, 212.5, wallColour),
-        new Wall(1300, 512.5, 25, 212.5, wallColour)
+        new Wall(1300, 0, 25, 212.5, wallColour$2),
+        new Wall(1300, 512.5, 25, 212.5, wallColour$2)
     ],
     // Second room - entered through the right of first room
     [
-        new Wall(0, 700, 1325, 25, wallColour),
+        new Wall(0, 700, 1325, 25, wallColour$2),
         // Left intersection
-        new Wall(0, 0, 25, 212.5, wallColour),
-        new Wall(0, 512.5, 25, 212.5, wallColour),
+        new Wall(0, 0, 25, 212.5, wallColour$2),
+        new Wall(0, 512.5, 25, 212.5, wallColour$2),
         // Top intersection
-        new Wall(0, 0, 512.5, 25, wallColour),
-        new Wall(812.5, 0, 612.5, 25, wallColour),
-        new Wall(1300, 0, 25, 725, wallColour)
+        new Wall(0, 0, 512.5, 25, wallColour$2),
+        new Wall(812.5, 0, 612.5, 25, wallColour$2),
+        new Wall(1300, 0, 25, 725, wallColour$2)
     ],
     // Third room - entered through the top of second room
     [
-        new Wall(0, 0, 1325, 25, wallColour),
+        new Wall(0, 0, 1325, 25, wallColour$2),
         // Left intersection
-        new Wall(0, 0, 25, 212.5, wallColour),
-        new Wall(0, 512.5, 25, 212.5, wallColour),
+        new Wall(0, 0, 25, 212.5, wallColour$2),
+        new Wall(0, 512.5, 25, 212.5, wallColour$2),
         // Bottom intersection
-        new Wall(0, 700, 512.5, 25, wallColour),
-        new Wall(812.5, 700, 612.5, 25, wallColour),
-        new Wall(1300, 0, 25, 725, wallColour),
+        new Wall(0, 700, 512.5, 25, wallColour$2),
+        new Wall(812.5, 700, 612.5, 25, wallColour$2),
+        new Wall(1300, 0, 25, 725, wallColour$2),
         new Img$1("armour", 1075, 60)
     ],
     // Fourth room - entered through the left of third room
     [
-        new Wall(0, 0, 25, 1325, wallColour),
-        new Wall(0, 0, 1325, 25, wallColour),
+        new Wall(0, 0, 25, 1325, wallColour$2),
+        new Wall(0, 0, 1325, 25, wallColour$2),
         // Right intersection
-        new Wall(1300, 0, 25, 212.5, wallColour),
-        new Wall(1300, 512.5, 25, 212.5, wallColour),
+        new Wall(1300, 0, 25, 212.5, wallColour$2),
+        new Wall(1300, 512.5, 25, 212.5, wallColour$2),
         // Bottom intersection
-        new Wall(0, 700, 512.5, 25, wallColour),
-        new Wall(812.5, 700, 612.5, 25, wallColour),
+        new Wall(0, 700, 512.5, 25, wallColour$2),
+        new Wall(812.5, 700, 612.5, 25, wallColour$2),
     ],
     // Fifth (Nero's) room - entered through the bottom of the fourth room
     [
-        new Wall(0, 0, 25, 725, wallColour),
-        new Wall(0, 700, 1325, 25, wallColour),
-        new Wall(1300, 0, 25, 725, wallColour),
+        new Wall(0, 0, 25, 725, wallColour$2),
+        new Wall(0, 700, 1325, 25, wallColour$2),
+        new Wall(1300, 0, 25, 725, wallColour$2),
         // Top intersection
-        new Wall(0, 0, 512.5, 25, wallColour),
-        new Wall(812.5, 0, 612.5, 25, wallColour),
+        new Wall(0, 0, 512.5, 25, wallColour$2),
+        new Wall(812.5, 0, 612.5, 25, wallColour$2),
     ],
     // (Nero's) room - locked
     [
-        new Wall(0, 0, 1325, 25, wallColour),
-        new Wall(0, 0, 25, 1325, wallColour),
-        new Wall(1300, 0, 25, 725, wallColour),
-        new Wall(0, 700, 1325, 25, wallColour)
+        new Wall(0, 0, 1325, 25, wallColour$2),
+        new Wall(0, 0, 25, 1325, wallColour$2),
+        new Wall(1300, 0, 25, 725, wallColour$2),
+        new Wall(0, 700, 1325, 25, wallColour$2)
     ]
 ];
 const interactables$2 = [
@@ -1953,13 +2045,13 @@ const interactables$2 = [
     [],
     []
 ];
-let prompt$3 = {
+let prompt$4 = {
     int: interactables$2[0][0],
     active: false,
     box: new MenuOption("=================================================", 0, 0)
 };
-let scene$2 = new Scene(dialogue$2.Nero);
-scene$2.playing = false;
+let scene$4 = new Scene(dialogue$4.Nero);
+scene$4.playing = false;
 // Generate the collisions array - what physical objects can Claudia collide
 // with in the current room?
 function genCollisions() {
@@ -1988,16 +2080,16 @@ const neroHouse = {
         document.onkeydown = event => {
             let key = event.code;
             // The player pressed Z to progress the dialogue
-            if (key == "KeyZ" && scene$2.playing) {
-                scene$2.progress();
+            if (key == "KeyZ" && scene$4.playing) {
+                scene$4.progress();
                 // Progress to fake battle room (5) after fight intro dialogue
-                if (!scene$2.playing && neroHouse.room == 4)
+                if (!scene$4.playing && neroHouse.room == 4)
                     neroHouse.neroRoomInit();
             }
             // The player entered an interaction prompt with X
-            else if (key == "KeyX" && prompt$3.active) {
-                prompt$3.active = false;
-                scene$2 = new Scene(dialogue$2[prompt$3.int.id]);
+            else if (key == "KeyX" && prompt$4.active) {
+                prompt$4.active = false;
+                scene$4 = new Scene(dialogue$4[prompt$4.int.id]);
             }
             player.handleKey("keydown", key);
         };
@@ -2048,7 +2140,7 @@ const neroHouse = {
         else if (this.room == 3 && player.y > 675) {
             this.room = 4;
             player.y = 50;
-            scene$2 = new Scene(dialogue$2.Nero);
+            scene$4 = new Scene(dialogue$4.Nero);
         }
         else if (this.room == 3 && player.x > 1275) {
             this.room = 2;
@@ -2067,7 +2159,7 @@ const neroHouse = {
             this.moveBattle(time);
         else {
             // Only check for scenes outside of battle
-            if (!scene$2.playing)
+            if (!scene$4.playing)
                 player.move(time, "fixed", collisions);
             this.roomTransitions();
         }
@@ -2102,7 +2194,6 @@ const neroHouse = {
                 c.text("You have successfully killed Nero.", 100, 300);
                 c.text("But, will you be able to sucessfully burn his body and generate the Linux CD-ROM?", 100, 330);
                 c.text("Will you be able to program your GPU driver?", 100, 360);
-                c.text("Where was Tiberius? What is moral relativism?", 100, 390);
                 c.text("How come the pause key (Backspace) wasn't working?", 100, 420);
                 c.text("How come Frontinus said you could replay the tutorial but you actually couldn't without restarting?", 100, 450);
                 c.text("Find the answer to these questions in the full version of the game!", 100, 480);
@@ -2133,31 +2224,27 @@ const neroHouse = {
             for (const int of interactables$2[this.room]) {
                 int.draw();
             }
-            if (!scene$2.playing) {
+            if (!scene$4.playing) {
                 let wasSet = false;
                 for (const int of interactables$2[this.room]) {
                     if (int.inRange()) {
                         // We only need to update the prompt box if it doesn't exist yet
-                        if (!prompt$3.active)
-                            prompt$3.box = new MenuOption("Press X to interact.", int.obj.x - 60, int.obj.y - 60);
-                        prompt$3.int = int;
-                        prompt$3.active = true;
+                        if (!prompt$4.active)
+                            prompt$4.box = new MenuOption("Press X to interact.", int.obj.x - 60, int.obj.y - 60);
+                        prompt$4.int = int;
+                        prompt$4.active = true;
                         wasSet = true;
                     }
                 }
                 // If none of them are inRange, make sure that no prompt is open
                 if (!wasSet)
-                    prompt$3.active = false;
+                    prompt$4.active = false;
             }
             // Show the prompt box if in range
-            if (prompt$3.active)
-                prompt$3.box.show(false);
+            if (prompt$4.active)
+                prompt$4.box.show(false);
             // Show the scene text if it's playing
-            if (scene$2.playing) {
-                scene$2.speech.draw();
-                if (scene$2.speaker)
-                    scene$2.speaker.draw();
-            }
+            scene$4.draw();
             // Don't worry about the battle besides the Nero placement, so it
             // doesn't look like Claudia is talking to nothing
             if (this.room == 4)
@@ -2176,6 +2263,880 @@ const neroHouse = {
     }
 };
 let collisions = genCollisions();
+
+// Dialogue inside Tiberius' house, excluding Augustus
+const dialogue$3 = {
+    Claudius: [
+        ["Claudia", "Dad? How'd you get here?"],
+        ["Claudius", "...Listen."],
+        ["Claudia", "..."],
+        ["Claudius", "You're interested in finding a 𝗽𝗮𝘀𝘀𝘄𝗼𝗿𝗱, are you not?"],
+        ["Claudia", "Sure?"],
+        ["Claudius", "I'll help you out."],
+        ["Claudius", "The password is #@abc$&"],
+        ["Claudia", "The literal string?"],
+        ["Claudius", "No, of course not."],
+        ["Claudius", "It's not supposed to be difficult to figure out, okay?"],
+        ["Claudia", "Then, what is 'b'?"],
+        ["Claudius", "Hmm, let's pick a number."],
+        ["Claudia", "9.9?"],
+        ["Claudius", "Sure, 'b' can be 9.9."],
+        ["Claudius", "The rest is simple."],
+        ["Claudia", "Hmm... I wonder if this is necessary..."]
+    ],
+    TiberiusBase: [
+        ["Tiberius", "ayyyyyyy :D"],
+        ["Claudia", "Oh, it's you."],
+        ["Tiberius", "hows it goin bro!"],
+        ["Claudia", "I'm just loo-"],
+        ["Tiberius", "dw, ik what ur thinking"],
+        ["Tiberius", "u want MY time machine, ya!"],
+        [null, "Claudia recalls her sorry exchange with Frontinus."],
+        ["Claudia", "Well, it's true that it could be helpful to me."],
+        ["Claudia", "Are you even using it for anything productive?"],
+        ["Tiberius", "lol u sound like pretty desprate bro"],
+        ["Claudia", "...That doesn't answer my question."],
+        ["Tiberius", "well i cant just give it out to randos lmfao"],
+        ["Claudia", "My point is that it doesn't look like you're doing anything particularly useful."],
+        ["Tiberius", "bruhhhhh u really want it"],
+        ["Tiberius", "idk i dont c a complusion to give u it"],
+        ["Claudia", "..."],
+        ["Tiberius", "o, how about this"],
+        ["Tiberius", "if u can beat me in an argument, il give u it"],
+        ["Claudia", "Argument? What are you talking about?"],
+        ["Tiberius", "well, i only hold positions on 2 topics"],
+        ["Tiberius", "k?"],
+        ["Claudia", "That doesn't make any sense, but which two topics are you referring to?"],
+        ["Tiberius", "idrk names or anything but i can explain"],
+        ["Tiberius", "so basically"],
+        ["Tiberius", "the first idea is that i dont rly think that anything is right or worng"],
+        ["Claudia", "Right or wrong? You mean, in the the context of morality?"],
+        ["Tiberius", "morilaty? uh idk :|"],
+        ["Claudia", "Well, here's an example."],
+        ["Claudia", "You don't think that unjustified murder is wrong? Because nothing is wrong?"],
+        ["Tiberius", "ye"],
+        ["Claudia", "...What? Why?"],
+        ["Tiberius", "wdym why"],
+        ["Tiberius", "its up to u to explain why its wrong"],
+        ["Claudia", "Well, if person A unjustifiably murders person B..."],
+        ["Claudia", "B experiences pain and discomfort. Why should they have to go through that?"],
+        ["Tiberius", "im not sayin they should have to"],
+        ["Tiberius", "just that its not wrong for B to experience that"],
+        ["Claudia", "So, you hold no value of suffering at all?"],
+        ["Tiberius", "why should i"],
+        ["Claudia", "Then, you have no argument against somebody wishing to harm you?"],
+        ["Tiberius", "ofc i do"],
+        ["Tiberius", "if they harm me, the police will get em"],
+        ["Tiberius", "so its bad for them"],
+        ["Claudia", "That's a pragmatic reason, not a moral reason, right?"],
+        ["Tiberius", "idk"],
+        ["Claudia", "So, if there were no practical negative consequences, you'd be fine with them doing it?"],
+        ["Tiberius", "i wouldnt be fine with it but it wouldnt be wrong"],
+        ["Claudia", "Doesn't it make more sense to value others?"],
+        ["Claudia", "If you can socially agree that suffering is wrong, it opens opportunities to help each other."],
+        ["Claudia", "You don't hurt others if you don't have to, and they agree not to hurt you if they don't have to."],
+        ["Tiberius", "still doesnt mean that its wrong for them to hurt you"],
+        ["Tiberius", "it would just be a bad idea"],
+        [null, "Claudia sighs."],
+        ["Claudia", "Okay, picture this hypothetical."],
+        ["Claudia", "If you push a button, your family dies but you get a free computer."],
+        ["Tiberius", "is it a good computer"],
+        ["Claudia", "Sure."],
+        ["Tiberius", "uh"],
+        ["Claudia", "Well, if you don't value suffering, the obvious answer is to push the button."],
+        ["Claudia", "Why care if your family dies?"],
+        ["Tiberius", "idk i dont think i would push it"],
+        ["Claudia", "Oh? Why is that?"],
+        ["Claudia", "Don't tell me that you're going to start selectively following common morality..."],
+        ["Tiberius", "uhhh"],
+        ["Tiberius", "o how bout this explanatino"],
+        ["Tiberius", "my family dying would make me sad"],
+        ["Tiberius", "i dont want to feel sad"],
+        ["Tiberius", "so i wont press the button"],
+        ["Tiberius", "the free computer wont make me unsad"],
+        ["Claudia", "Really? How about this one?"],
+        ["Claudia", "You can press a button and get $0.01."],
+        ["Claudia", "But, a random person is now put in front of you and tortured for a while, until their death."],
+        ["Claudia", "Would you press it? $0.01 is better than nothing, but is it worth it?"],
+        ["Tiberius", "uh"],
+        ["Tiberius", "same answer ig"],
+        ["Claudia", "And the same justification?"],
+        ["Tiberius", "probably"],
+        ["Claudia", "Judging from your response, it seems like you do believe that suffering is wrong."],
+        ["Claudia", "However, because you don't like that idea (for some reason), you hide behind psychological egoism."],
+        ["Claudia", "When you propose that seeing the person makes you 'sad', it means that you see it as wrong."],
+        ["Tiberius", "nope"],
+        ["Claudia", "With this logic, you would probably feel 'sad' for person B from earlier."],
+        ["Claudia", "If you saw it in real life, that is. You're just in denial about your ideas."],
+        ["Tiberius", "u rly arnt giving any good points lol"],
+        ["Tiberius", "ppl like u come here everyday w ith this stuff"],
+        ["Claudia", "You mean 'every day'? How are you this illiterate?"],
+        ["Claudia", "It's honestly difficult to understand you."],
+        ["Tiberius", "lmfaooooo"],
+        ["Tiberius", "ur so bad at arguing that u have to start attackign me"],
+        ["Tiberius", "cuz u cant touch my arguments"],
+        ["Tiberius", "lmao how can you be this dumb"],
+        [null, "Claudia sighs."],
+        ["Claudia", "You know, let's just move on to the next topic."],
+        ["Claudia", "But first, I think that there's a bit too much tension. Don't you think so?"],
+        ["Tiberius", "idk u tell me"],
+        ["Claudia", "Tell me about yourself. What kinds of foods do you like to eat?"],
+        ["Tiberius", "uh, i like candy"],
+        ["Tiberius", "especially aspertane"],
+        ["Claudia", "Do you mean 'Aspartame'?"],
+        ["Tiberius", "idk probably"],
+        ["Claudia", "Nobody would call that 'candy'."],
+        ["Tiberius", "dc bro"],
+        ["Claudia", "I'm guessing you like processed meat as well..."],
+        ["Tiberius", "o but there is stuff that i rly wouldnt eat"],
+        ["Tiberius", "spficialy, i cant have peanuts"],
+        ["Claudia", "Are you allergic?"],
+        ["Tiberius", "ye"],
+        ["Tiberius", "its really bad"],
+        ["Claudia", "Tiberius has a 𝘀𝗲𝘃𝗲𝗿𝗲 𝗮𝗹𝗹𝗲𝗿𝗴𝘆 𝘁𝗼 𝗽𝗲𝗮𝗻𝘂𝘁𝘀. I should remember that."],
+        ["Tiberius", "who u talking to lol"],
+        ["Tiberius", "and why"],
+        ["Claudia", "Anyway, I think that's enough conversation."],
+        ["Claudia", "What's the other position you had?"],
+        ["Tiberius", "its about reality"],
+        ["Tiberius", "i dont know that anything is true, bro"],
+        ["Claudia", "So, you don't know that I'm standing here, in front of you?"],
+        ["Tiberius", "nope, theres now way to know"],
+        ["Claudia", "Well, you can see me, using your eyes."],
+        ["Tiberius", "but how do i know that my eyes are accurate"],
+        ["Claudia", "Have they been inaccurate in the past?"],
+        ["Claudia", "When you walk up a staircase, you see the steps (and your feet) with your eyes."],
+        ["Claudia", "You position your limbs accordingly, and you feel the steps with your feet."],
+        ["Claudia", "The result is that you go up the stairs successfully, without falling down."],
+        ["Tiberius", "well, how would i know that i didnt fall down"],
+        ["Tiberius", "again, bc of my eyes, which is just a circle of logic"],
+        ["Tiberius", "same with my sense of touch"],
+        ["Tiberius", "maybe my skin is inaccurate, telling me that im touching the steps"],
+        ["Tiberius", "also, ye, my eyes have been inaccurate in the past"],
+        ["Tiberius", "like, when im tired, i see spiders on the walls sometimes out of the corner of my eye"],
+        ["Claudia", "Uh..."],
+        ["Tiberius", "but when i look closely, they're not there"],
+        ["Tiberius", "thats not really what im talking abou tho"],
+        ["Claudia", "How would that make sense? You're worried that your optic nerve is dysfunctional?"],
+        ["Tiberius", "no"],
+        ["Tiberius", "it doesnt matter if it makes sense"],
+        ["Claudia", "What? Why?"],
+        ["Tiberius", "just because we dont think something makes sense, it doesnt mean it cant exist"],
+        ["Claudia", "So, if a = b, you don't *know* that b = a?"],
+        ["Tiberius", "it makes sense under my logical system"],
+        ["Tiberius", "but i cant prove that my logical system is true"],
+        ["Claudia", "How would it not be?"],
+        ["Tiberius", "again, just bc u feel like it has to be true, it doesnt mean it does"],
+        ["Tiberius", "just cuz u cant imagine something doesnt mean it cant exist lol"],
+        ["Claudia", "Well, you can't make any claim, then."],
+        ["Claudia", "You can't say that you don't know anything if you don't know that you don't know anything."],
+        ["Tiberius", "k so idk if ik that idk"],
+        ["Tiberius", "and idk if ik that idk if ik that idk"],
+        ["Tiberius", "etc"],
+        ["Claudia", "You're accepting that some sort of logic exists to make these arguments in the first place..."],
+        ["Tiberius", "no"],
+        ["Claudia", "I've had enough of this. But I still don't have the time machine..."],
+        ["Claudia", "Maybe there's a different way of getting it from him..."]
+    ],
+    TiberiusTransact: [
+        ["Claudia", "Hey, Tiberius."],
+        ["Tiberius", "wh-"],
+        ["Claudia", "You have a time machine, don't you?"],
+        ["Claudia", "But you're only willing to give it up if somebody beats you in an argument?"],
+        ["Tiberius", "lol whu told u that"],
+        ["Claudia", "Does it matter?"],
+        ["Tiberius", "idk guess not"],
+        ["Claudia", "Well, there's a change of plans."],
+        ["Tiberius", "wdym"],
+        ["Claudia", "Take a look at this..."],
+        [null, "Claudia takes a pack of peanuts out of her pocket."],
+        ["Tiberius", "wwwhatt! no!"],
+        ["Tiberius", "im allergic to peanuts! get rid of those! wtf"],
+        ["Claudia", "I'm aware. Why do you think I brought this?"],
+        ["Claudia", "Considering the severity of your allergy, this should be enough to kill you."],
+        ["Tiberius", "wtf ru doing!!?"],
+        ["Claudia", "Oh, but there is one thing that could make me reconsider."],
+        ["Tiberius", "u want my time machine? fine! just throw those away!"],
+        [null, "Tiberius frantically hands Claudia the time machine."],
+        [null, "Claudia puts the peanuts back in her pocket."],
+        ["Claudia", "That wasn't so hard, now, was it?"],
+        ["Tiberius", "..."],
+        ["Tiberius", "tf is wrong with u"]
+    ],
+    TiberiusAftermath: [
+        ["Tiberius", "...tf is wrong with u"],
+        ["Tiberius", "ur so bad at arguing that you had to resort to threatening me..."],
+        ["Tiberius", "howd u even know that im allergic? u a stalker r somting?"],
+        ["Claudia", "Say whatever you want. I'm still the winner."]
+    ]
+};
+
+const wallColour$1 = "#c3272b";
+const walls$1 = [
+    // Initial room after entering from Lerwick
+    // Includes Claudius and door to room 1
+    [
+        new Wall(0, 0, 1325, 25, wallColour$1),
+        new Wall(0, 700, 1325, 25, wallColour$1),
+        new Wall(0, 0, 25, 262.5, wallColour$1),
+        new Wall(0, 462.5, 25, 262.5, wallColour$1),
+        new Wall(1300, 0, 25, 262.5, wallColour$1),
+        new Wall(1300, 462.5, 25, 262.5, wallColour$1)
+    ],
+    // To the right of room 0
+    // Includes Tiberius - is the center room that touches all other rooms
+    [
+        // Right opening
+        // Needs to be drawn first so it's behind the other walls
+        new Wall(1300, 0, 25, 262.5, "#8db255"),
+        new Wall(1300, 462.5, 25, 262.5, "#8db255"),
+        // Top opening
+        new Wall(0, 0, 562.5, 25, wallColour$1),
+        new Wall(762.5, 0, 562.5, 25, wallColour$1),
+        // Bottom opening
+        new Wall(0, 700, 562.5, 25, wallColour$1),
+        new Wall(762.5, 700, 562.5, 25, wallColour$1),
+        // Left opening
+        new Wall(0, 0, 25, 262.5, wallColour$1),
+        new Wall(0, 462.5, 25, 262.5, wallColour$1)
+    ],
+    // The room which is above room 1
+    [
+        new Wall(0, 0, 1325, 25, wallColour$1),
+        new Wall(0, 0, 25, 725, wallColour$1),
+        new Wall(1300, 0, 25, 725, wallColour$1),
+        // Bottom opening
+        new Wall(0, 700, 562.5, 25, wallColour$1),
+        new Wall(762.5, 700, 562.5, 25, wallColour$1)
+    ],
+    // The room which is below room 1
+    [
+        new Wall(0, 700, 1325, 25, wallColour$1),
+        new Wall(0, 0, 25, 725, wallColour$1),
+        new Wall(1300, 0, 25, 725, wallColour$1),
+        // Top opening
+        new Wall(0, 0, 562.5, 25, wallColour$1),
+        new Wall(762.5, 0, 562.5, 25, wallColour$1)
+    ],
+];
+const claudius = new Interactable$1("Claudius", new Wall(200, 600, 50, 50, "#1d697c"));
+const tiberius = new Interactable$1("Tiberius", new Wall(1000, 600, 50, 50, "#48929b"));
+let scene$3 = new Scene(dialogue$3.Claudius);
+scene$3.playing = false;
+let prompt$3 = {
+    int: claudius,
+    active: false,
+    box: new MenuOption("=================================================", 0, 0)
+};
+class House {
+    constructor() {
+        this.room = 0;
+        this.collisions = [];
+    }
+    init() {
+        document.onkeydown = event => {
+            let code = event.code;
+            if (scene$3.playing && code == "KeyZ")
+                scene$3.progress();
+            else if (code == "KeyX" && prompt$3.active) {
+                prompt$3.active = false;
+                // Set the dialogue option based on the password
+                let speech;
+                if (prompt$3.int.id == "Claudius")
+                    speech = "Claudius";
+                // The right password was not entered
+                else if (!password.peanuts)
+                    speech = "TiberiusBase";
+                // The right password was entered, and this is the first time
+                // Claudia speaks to Tiberius
+                else if (!password.timeMachine) {
+                    speech = "TiberiusTransact";
+                    password.timeMachine = true;
+                }
+                // The right password was entered and Claudia already recevied
+                // the time machine from Tiberius
+                else
+                    speech = "TiberiusAftermath";
+                scene$3 = new Scene(dialogue$3[speech]);
+            }
+            else if (!scene$3.playing)
+                player.handleKey("keydown", code);
+        };
+        document.onkeyup = event => {
+            player.handleKey("keyup", event.code);
+        };
+        this.genCollisions();
+    }
+    genCollisions() {
+        let room = this.room;
+        this.collisions = walls$1[room];
+        if (room == 0)
+            this.collisions.push(claudius.obj);
+        if (room == 1)
+            this.collisions.push(tiberius.obj);
+    }
+    transitions() {
+        let oldRoom = this.room;
+        if (this.room == 0 && player.x < 0)
+            return "Lerwick";
+        else if (this.room == 1 && player.x > 1275)
+            return "AugustusRoom";
+        else if (this.room == 0 && player.x > 1275) {
+            player.x = 0;
+            this.room = 1;
+        }
+        else if (this.room == 1 && player.x < 0) {
+            player.x = 1275;
+            this.room = 0;
+        }
+        else if (this.room == 1 && player.y < 0) {
+            player.y = 675;
+            this.room = 2;
+        }
+        else if (this.room == 3 && player.y < 0) {
+            player.y = 675;
+            this.room = 1;
+        }
+        else if (this.room == 2 && player.y > 675) {
+            player.y = 0;
+            this.room = 1;
+        }
+        else if (this.room == 1 && player.y > 675) {
+            player.y = 0;
+            this.room = 3;
+        }
+        // We switched rooms
+        if (this.room != oldRoom)
+            this.genCollisions();
+        // The location transition conditions failed, so we're not changing
+        return null;
+    }
+    move(time) {
+        if (!scene$3.playing)
+            player.move(time, "fixed", this.collisions);
+    }
+    draw() {
+        // Floor
+        c.fillStyle = "#dba97d";
+        c.frect(0, 0, 1325, 725);
+        // Black entrance floor to Augustus's room
+        if (this.room == 1) {
+            c.fillStyle = "#000";
+            c.frect(1312.5, 262.5, 12.5, 200);
+        }
+        for (const obj of this.collisions) {
+            obj.draw();
+        }
+        // Math password hints
+        if (this.room == 2) {
+            c.fillStyle = "#111";
+            c.text("How many numbers greater than 100 but less than 1000", 200, 100);
+            c.text("are multiples of 10 but not of 6 or 13?", 200, 150);
+            c.text("Call the answer 'a'.", 200, 250);
+            /*
+            (If you haven't tried it yourself, you shouldn't be reading this,
+            unless you're so comfortable with counting that you think it would
+            be redundant practice)
+
+            My thought process for solving it:
+
+            ">100" and "<1000" means our range is 101-999.
+            The word "multiple" means that we only consider integers.
+
+            We should find the number of multiples of 10, multiples of 10 and 6,
+            multiples of 10 and 13, and multiples of 10 and 6 and 13. Then,
+            subtract the multiples of 10 and 6 and the multiples of 10 and 13
+            but add the multiples of 10 and 6 and 13, because they would have
+            been subtracted twice.
+
+            Multiples of 10:
+                110, 120, 130, ..., 980, 990
+                --> 11, 12, 13, ..., 98, 99
+                --> 1, 2, 3, ..., 88, 89
+                = 89 multiples of 10
+                (Applying these operations to each number in the set doesn't
+                change the length)
+
+            Multiples of 10 and 6:
+                10 = 2 * 5
+                6 = 2 * 3
+                So, we're loooking for multiples of 2 * 3 * 5 = 30
+
+                101 / 30 = 3.366...
+                3 * 30 = 90
+                4 * 30 = 120
+
+                999 / 30 = 33.3
+                33 * 30 = 990
+
+                --> 120, 150, 180, ..., 960, 990
+                --> 4, 5, 6, ..., 32, 33
+                --> 1, 2, 3, ..., 29, 30
+                = 30 multiples of 10 and 6
+
+            Multiples of 10 and 13:
+                13 is prime, so we're only looking at multiples of 10 * 13 = 130
+                130 * 1 = 130
+                999 / 130 = 7.68...
+
+                Our lower bound is 1 and our upper bound is 7, so we already
+                know there are 7 multiples of 10 and 13
+
+            Multiples of 10 and 6 and 13:
+                We just look at multiples of 13 * 30 = 390
+                390 * 1 = 390
+                390 * 2 = 780
+                390 * 3 = 1170
+                = 2 multiples of 10, 6, and 13
+
+                We counted 390 and 780 twice earlier, so we subtract 2
+
+            Final answer:
+                89 - 30 - 7 + 2
+                = 54
+
+                Therefore, there are 54 numbers greater than 100 and less than
+                1000 that are multiples of 10 but not of 6 or 13
+            */
+        }
+        else if (this.room == 3) {
+            c.fillStyle = "#111";
+            c.text("What is the value of the sum 52.5 + 53 + 53.5 + ... + 144.5 + 145?", 200, 550);
+            c.text("Call the answer 'c'.", 200, 600);
+            /*
+            (Again: If you haven't tried it yourself, you shouldn't be reading this,
+            unless you're so comfortable with counting that you think it would
+            be redundant practice)
+
+            My thought process for solving it:
+
+            The .5s are sort of annoying, so I'd find it simpler to first factor
+            them out.
+            52.5 + 53 + ... + 144.5 + 155
+            = 0.5(105) + 0.5(106) + ... + 0.5(289) + 0.5(290)
+            = 0.5(105 + 106 + ... + 289 + 290)
+
+            Let's say that x = 105 + 106 + ... + 289 + 290, so our answer would be
+            0.5x = x/2. (This is for organization, again.)
+
+            Then, what if we re-arrange the terms to clump opposites together?
+            1 + 2 + 3 + 4 --> (1 + 4) + (2 + 3)
+
+            x = 105 + 106 + ... + 289 + 290
+            = (105 + 290) + (106 + 289) + ...?
+
+            Each of these are going to sum to 395.
+            395 / 2 is 197.5, so our inner-most pair would be 197 + 198.
+            To confirm, |105 - 197| = 92 = |290 - 198|.
+
+            We have the (105 + ...), (106 + ...), ... pairs up to (197 + 198)
+            The set of first terms in each pair is {105, 106, ..., 196, 197}
+            --> {1, 2, ..., 92, 93}
+            Meaning that there are 93 first terms and hence 93 pairs
+
+            Since each pair sums to 395, the total sum is 93 * 395 = 36735 = x.
+            Our answer is x/2 (from earlier), which is 18367.5.
+            */
+        }
+        player.draw("fixed");
+        if (!scene$3.playing && (this.room == 0 || this.room == 1)) {
+            // int: Interactable
+            const int = this.room == 0 ? claudius : tiberius;
+            if (int.inRange()) {
+                // Create a prompt box if it hasn't been set
+                if (!prompt$3.active)
+                    prompt$3.box = new MenuOption("Press X to interact.", int.obj.x - 60, int.obj.y - 60);
+                prompt$3.int = int;
+                prompt$3.active = true;
+            }
+            else
+                prompt$3.active = false;
+        }
+        if (prompt$3.active)
+            prompt$3.box.show(false);
+        scene$3.draw();
+    }
+}
+const house = new House();
+
+const RNG$1 = (min, max) => {
+    return Math.round(Math.random() * (max - min)) + min;
+};
+// Move every 100 ms
+const threshold = 16.66;
+/*
+elapsed {
+    0: timer for movement (x,y manipulation)
+    1: timer for countdown (attack counter manipulation)
+}
+
+status
+    "circle" = moving in a circle
+    "glide" = moving in a straight line towards the next rotation origin
+    "attacking" = swinging sword
+
+Times
+    19, 37, 54.5, 1:12
+*/
+class Augustus extends Enemy {
+    constructor() {
+        super(993.75, 337.5, [0, 0], 99, "#eee", "#111");
+        this.angle = {
+            degrees: 0,
+            change: 0
+        };
+        // Radius of rotation circle
+        this.radius = 200;
+        this.origin = {
+            x: 993.75,
+            y: 337.5
+        };
+        this.glideValues = {
+            x: [0, 1],
+            y: [0, 1],
+            cy: 0,
+            cx: 0
+        };
+        this.buffer = {
+            status: "",
+            elapsed: 0
+        };
+        this.status = "glide";
+        this.dir = "right";
+        this.counter = 63;
+        this.radius = RNG$1(100, 250);
+        this.genGlide();
+    }
+    constraints() {
+        // Don't move through walls
+        if (this.x > 1250)
+            this.x = 1250;
+        if (this.y > 650)
+            this.y = 650;
+        if (this.x < 25)
+            this.x = 25;
+        if (this.y < 25)
+            this.y = 25;
+    }
+    // Generate the gliding destination and appropriate (x,y) movement speed
+    genGlide() {
+        let x = this.origin.x;
+        let y = this.origin.y - this.radius;
+        let cx = (x - this.x) / 100;
+        let cy = (y - this.y) / 100;
+        this.glideValues = {
+            // We use a small range instead of literal this.x == glideValue.x
+            // because JavaScript messes up arithmetic with decimals
+            x: [x - Math.abs(cx), x + Math.abs(cx)],
+            y: [y - Math.abs(cy), y + Math.abs(cy)],
+            cx: cx,
+            cy: cy
+        };
+    }
+    // Decide on a radius and origin point
+    glideInit() {
+        this.status = "glide";
+        let radius = RNG$1(100, 300);
+        // We just twisted clockwise and are now at the bottom of the previous
+        // origin point. So, we're moving to the left.
+        if (this.angle.change == 1) {
+            this.origin = {
+                x: RNG$1(25 + radius, this.x - radius),
+                y: RNG$1(25 + radius, 650 - radius)
+            };
+            this.dir = "left";
+        }
+        // We just twisted counterclockwise and are now at the bottom of the
+        // previous origin point. So, we're moving to the right.
+        else {
+            this.origin = {
+                x: RNG$1(this.x + radius, 1250 - radius),
+                y: RNG$1(25 + radius, 650 - radius)
+            };
+            this.dir = "right";
+        }
+        this.radius = radius;
+        this.genGlide();
+    }
+    glide() {
+        while (this.elapsed[0] > threshold) {
+            this.elapsed[0] -= threshold;
+            const glide = this.glideValues;
+            this.x += glide.cx;
+            this.y += glide.cy;
+            if (this.x >= glide.x[0] &&
+                this.x <= glide.x[1] &&
+                this.y >= glide.y[0] &&
+                this.y <= glide.y[1])
+                this.circleInit();
+            this.constraints();
+        }
+    }
+    circleInit() {
+        this.status = "circle";
+        this.angle.degrees = 270;
+        if (this.dir == "right") {
+            this.angle.change = 1;
+            this.dir = "left";
+        }
+        else {
+            this.angle.change = -1;
+            this.dir = "right";
+        }
+    }
+    circle() {
+        while (this.elapsed[0] > threshold) {
+            this.elapsed[0] -= threshold;
+            this.angle.degrees += this.angle.change;
+            // We've rotated to the bottom of the circle
+            if (this.angle.degrees == 90) {
+                this.glideInit();
+                return;
+            }
+            if (this.angle.degrees > 360)
+                this.angle.degrees = this.angle.degrees % 360;
+            let radian = Math.round(this.angle.degrees) * Math.PI / 180;
+            this.x = this.origin.x + this.radius * Math.cos(radian);
+            this.y = this.origin.y + this.radius * Math.sin(radian);
+            this.constraints();
+        }
+    }
+    attackCounter() {
+        if (this.elapsed[1] > 350) {
+            this.counter -= 1;
+            this.elapsed[1] = 0;
+            if (this.counter == 0) {
+                this.buffer.status = this.status;
+                this.buffer.elapsed = this.elapsed[0];
+                this.startSwing();
+            }
+        }
+    }
+    attack(time) {
+        // We want a 180 degree rotation in 500ms, which means 180/500 = 0.36
+        // degrees per millisecond
+        this.sword.rotate((time - this.lastFrame) * 0.36);
+        if (this.elapsed[1] > 500) {
+            // Reset to old, pre-attack values
+            this.status = this.buffer.status;
+            this.elapsed[0] = this.buffer.elapsed;
+            this.elapsed[1] = 0;
+            this.counter = 63;
+        }
+    }
+    move(time) {
+        this.timer("start", time);
+        this[this.status](time); // circle(), glide(), etc.
+        if (this.status != "attack")
+            this.attackCounter();
+        this.timer("end", time);
+    }
+    collision(playerX, playerY) {
+        // Augustus is physically overlapping Claudia
+        if (this.x + 50 > playerX &&
+            this.y + 50 > playerY &&
+            playerX + 50 > this.x &&
+            playerY + 50 > this.y)
+            return true;
+        return super.collision(playerX, playerY);
+    }
+    draw() {
+        super.draw();
+        // Show origin
+        c.beginPath();
+        c.rect(this.origin.x, this.origin.y, 50, 50);
+        c.strokeStyle = "#eee";
+        c.stroke();
+    }
+}
+const augustus = new Augustus();
+
+// Dialogue in Augustus' room
+const dialogue$2 = [
+    // Initial enter
+    [
+        ["Claudia", "..."],
+        ["Claudia", "...?"],
+        ["Claudia", "Wait, didn't you die in AD 14?"],
+        ["Claudia", "Either you're supposed to be dead, or I'm not supposed to be alive."],
+        ["Augustus", "It's the former. You're right; I'm supposed to be dead."],
+        ["Augustus", "And yet, I am not."],
+        ["Augustus", "Does that fact intensely trouble you?"],
+        ["Claudia", "It does. How can you be content with contradiction?"],
+        ["Claudia", "Have you never heard of the explosion principle?"],
+        ["Augustus", "I have, but it does not apply. Your view of 'logic' is too narrow-minded."],
+        ["Augustus", "Regardless, I can already infer why you are here."],
+        ["Claudia", "What's your conclusion?"],
+        ["Augustus", "You're here to suffer, are you not?"],
+        ["Augustus", "You're capable of slaying Nero flawlessly and yearn for defeat?"],
+        ["Claudia", "What if I'm not?"],
+        ["Augustus", "If you can't do something as simple as overpowering poor Nero..."],
+        ["Augustus", "You're out of your territory here."],
+        ["Claudia", "What if I am?"],
+        ["Augustus", "You'll still be disappointed. Go home, or you'll regret it."],
+        ["Claudia", "Thanks for the offer, but I think I'll stay."],
+        ["Claudia", "You'll probably even fail to provide a sufficient amount of suffering..."],
+        ["Claudia", "By the way, was that Tiberius Caesar Augustus in the other room?"],
+        ["Augustus", "No, obviously. Don't get confused just because his name tag uses his first name."],
+        ["Claudia", "But wouldn't 'Britannicus' be more accurate, then?"],
+        ["Augustus", "Who cares?"],
+        ["Claudia", "..."],
+        ["Augustus", "Here is my proposal."],
+        ["Augustus", "You're clearly not thinking straight, so I'll give you three minutes."],
+        ["Augustus", "If, after the three minutes, your intent for misfortune exists, I won't stop myself."],
+        ["Claudia", "You think that will make me change my mind?"],
+        ["Claudia", "Although, waiting three minutes does seem kind of annoying..."],
+        ["Augustus", "Of course it does. So, leave."],
+        ["Claudia", "I wonder if it's possible to 𝘀𝗸𝗶𝗽 𝘁𝗵𝗶𝘀..."]
+    ],
+    // After the three-minute wait
+    [
+        ["Claudia", "Three minutes is up. My intent is everlasting."],
+        ["Augustus", "I see. Let's begin, then."]
+    ]
+];
+
+let scene$2 = new Scene(dialogue$2[0]);
+const wallColour = "#8db255";
+const openWalls = [
+    new Wall(0, 0, 1325, 25, wallColour),
+    new Wall(0, 700, 1325, 25, wallColour),
+    new Wall(0, 0, 25, 262.5, wallColour),
+    new Wall(0, 462.5, 25, 262.5, wallColour),
+    new Wall(1300, 0, 25, 725, wallColour)
+];
+const closedWalls = [
+    new Wall(0, 0, 1325, 25, wallColour),
+    new Wall(0, 700, 1325, 25, wallColour),
+    new Wall(0, 0, 25, 725, wallColour),
+    new Wall(1300, 0, 25, 725, wallColour)
+];
+let walls = openWalls;
+class Room {
+    constructor() {
+        this.status = "dialogue_0";
+        this.gameState = "playing";
+        // The timestamp of the timer starting
+        this.initTime = 0;
+        // How many ms have passed since the timer started
+        this.time = 0;
+    }
+    init() {
+        player.x = 30;
+        document.onkeydown = this.inputInit;
+        // Stop the trailing movement from the previous screen
+        if (scene$2.playing)
+            player.resetInput();
+        document.onkeyup = event => {
+            player.handleKey("keyup", event.code);
+        };
+    }
+    fightInit() {
+        this.status = "fighting";
+        document.onkeydown = this.inputFight;
+        player.life.hp = 10;
+        player.life.threatened = false;
+        music.reset();
+        music.climax_reasoning.play();
+        walls = closedWalls;
+        // In case the player thinks that they're smart
+        if (player.x < 25)
+            player.x = 25;
+    }
+    inputInit(event) {
+        let code = event.code;
+        if (scene$2.playing && code == "KeyZ") {
+            scene$2.progress();
+            if (!scene$2.playing) {
+                if (this.status == "dialogue_0")
+                    this.status = "waiting";
+                // i.e. this.status == "dialogue_1"
+                else
+                    this.fightInit();
+            }
+        }
+        else if (scene$2.playing)
+            return;
+        // Skip wait if you have the time machine
+        else if (code == "Space" && password.timeMachine)
+            this.initTime = -180000;
+        else
+            player.handleKey("keydown", code);
+    }
+    inputFight(event) {
+        let code = event.code;
+        player.handleKey("keydown", code);
+        player.fixedKeys(code);
+    }
+    move(time) {
+        if (this.status == "waiting") {
+            player.move(time, "fixed", walls);
+            // Set the starting time
+            if (!scene$2.playing && this.initTime == 0)
+                this.initTime = time;
+            this.time = time - this.initTime;
+            if (this.time >= 180000) {
+                this.status = "dialogue_1";
+                scene$2 = new Scene(dialogue$2[1]);
+            }
+        }
+        // Augustus fight started
+        else if (this.status == "fighting") {
+            player.progressCooldowns(time);
+            augustus.move(time);
+            player.move(time, "fixed", walls);
+            if (player.status == "attacking")
+                augustus.receiveDamage();
+            // Have the player take damage if Augustus hits (sword) or overlaps
+            if (augustus.collision(player.x, player.y)) {
+                player.receiveDamage();
+                // Tell steps.ts to render the lose screen
+                if (player.life.hp < 1)
+                    this.gameState = "lose";
+            }
+        }
+    }
+    transitions() {
+        if (player.x < 0)
+            return "TiberiusHouse";
+        else
+            return null;
+    }
+    drawTimer() {
+        let seconds = Math.round(this.time / 1000);
+        let minutes = Math.ceil(seconds / 60);
+        seconds = seconds - (minutes - 1) * 60;
+        let padding = 60 - seconds < 10 ? '0' : '';
+        let time = `${3 - minutes}:${padding}${60 - seconds}`;
+        c.fillStyle = "#eee";
+        c.font = "40px serif";
+        c.text(time, 100, 100);
+    }
+    draw() {
+        c.fillStyle = "#000";
+        c.frect(0, 0, 1325, 725);
+        if (this.status == "waiting") {
+            this.drawTimer();
+            if (password.timeMachine)
+                c.text("Press 𝗦𝗽𝗮𝗰𝗲 to use your time machine.", 100, 625);
+        }
+        for (const wall of walls) {
+            wall.draw();
+        }
+        player.draw("fixed");
+        augustus.draw();
+        if (this.status == "fighting") {
+            player.drawRange(augustus.x, augustus.y);
+            player.drawCooldowns();
+            augustus.life.draw();
+            player.life.draw();
+        }
+        scene$2.draw();
+    }
+}
+const room = new Room();
+room.inputInit = room.inputInit.bind(room);
+room.inputFight = room.inputFight.bind(room);
 
 // A "Block" is just a coloured rectangle. Since it's in overworld/, it's meant
 // to be placed in the overworld, which is why it keeps scroll(X,Y) in mind.
@@ -2266,7 +3227,7 @@ class Interactable {
 // Interactions in Perinthus
 const dialogue$1 = {
     Ovicula: [
-        ["Claudia", "Hey, want to know what my position on the theory of mind is?"],
+        ["Claudia", "Hey, want to know what my position on the philosophy of mind is?"],
         ["Ovicula", "I don't care. Go away!"]
     ],
     Dorus: [
@@ -2505,11 +3466,7 @@ const perinthus = {
         if (prompt$2.active)
             prompt$2.box.show(false);
         // Show the scene text if it's playing
-        if (scene$1.playing) {
-            scene$1.speech.draw();
-            if (scene$1.speaker)
-                scene$1.speaker.draw();
-        }
+        scene$1.draw();
     }
 };
 // It's better to bind it outside of the requestAnimationFrame call so that a
@@ -3017,10 +3974,8 @@ const lerwick = {
             return "neroHouse";
         if (x == -5 && y > -75 && y < 75)
             return "akvedukto";
-        /*
         if (x == 1825 && y > -525 && y < -370)
-            return "tiberiusHouse"
-        */
+            return "tiberiusHouse";
         else
             return null;
     },
@@ -3079,11 +4034,7 @@ const lerwick = {
         if (prompt$1.active)
             prompt$1.box.show(false);
         // Show the scene text if it's playing
-        if (scene.playing) {
-            scene.speech.draw();
-            if (scene.speaker)
-                scene.speaker.draw();
-        }
+        scene.draw();
     }
 };
 
@@ -3177,6 +4128,15 @@ const steps = {
                 player.y = 670;
                 window.requestAnimationFrame(this.neroHouse);
                 break;
+            case "tiberiusHouse":
+                house.init();
+                player.x = 0;
+                player.y = 337.5;
+                // We can't have the music operations in tiberiusHouse.init() or
+                // else it will have to run when coming back from augustusRoom
+                music.reset();
+                music.climactic_return.play();
+                window.requestAnimationFrame(this.tiberiusHouse);
         }
     },
     gameOver() {
@@ -3227,6 +4187,39 @@ const steps = {
         }
         else
             window.requestAnimationFrame(this.neroHouse);
+    },
+    tiberiusHouse(time) {
+        house.move(time);
+        house.draw();
+        switch (house.transitions()) {
+            case null:
+                window.requestAnimationFrame(this.tiberiusHouse);
+                break;
+            case "Lerwick":
+                lerwick.init();
+                player.x = 1825;
+                player.y = -447.5;
+                window.requestAnimationFrame(this.lerwick);
+                break;
+            case "AugustusRoom":
+                room.init();
+                window.requestAnimationFrame(this.augustusRoom);
+                break;
+        }
+    },
+    augustusRoom(time) {
+        room.move(time);
+        room.draw();
+        switch (room.transitions()) {
+            case null:
+                window.requestAnimationFrame(this.augustusRoom);
+                break;
+            case "TiberiusHouse":
+                house.init();
+                player.x = 1220;
+                window.requestAnimationFrame(this.tiberiusHouse);
+                break;
+        }
     }
 };
 // Bind each "this" to "steps"
@@ -3234,9 +4227,7 @@ for (const step of Object.keys(steps)) {
     steps[step] = steps[step].bind(steps);
 }
 
-/*
-Name: Michael Skyba, Malfacile Gajnita Savo
-*/
+// Official start
 document.getElementById("load").onclick = () => {
     mainMenu.init();
     window.requestAnimationFrame(steps.mainMenu);
