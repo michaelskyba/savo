@@ -99,9 +99,7 @@ class Nero extends Enemy {
 				this.status = "countdown"
 				this.elapsed[1] = 0
 
-				this.counter = 99
 				this.pattern = Math.round(RNG(0, 200) / 100)
-
 				switch(this.pattern) {
 					case 2:
 						this.counter = 99

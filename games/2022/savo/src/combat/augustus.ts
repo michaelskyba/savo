@@ -43,6 +43,11 @@ class Augustus extends Enemy {
 		cx: 0
 	}
 
+	buffer = {
+		status: "",
+		elapsed: 0
+	}
+
 	status = "glide"
 	dir = "right"
 
@@ -165,11 +170,40 @@ class Augustus extends Enemy {
 		}
 	}
 
+	attackCounter() {
+		if (this.elapsed[1] > 350) {
+			this.counter -= 1
+			this.elapsed[1] = 0
+
+			if (this.counter == 0) {
+				this.buffer.status = this.status
+				this.buffer.elapsed = this.elapsed[0]
+				this.startSwing()
+			}
+		}
+	}
+
+	attack(time: number) {
+		// We want a 180 degree rotation in 500ms, which means 180/500 = 0.36
+		// degrees per millisecond
+		this.sword.rotate((time - this.lastFrame) * 0.36)
+
+		if (this.elapsed[1] > 500) {
+			// Reset to old, pre-attack values
+			this.status = this.buffer.status
+			this.elapsed[0] = this.buffer.elapsed
+			this.elapsed[1] = 0
+			this.counter = 63
+		}
+	}
+
 	move(time: number) {
 		this.timer("start", time)
 
-		// circle(), glide(), etc.
-		this[this.status]()
+		this[this.status](time) // circle(), glide(), etc.
+
+		if (this.status != "attack")
+			this.attackCounter()
 
 		this.timer("end", time)
 	}
