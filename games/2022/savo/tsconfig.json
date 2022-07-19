@@ -4,7 +4,7 @@
 		"module": "esnext",
 		"lib": ["dom", "es2015"],
 		"outDir": "out-ts",
-		"watch": true
+		"watch": false
 	},
 	"include": ["./src/*/*.ts"]
 }

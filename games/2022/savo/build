@@ -1,9 +1,18 @@
 #!/bin/sh -e
 
-# Recompile TypeScript incrementally in the background
-tsc &
+echo "./build: Check/install rollup"
+npx rollup -v
 
-# When any file in out-ts/ changes, compile with rollup
+echo "./build: Initial TS compilation"
+tsc
+
+echo "./build: Initial rollup bundling"
+npx rollup -c rollup.config.js
+
+echo "./build: Incremental, ongoing TS compilation"
+tsc -w &
+
+echo "./build: rollup watching of out-ts/ with entr"
 find out-ts/* -type f | entr npx rollup -c rollup.config.js
 
 # However, since find doesn't update, you'll have to restart this build script if
