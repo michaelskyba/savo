@@ -1,5 +1,6 @@
 import c from "../game/canvas"
-import Enemy from "../combat/Enemy"
+import Enemy from "./Enemy"
+import Slider from "./Slider"
 
 const RNG = (min, max) => {
 	return Math.round(Math.random() * (max - min)) + min
@@ -28,6 +29,10 @@ class Augustus extends Enemy {
 		degrees: 0,
 		change: 0
 	}
+
+	sliders = [
+		new Slider(-100, 50, "right")
+	]
 
 	// Radius of rotation circle
 	radius = 200
@@ -206,6 +211,8 @@ class Augustus extends Enemy {
 			this.attackCounter()
 
 		this.timer("end", time)
+
+		this.sliders[0].move()
 	}
 
 	collision(playerX: number, playerY: number): boolean {
@@ -226,6 +233,8 @@ class Augustus extends Enemy {
 		c.rect(this.origin.x, this.origin.y, 50, 50)
 		c.strokeStyle = "#eee"
 		c.stroke()
+
+		this.sliders[0].draw()
 	}
 }
 
