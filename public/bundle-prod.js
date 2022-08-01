@@ -155,11 +155,11 @@ const mainMenu = {
                     break;
                 // "Source code" button
                 case 3:
-                    window.open("https://github.com/michaelskyba/michaelskyba.github.io/tree/master/games/2022/savo", "_blank").focus();
+                    window.open("https://github.com/michaelskyba/savo", "_blank").focus();
                     break;
                 // "Home" button
                 case 4:
-                    window.location.href = "../../2022.html";
+                    window.location.href = "../games/2022/index.html";
                     break;
                 // "Password" button
                 case 5:
