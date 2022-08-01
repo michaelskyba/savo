@@ -117,7 +117,7 @@ const mainMenu = {
 
 				// "Home" button
 				case 4:
-					window.location.href = "../games/2022/index.html"
+					window.location.href = "../../games/2022/index.html"
 					break
 
 				// "Password" button
