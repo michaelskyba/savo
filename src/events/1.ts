@@ -44,7 +44,7 @@ const dialogue = {
 		["Messalina", "Once you've acquired the ROM, you have a second problem: no drivers exist for your Kepler GPU."],
 		["Claudia", "What's a driver? Cars aren't going to exist a while."],
 		["Messalina", "Again, disregard the details for the moment."],
-		["Claudia", "All it means in the broader sense is that you're going to have to program your own."],
+		["Messalina", "All it means in the broader sense is that you're going to have to program your own."],
 		["Claudia", "Programming? You mean that thing that losers do?"],
 		["Messalina", "Hey, I'm trying to help you here."],
 

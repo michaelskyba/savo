@@ -84,7 +84,7 @@ const dialogue = {
 		["Claudia", "For example, take a look at the edit history of the Enbridge article."],
 		["Serapio", "No... there must be some mistake. There's no way... *Wikipedia*... actually works..."],
 		["Claudia", "It's seeming more and more to me that you're overwhelmingly biased on the topic."],
-		["Claudia", "Why not solve the riddle of your own academic dishonesty before attacking others?"],
+		["Claudia", "Why not solve the riddle of your own intellectual dishonesty before attacking others?"],
 		["Serapio", "..."],
 	],
 
