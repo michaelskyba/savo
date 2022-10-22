@@ -230,6 +230,7 @@ class Augustus extends Enemy {
 
 		// Show origin
 		c.beginPath()
+		c.lineWidth = 2
 		c.rect(this.origin.x, this.origin.y, 50, 50)
 		c.strokeStyle = "#eee"
 		c.stroke()
