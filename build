@@ -7,13 +7,13 @@ echo "./build: Initial TS compilation"
 tsc
 
 echo "./build: Initial rollup bundling"
-npx rollup -c rollup.config.js
+npx rollup -c rollup.config.mjs
 
 echo "./build: Incremental, ongoing TS compilation"
 tsc -w &
 
 echo "./build: rollup watching of out-ts/ with entr"
-find out-ts/* -type f | entr npx rollup -c rollup.config.js
+find out-ts/* -type f | entr npx rollup -c rollup.config.mjs
 
 # However, since find doesn't update, you'll have to restart this build script if
 # you add a new file to look for changes in. I think it's possible to set up a
