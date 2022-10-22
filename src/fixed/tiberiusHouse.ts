@@ -203,6 +203,7 @@ class House {
 
 		// Math password hints
 		if (this.room == 2) {
+			c.font = "30px serif"
 			c.fillStyle = "#111"
 			c.text("How many numbers greater than 100 but less than 1000", 200, 100)
 			c.text("are multiples of 10 but not of 6 or 13?", 200, 150)
@@ -276,6 +277,7 @@ class House {
 		}
 
 		else if (this.room == 3) {
+			c.font = "30px serif"
 			c.fillStyle = "#111"
 			c.text("What is the value of the sum 52.5 + 53 + 53.5 + ... + 144.5 + 145?", 200, 550)
 			c.text("Call the answer 'c'.", 200, 600)
