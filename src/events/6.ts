@@ -147,7 +147,7 @@ const dialogue = {
 		["Nero", "Around the room, you will encounter purple (#2B193D) squares."],
 		["Nero", "If you pick one up, your next attack will do more damage."],
 		["Nero", "This encourages you to move around the room while fighting instead of staying in the same spot."],
-		["Nero", "It's peak game design, okay?."],
+		["Nero", "It's peak game design, okay?"],
 		["Claudia", "Thanks for making it even easier to kill you, idiot."]
 	]
 }
