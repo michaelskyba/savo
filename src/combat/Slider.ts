@@ -4,11 +4,10 @@ import { RNG } from "../game/functions"
 class Slider extends Enemy {
 	cx: number
 
-	constructor(x: number, y: number, dir: string) {
-		super(x, y, [0, 0], 0, "#111", "#eee")
+	constructor(y: number) {
+		super(-100, y, [0, 0], 0, "#111", "#eee")
 		this.counter = RNG(10, 15) * 2
-
-		this.cx = dir == "right" ? 1 : -1
+		this.cx = RNG(1, 3)/2
 	}
 
 	move() {

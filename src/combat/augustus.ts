@@ -28,9 +28,9 @@ class Augustus extends Enemy {
 	}
 
 	sliders = [
-		new Slider(-100, 100, "right"),
-		new Slider(-100, 337.5, "right"),
-		new Slider(-100, 575, "right")
+		new Slider(100),
+		new Slider(337.5),
+		new Slider(575)
 	]
 
 	// Radius of rotation circle
