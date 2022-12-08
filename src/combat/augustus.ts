@@ -31,7 +31,9 @@ class Augustus extends Enemy {
 	}
 
 	sliders = [
-		new Slider(-100, 50, "right")
+		new Slider(-100, 50, "right"),
+		new Slider(-100, 337.5, "right"),
+		new Slider(-100, 625, "right")
 	]
 
 	// Radius of rotation circle
@@ -212,7 +214,9 @@ class Augustus extends Enemy {
 
 		this.timer("end", time)
 
-		this.sliders[0].move()
+		this.sliders.forEach(slider => {
+			slider.move()
+		})
 	}
 
 	collision(playerX: number, playerY: number): boolean {
@@ -235,7 +239,9 @@ class Augustus extends Enemy {
 		c.strokeStyle = "#eee"
 		c.stroke()
 
-		this.sliders[0].draw()
+		this.sliders.forEach(slider => {
+			slider.draw()
+		})
 	}
 }
 
