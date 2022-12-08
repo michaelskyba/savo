@@ -1,9 +1,6 @@
 import Img from "./Img"
 import player from "../game/player"
-
-const RNG = (min, max) => {
-	return Math.round(Math.random() * (max - min)) + min
-}
+import { RNG } from "../game/functions"
 
 class Grass {
 	x: number

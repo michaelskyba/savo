@@ -1,10 +1,7 @@
 import c from "../game/canvas"
 import Enemy from "./Enemy"
 import Slider from "./Slider"
-
-const RNG = (min, max) => {
-	return Math.round(Math.random() * (max - min)) + min
-}
+import { RNG } from "../game/functions"
 
 // Move every 100 ms
 const threshold = 16.66
@@ -31,9 +28,9 @@ class Augustus extends Enemy {
 	}
 
 	sliders = [
-		new Slider(-100, 50, "right"),
+		new Slider(-100, 100, "right"),
 		new Slider(-100, 337.5, "right"),
-		new Slider(-100, 625, "right")
+		new Slider(-100, 575, "right")
 	]
 
 	// Radius of rotation circle

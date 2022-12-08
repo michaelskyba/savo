@@ -1,8 +1,5 @@
 import Enemy from "../combat/Enemy"
-
-const RNG = (min, max) => {
-	return Math.round(Math.random() * (max - min)) + min
-}
+import { RNG } from "../game/functions"
 
 class Slider extends Enemy {
 	cx: number

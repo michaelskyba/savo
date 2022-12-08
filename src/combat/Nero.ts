@@ -1,6 +1,7 @@
 import Enemy from "./Enemy"
 import player from "../game/player"
 import Powerup from "./Powerup"
+import { RNG } from "../game/functions"
 
 const powerup = new Powerup()
 
@@ -10,10 +11,6 @@ elapsed {
 	1: timer for countdown (attack counter manipulation)
 }
 */
-
-const RNG = (min, max) => {
-	return Math.round(Math.random() * (max - min)) + min
-}
 
 class Nero extends Enemy {
 	moveStatus = "approaching"

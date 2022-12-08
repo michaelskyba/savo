@@ -4,13 +4,9 @@ import claudiaHouse from "../fixed/claudiaHouse"
 
 import steps from "../game/steps"
 import music from "../game/music"
+import { RNG } from "../game/functions"
 
 import password from "../events/password"
-
-// Return random integer from min to max (inclusive)
-const RNG = (min, max) => {
-	return Math.round(Math.random() * (max - min)) + min
-}
 
 class Particle {
 	id: number

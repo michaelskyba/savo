@@ -1,9 +1,6 @@
 import player from "../game/player"
 import c from "../game/canvas"
-
-const RNG = (min, max) => {
-	return Math.round(Math.random() * (max - min)) + min
-}
+import { RNG } from "../game/functions"
 
 class Powerup {
 	x = 662.5
