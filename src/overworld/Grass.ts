@@ -1,6 +1,6 @@
 import Img from "./Img"
 import player from "../game/player"
-import { RNG } from "../game/functions"
+import { RNG } from "../util/functions"
 
 class Grass {
 	x: number

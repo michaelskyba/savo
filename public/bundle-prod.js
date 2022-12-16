@@ -717,15 +717,30 @@ class Wall {
     }
 }
 
-let Img$1 = class Img {
+// No draw because we might have () or (number number) as args
+let Img$2 = class Img {
     constructor(id, x, y) {
         this.x = x;
         this.y = y;
         this.img = document.getElementById(id);
+        this.initDimensions();
+    }
+    initDimensions() {
         this.width = this.img.width;
         this.height = this.img.height;
+        console.log(this.img.id, "setting new dimensions", this.width, this.height);
     }
+    // <img> dimensions are set to 0 before they are fully loaded, which will
+    // lead to collision errors if they are not checked constantly
+    checkDimensions() {
+        if (this.width == 0 || this.height == 0)
+            this.initDimensions();
+    }
+};
+
+let Img$1 = class Img extends Img$2 {
     draw() {
+        this.checkDimensions();
         c.drawImage(this.img, this.x, this.y);
     }
 };
@@ -3183,24 +3198,14 @@ class Block {
     }
 }
 
-class Img {
+class Img extends Img$2 {
     constructor(id, x, y) {
-        this.x = x + 662.5;
-        this.y = y + 362.5;
-        this.img = document.getElementById(id);
-        this.initDimensions();
-    }
-    initDimensions() {
-        this.width = this.img.width;
-        this.height = this.img.height;
-        console.log(this.img.id, "setting new dimensions", this.width, this.height);
+        super(id, x, y);
+        this.x += 662.5;
+        this.y += 362.5;
     }
     draw(scrollX, scrollY) {
-        if (this.width == 0 || this.height == 0) {
-            this.initDimensions();
-            console.log(this.img.id, "Width or height is 0");
-        }
-        // else console.log(this.img.id, "Width and height aren't 0")
+        this.checkDimensions();
         c.drawImage(this.img, this.x - scrollX, this.y - scrollY);
     }
 }

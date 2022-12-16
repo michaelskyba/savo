@@ -1,5 +1,5 @@
 import Enemy from "../combat/Enemy"
-import { RNG } from "../game/functions"
+import { RNG } from "../util/functions"
 
 class Slider extends Enemy {
 	cx: number

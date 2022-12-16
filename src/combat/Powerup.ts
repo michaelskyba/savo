@@ -1,6 +1,6 @@
 import player from "../game/player"
 import c from "../game/canvas"
-import { RNG } from "../game/functions"
+import { RNG } from "../util/functions"
 
 class Powerup {
 	x = 662.5

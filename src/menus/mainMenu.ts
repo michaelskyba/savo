@@ -4,7 +4,7 @@ import claudiaHouse from "../fixed/claudiaHouse"
 
 import steps from "../game/steps"
 import music from "../game/music"
-import { RNG } from "../game/functions"
+import { RNG } from "../util/functions"
 
 import password from "../events/password"
 

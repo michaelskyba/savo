@@ -1,25 +1,9 @@
 import c from "../game/canvas"
+import BaseImg from "../util/BaseImg"
 
-class Img {
-	x: number
-	y: number
-
-	width: number
-	height: number
-
-	img: HTMLImageElement
-
-	constructor(id: string, x: number, y: number) {
-		this.x = x
-		this.y = y
-
-		this.img = document.getElementById(id) as HTMLImageElement
-
-		this.width = this.img.width
-		this.height = this.img.height
-	}
-
+class Img extends BaseImg {
 	draw() {
+		this.checkDimensions()
 		c.drawImage(this.img, this.x, this.y)
 	}
 }

@@ -1,7 +1,7 @@
 import Enemy from "./Enemy"
 import player from "../game/player"
 import Powerup from "./Powerup"
-import { RNG } from "../game/functions"
+import { RNG } from "../util/functions"
 
 const powerup = new Powerup()
 

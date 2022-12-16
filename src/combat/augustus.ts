@@ -1,7 +1,7 @@
 import c from "../game/canvas"
 import Enemy from "./Enemy"
 import Slider from "./Slider"
-import { RNG } from "../game/functions"
+import { RNG } from "../util/functions"
 
 // Move every 100 ms
 const threshold = 16.66
