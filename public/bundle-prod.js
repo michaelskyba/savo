@@ -73,23 +73,23 @@ const music = {
 // Make all tracks loop
 Object.keys(music).forEach(name => music[name].loop = true);
 
+const RNG = (min, max) => {
+    return Math.round(Math.random() * (max - min)) + min;
+};
+
 let password = {
     peanuts: false,
     timeMachine: false
 };
 
-// Return random integer from min to max (inclusive)
-const RNG$4 = (min, max) => {
-    return Math.round(Math.random() * (max - min)) + min;
-};
 class Particle {
     constructor(id) {
         this.active = true;
         this.id = id;
-        this.speed = RNG$4(1, 5);
-        this.size = RNG$4(25, 100);
+        this.speed = RNG(1, 5);
+        this.size = RNG(25, 100);
         this.x = 1325;
-        this.y = RNG$4(0 - this.size, 725);
+        this.y = RNG(0 - this.size, 725);
     }
     draw() {
         // I can't be bothered to implement a timing system: the movement speed is
@@ -583,7 +583,7 @@ const dialogue$7 = {
         ["Messalina", "Once you've acquired the ROM, you have a second problem: no drivers exist for your Kepler GPU."],
         ["Claudia", "What's a driver? Cars aren't going to exist a while."],
         ["Messalina", "Again, disregard the details for the moment."],
-        ["Claudia", "All it means in the broader sense is that you're going to have to program your own."],
+        ["Messalina", "All it means in the broader sense is that you're going to have to program your own."],
         ["Claudia", "Programming? You mean that thing that losers do?"],
         ["Messalina", "Hey, I'm trying to help you here."],
         ["Claudia", "Anyway, I haven't been paying attention. Just tell me the first thing I need to do."],
@@ -717,7 +717,7 @@ class Wall {
     }
 }
 
-class Img$1 {
+let Img$1 = class Img {
     constructor(id, x, y) {
         this.x = x;
         this.y = y;
@@ -728,9 +728,9 @@ class Img$1 {
     draw() {
         c.drawImage(this.img, this.x, this.y);
     }
-}
+};
 
-class Interactable$1 {
+let Interactable$1 = class Interactable {
     constructor(id, obj) {
         this.id = id;
         this.obj = obj;
@@ -747,7 +747,7 @@ class Interactable$1 {
             player.y > obj.y - 125 &&
             player.y < obj.y + obj.height + 75);
     }
-}
+};
 
 // Interaction inside claudiaHouse
 const dialogue$6 = {
@@ -1630,9 +1630,6 @@ const akvedukto = {
     }
 };
 
-const RNG$3 = (min, max) => {
-    return Math.round(Math.random() * (max - min)) + min;
-};
 class Powerup {
     constructor() {
         this.x = 662.5;
@@ -1641,8 +1638,8 @@ class Powerup {
         this.newPos();
     }
     newPos() {
-        this.x = [220, 662.5, 1100][RNG$3(0, 2)];
-        this.y = [120, 362.5, 600][RNG$3(0, 2)];
+        this.x = [220, 662.5, 1100][RNG(0, 2)];
+        this.y = [120, 362.5, 600][RNG(0, 2)];
     }
     draw() {
         // Don't draw if already activated
@@ -1670,9 +1667,6 @@ elapsed {
     1: timer for countdown (attack counter manipulation)
 }
 */
-const RNG$2 = (min, max) => {
-    return Math.round(Math.random() * (max - min)) + min;
-};
 class Nero extends Enemy {
     constructor() {
         super(637.5, 445, [0, 0], 50, "maroon", "#ffb5b5");
@@ -1741,7 +1735,7 @@ class Nero extends Enemy {
             if (this.elapsed[1] > 200) {
                 this.status = "countdown";
                 this.elapsed[1] = 0;
-                this.pattern = Math.round(RNG$2(0, 200) / 100);
+                this.pattern = Math.round(RNG(0, 200) / 100);
                 switch (this.pattern) {
                     case 2:
                         this.counter = 99;
@@ -1908,7 +1902,7 @@ const dialogue$4 = {
         ["Claudia", "For example, take a look at the edit history of the Enbridge article."],
         ["Serapio", "No... there must be some mistake. There's no way... *Wikipedia*... actually works..."],
         ["Claudia", "It's seeming more and more to me that you're overwhelmingly biased on the topic."],
-        ["Claudia", "Why not solve the riddle of your own academic dishonesty before attacking others?"],
+        ["Claudia", "Why not solve the riddle of your own intellectual dishonesty before attacking others?"],
         ["Serapio", "..."],
     ],
     Nero: [
@@ -1967,7 +1961,7 @@ const dialogue$4 = {
         ["Nero", "Around the room, you will encounter purple (#2B193D) squares."],
         ["Nero", "If you pick one up, your next attack will do more damage."],
         ["Nero", "This encourages you to move around the room while fighting instead of staying in the same spot."],
-        ["Nero", "It's peak game design, okay?."],
+        ["Nero", "It's peak game design, okay?"],
         ["Claudia", "Thanks for making it even easier to kill you, idiot."]
     ]
 };
@@ -2629,6 +2623,7 @@ class House {
         }
         // Math password hints
         if (this.room == 2) {
+            c.font = "30px serif";
             c.fillStyle = "#111";
             c.text("How many numbers greater than 100 but less than 1000", 200, 100);
             c.text("are multiples of 10 but not of 6 or 13?", 200, 150);
@@ -2700,6 +2695,7 @@ class House {
             */
         }
         else if (this.room == 3) {
+            c.font = "30px serif";
             c.fillStyle = "#111";
             c.text("What is the value of the sum 52.5 + 53 + 53.5 + ... + 144.5 + 145?", 200, 550);
             c.text("Call the answer 'c'.", 200, 600);
@@ -2759,9 +2755,28 @@ class House {
 }
 const house = new House();
 
-const RNG$1 = (min, max) => {
-    return Math.round(Math.random() * (max - min)) + min;
-};
+class Slider extends Enemy {
+    constructor(y) {
+        super(-100, y, [0, 0], 0, "#111", "#eee");
+        this.counter = RNG(10, 15) * 2;
+        this.initSpeed(1);
+    }
+    initSpeed(direction) {
+        this.cx = RNG(1, 3) * direction;
+    }
+    move() {
+        this.x += this.cx;
+        if (this.cx > 0 && this.x > 1250) {
+            this.x = 1250;
+            this.initSpeed(-1);
+        }
+        if (this.cx < 0 && this.x < 25) {
+            this.x = 25;
+            this.initSpeed(1);
+        }
+    }
+}
+
 // Move every 100 ms
 const threshold = 16.66;
 /*
@@ -2785,6 +2800,11 @@ class Augustus extends Enemy {
             degrees: 0,
             change: 0
         };
+        this.sliders = [
+            new Slider(100),
+            new Slider(337.5),
+            new Slider(575)
+        ];
         // Radius of rotation circle
         this.radius = 200;
         this.origin = {
@@ -2804,7 +2824,7 @@ class Augustus extends Enemy {
         this.status = "glide";
         this.dir = "right";
         this.counter = 63;
-        this.radius = RNG$1(100, 250);
+        this.radius = RNG(100, 250);
         this.genGlide();
     }
     constraints() {
@@ -2836,13 +2856,13 @@ class Augustus extends Enemy {
     // Decide on a radius and origin point
     glideInit() {
         this.status = "glide";
-        let radius = RNG$1(100, 300);
+        let radius = RNG(100, 300);
         // We just twisted clockwise and are now at the bottom of the previous
         // origin point. So, we're moving to the left.
         if (this.angle.change == 1) {
             this.origin = {
-                x: RNG$1(25 + radius, this.x - radius),
-                y: RNG$1(25 + radius, 650 - radius)
+                x: RNG(25 + radius, this.x - radius),
+                y: RNG(25 + radius, 650 - radius)
             };
             this.dir = "left";
         }
@@ -2850,8 +2870,8 @@ class Augustus extends Enemy {
         // previous origin point. So, we're moving to the right.
         else {
             this.origin = {
-                x: RNG$1(this.x + radius, 1250 - radius),
-                y: RNG$1(25 + radius, 650 - radius)
+                x: RNG(this.x + radius, 1250 - radius),
+                y: RNG(25 + radius, 650 - radius)
             };
             this.dir = "right";
         }
@@ -2930,6 +2950,9 @@ class Augustus extends Enemy {
         if (this.status != "attack")
             this.attackCounter();
         this.timer("end", time);
+        this.sliders.forEach(slider => {
+            slider.move();
+        });
     }
     collision(playerX, playerY) {
         // Augustus is physically overlapping Claudia
@@ -2944,9 +2967,13 @@ class Augustus extends Enemy {
         super.draw();
         // Show origin
         c.beginPath();
+        c.lineWidth = 2;
         c.rect(this.origin.x, this.origin.y, 50, 50);
         c.strokeStyle = "#eee";
         c.stroke();
+        this.sliders.forEach(slider => {
+            slider.draw();
+        });
     }
 }
 const augustus = new Augustus();
@@ -3161,17 +3188,19 @@ class Img {
         this.x = x + 662.5;
         this.y = y + 362.5;
         this.img = document.getElementById(id);
+        this.initDimensions();
+    }
+    initDimensions() {
         this.width = this.img.width;
         this.height = this.img.height;
     }
     draw(scrollX, scrollY) {
+        if (this.width == 0 || this.height == 0)
+            this.initDimensions();
         c.drawImage(this.img, this.x - scrollX, this.y - scrollY);
     }
 }
 
-const RNG = (min, max) => {
-    return Math.round(Math.random() * (max - min)) + min;
-};
 class Grass {
     constructor(x, y) {
         this.elapsed = 0;
@@ -4227,7 +4256,6 @@ for (const step of Object.keys(steps)) {
     steps[step] = steps[step].bind(steps);
 }
 
-// Official start
 document.getElementById("load").onclick = () => {
     mainMenu.init();
     window.requestAnimationFrame(steps.mainMenu);

@@ -14,12 +14,18 @@ class Img {
 		this.y = y + 362.5
 
 		this.img = document.getElementById(id) as HTMLImageElement
+		this.initDimensions()
+	}
 
+	initDimensions() {
 		this.width = this.img.width
 		this.height = this.img.height
 	}
 
 	draw(scrollX: number, scrollY: number) {
+		if (this.width == 0 || this.height == 0)
+			this.initDimensions()
+
 		c.drawImage(this.img, this.x - scrollX, this.y - scrollY)
 	}
 }
