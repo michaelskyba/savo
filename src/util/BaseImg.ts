@@ -23,7 +23,6 @@ class Img {
 	initDimensions() {
 		this.width = this.img.width
 		this.height = this.img.height
-		console.log(this.img.id, "setting new dimensions", this.width, this.height)
 	}
 
 	// <img> dimensions are set to 0 before they are fully loaded, which will

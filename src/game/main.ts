@@ -1,5 +1,5 @@
 // Official start
-// /*
+/*
 import mainMenu from "../menus/mainMenu"
 import steps from "./steps"
 
@@ -10,9 +10,8 @@ document.getElementById("load").onclick = () => {
 	// Hide load button
 	document.getElementById("load").style.display = "none"
 }
-// */
+*/
 
-/*
 // Testing Augustus fight
 
 import steps from "./steps"
@@ -26,4 +25,3 @@ password.timeMachine = true
 
 augustusRoom.init()
 window.requestAnimationFrame(steps.augustusRoom)
-*/

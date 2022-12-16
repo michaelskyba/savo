@@ -728,7 +728,6 @@ let Img$2 = class Img {
     initDimensions() {
         this.width = this.img.width;
         this.height = this.img.height;
-        console.log(this.img.id, "setting new dimensions", this.width, this.height);
     }
     // <img> dimensions are set to 0 before they are fully loaded, which will
     // lead to collision errors if they are not checked constantly
@@ -4265,26 +4264,9 @@ for (const step of Object.keys(steps)) {
     steps[step] = steps[step].bind(steps);
 }
 
-// Official start
 document.getElementById("load").onclick = () => {
     mainMenu.init();
     window.requestAnimationFrame(steps.mainMenu);
     // Hide load button
     document.getElementById("load").style.display = "none";
 };
-// */
-/*
-// Testing Augustus fight
-
-import steps from "./steps"
-import augustusRoom from "../fixed/augustusRoom"
-import password from "../events/password"
-
-// Based qutebrowser doesn't require input, so I can leave it like this while testing
-document.getElementById("help").style.display = "none"
-
-password.timeMachine = true
-
-augustusRoom.init()
-window.requestAnimationFrame(steps.augustusRoom)
-*/
