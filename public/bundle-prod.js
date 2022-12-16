@@ -3193,10 +3193,14 @@ class Img {
     initDimensions() {
         this.width = this.img.width;
         this.height = this.img.height;
+        console.log(this.img.id, "setting new dimensions", this.width, this.height);
     }
     draw(scrollX, scrollY) {
-        if (this.width == 0 || this.height == 0)
+        if (this.width == 0 || this.height == 0) {
             this.initDimensions();
+            console.log(this.img.id, "Width or height is 0");
+        }
+        // else console.log(this.img.id, "Width and height aren't 0")
         c.drawImage(this.img, this.x - scrollX, this.y - scrollY);
     }
 }
@@ -4256,9 +4260,26 @@ for (const step of Object.keys(steps)) {
     steps[step] = steps[step].bind(steps);
 }
 
+// Official start
 document.getElementById("load").onclick = () => {
     mainMenu.init();
     window.requestAnimationFrame(steps.mainMenu);
     // Hide load button
     document.getElementById("load").style.display = "none";
 };
+// */
+/*
+// Testing Augustus fight
+
+import steps from "./steps"
+import augustusRoom from "../fixed/augustusRoom"
+import password from "../events/password"
+
+// Based qutebrowser doesn't require input, so I can leave it like this while testing
+document.getElementById("help").style.display = "none"
+
+password.timeMachine = true
+
+augustusRoom.init()
+window.requestAnimationFrame(steps.augustusRoom)
+*/
