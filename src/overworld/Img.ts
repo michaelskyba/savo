@@ -20,11 +20,15 @@ class Img {
 	initDimensions() {
 		this.width = this.img.width
 		this.height = this.img.height
+		console.log(this.img.id, "setting new dimensions", this.width, this.height)
 	}
 
 	draw(scrollX: number, scrollY: number) {
-		if (this.width == 0 || this.height == 0)
+		if (this.width == 0 || this.height == 0) {
 			this.initDimensions()
+			console.log(this.img.id, "Width or height is 0")
+		}
+		// else console.log(this.img.id, "Width and height aren't 0")
 
 		c.drawImage(this.img, this.x - scrollX, this.y - scrollY)
 	}
