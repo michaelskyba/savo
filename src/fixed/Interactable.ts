@@ -2,6 +2,7 @@ import Block from "./Block"
 import Img from "./Img"
 
 import player from "../game/player"
+import c from "../game/canvas"
 
 class Interactable {
 	id: string
@@ -18,13 +19,13 @@ class Interactable {
 
 	// Is the player in range to interact?
 	inRange(): boolean {
-		let obj = this.obj
+		const obj = this.obj
+		const range = 75
 
-		// Made with the assumption that player is (50, 50) in width and height
-		return (player.x > obj.x - 125 &&
-				player.x < obj.x + obj.width + 75 &&
-				player.y > obj.y - 125 &&
-				player.y < obj.y + obj.height + 75)
+		return (player.x > obj.x - range - c.s &&
+				player.x < obj.x + obj.width + range &&
+				player.y > obj.y - range - c.s &&
+				player.y < obj.y + obj.height + range)
 	}
 }
 

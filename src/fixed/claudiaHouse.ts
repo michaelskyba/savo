@@ -21,12 +21,12 @@ const interactables = [
 	// Room 0 (left)
 	[
 		new Interactable("stove", new Img("stove", 150, 75)),
-		new Interactable("Claudius", new Block(200, 600, 50, 50, "#1d697c"))
+		new Interactable("Claudius", new Block(200, 600, c.s, c.s, "#1d697c"))
 	],
 
 	// Room 1 (right)
 	[
-		new Interactable("Messalina", new Block(200, 75, 50, 50, "#006442")),
+		new Interactable("Messalina", new Block(200, 75, c.s, c.s, "#006442")),
 		new Interactable("bookshelf", new Img("bookshelf", 650, 75)),
 		new Interactable("bed", new Img("bed", 150, 550))
 	]
@@ -40,28 +40,34 @@ let prompt = {
 	box: new MenuOption("=================================================", 0, 0)
 }
 
+// Wall width
+const w = 25
+
+// Door gap
+const gap = 200
+
 let wallColour = "#bf823e"
 const walls = [
 	// Room 0 (left)
 	[
-		new Block(0, 0, 1325, 25, wallColour),
-		new Block(0, 0, 25, 1325, wallColour),
-		new Block(0, 700, 1325, 25, wallColour),
+		new Block(0, 0, c.w, w, wallColour),
+		new Block(0, 0, w, c.w, wallColour),
+		new Block(0, c.h - w, c.w, w, wallColour),
 
-		new Block(1300, 0, 25, 262.5, wallColour),
-		new Block(1300, 462.5, 25, 262.5, wallColour)
+		new Block(c.w - w, 0, w, (c.h-gap)/2, wallColour),
+		new Block(c.w - w, (c.h-gap)/2 + gap, w, (c.h-gap)/2, wallColour)
 	],
 
 	// Room 1 (right)
 	[
-		new Block(0, 0, 1325, 25, wallColour),
-		new Block(0, 700, 1325, 25, wallColour),
+		new Block(0, 0, c.w, w, wallColour),
+		new Block(0, c.h - w, c.w, w, wallColour),
 
-		new Block(0, 0, 25, 262.5, wallColour),
-		new Block(0, 462.5, 25, 262.5, wallColour),
+		new Block(0, 0, w, (c.h-gap)/2, wallColour),
+		new Block(0, (c.h-gap)/2 + gap, w, (c.h-gap)/2, wallColour),
 
-		new Block(1300, 0, 25, 262.5, wallColour),
-		new Block(1300, 462.5, 25, 262.5, wallColour)
+		new Block(c.w - w, 0, w, (c.h-gap)/2, wallColour),
+		new Block(c.w - w, (c.h-gap)/2 + gap, w, (c.h-gap)/2, wallColour)
 	]
 ]
 let collision
@@ -161,7 +167,7 @@ class ClaudiaHouse {
 
 		else {
 			c.fillStyle = "#ddd"
-			c.frect(0, 0, 1325, 725)
+			c.frect(0, 0, c.w, c.h)
 		}
 
 		scene.draw()
@@ -169,7 +175,7 @@ class ClaudiaHouse {
 
 	drawRoom() {
 		c.fillStyle = "#f0e68c"
-		c.frect(0, 0, 1325, 725)
+		c.frect(0, 0, c.w, c.h)
 
 		player.draw("fixed")
 

@@ -47,9 +47,8 @@ class Sword {
 		let x3 = playerX
 		let y3 = playerY
 
-		// Player size = 50
-		let x4 = x3 + 50
-		let y4 = y3 + 50
+		let x4 = x3 + c.s
+		let y4 = y3 + c.s
 
 		// Quick rejects: player out of range of diagonal box
 		if (Math.min(x1, x2) > x4 || Math.max(x1, x2) < x3 ||
@@ -68,14 +67,14 @@ class Sword {
 		// Special case if the sword is straight down or straight up
 		if (dx == 0) {
 			// Player's center point Y
-			let y = y3 + 25
+			let y = y3 + c.s/2
 
 			// If the enemy center point --> play center point distance is less
 			// than the sword length, we know that it's touching. Otherwise, it
 			// can't be. We don't have to worry about the fact that the player is a
 			// square instead of a circle because the x values are aligned.
 
-			return Math.abs(y1 - y) < this.length - 25
+			return Math.abs(y1 - y) < this.length - c.s/2
 		}
 
 		let m = dy / dx
@@ -96,7 +95,7 @@ class Sword {
 		if (intersectLeft >= y3 && intersectLeft <= y4)
 			return true
 
-		// y value of equation when x = player right side (x + 50)
+		// y value of equation when x = player right side (x + c.s)
 		let intersectRight = m * x4 + b
 
 		// Check if the line intersects the right side of the player
@@ -117,7 +116,7 @@ class Sword {
 		if (intersectTop >= x3 && intersectTop <= x4)
 			return true
 
-		// x value of equation when y = player bottom side (y + 50)
+		// x value of equation when y = player bottom side (y + c.s)
 		let intersectBottom = (y4 - b) / m
 
 		// Check if line intersects the bottom side of the player

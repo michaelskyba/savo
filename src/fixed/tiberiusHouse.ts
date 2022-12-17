@@ -10,19 +10,26 @@ import password from "../events/password"
 import Block from "./Block"
 import Interactable from "./Interactable"
 
+// Width of the wall
+// I'm going to hardcode it because I don't think it /has/ to be c.s/2
+const w = 25
+
+// Door gap
+const gap = 200 
+
 const wallColour = "#c3272b"
 const walls = [
 	// Initial room after entering from Lerwick
 	// Includes Claudius and door to room 1
 	[
-		new Block(0, 0, 1325, 25, wallColour),
-		new Block(0, 700, 1325, 25, wallColour),
+		new Block(0, 0, c.w, w, wallColour),
+		new Block(0, c.h-w, c.w, w, wallColour),
 
-		new Block(0, 0, 25, 262.5, wallColour),
-		new Block(0, 462.5, 25, 262.5, wallColour),
+		new Block(0, 0, w, (c.h-gap)/2, wallColour),
+		new Block(0, (c.h-gap)/2 + gap, w, (c.h-gap)/2, wallColour),
 
-		new Block(1300, 0, 25, 262.5, wallColour),
-		new Block(1300, 462.5, 25, 262.5, wallColour)
+		new Block(c.w - w, 0, w, (c.h-gap)/2, wallColour),
+		new Block(c.w - w, (c.h-gap)/2 + gap, w, (c.h-gap)/2, wallColour)
 	],
 
 	// To the right of room 0
@@ -30,47 +37,47 @@ const walls = [
 	[
 		// Right opening
 		// Needs to be drawn first so it's behind the other walls
-		new Block(1300, 0, 25, 262.5, "#8db255"),
-		new Block(1300, 462.5, 25, 262.5, "#8db255"),
+		new Block(c.w - w, 0, w, (c.h-gap)/2, "#8db255"),
+		new Block(c.w - w, (c.h-gap)/2 + gap, w, (c.h-gap)/2, "#8db255"),
 
 		// Top opening
-		new Block(0, 0, 562.5, 25, wallColour),
-		new Block(762.5, 0, 562.5, 25, wallColour),
+		new Block(0, 0, (c.w-gap)/2, w, wallColour),
+		new Block((c.w-gap)/2 + gap, 0, (c.w-gap)/2, w, wallColour),
 
 		// Bottom opening
-		new Block(0, 700, 562.5, 25, wallColour),
-		new Block(762.5, 700, 562.5, 25, wallColour),
+		new Block(0, c.h - w, (c.w-gap)/2, w, wallColour),
+		new Block((c.w-gap)/2 + gap, c.h - w, (c.w-gap)/2, w, wallColour),
 
 		// Left opening
-		new Block(0, 0, 25, 262.5, wallColour),
-		new Block(0, 462.5, 25, 262.5, wallColour)
+		new Block(0, 0, w, (c.h-gap)/2, wallColour),
+		new Block(0, (c.h-gap)/2 + gap, w, (c.h-gap)/2, wallColour)
 	],
 
 	// The room which is above room 1
 	[
-		new Block(0, 0, 1325, 25, wallColour),
-		new Block(0, 0, 25, 725, wallColour),
-		new Block(1300, 0, 25, 725, wallColour),
+		new Block(0, 0, c.w, w, wallColour),
+		new Block(0, 0, w, c.h, wallColour),
+		new Block(c.w - w, 0, w, c.h, wallColour),
 
 		// Bottom opening
-		new Block(0, 700, 562.5, 25, wallColour),
-		new Block(762.5, 700, 562.5, 25, wallColour)
+		new Block(0, c.h - w, (c.w-gap)/2, w, wallColour),
+		new Block((c.w-gap)/2 + gap, c.h - w, (c.w-gap)/2, w, wallColour)
 	],
 
 	// The room which is below room 1
 	[
-		new Block(0, 700, 1325, 25, wallColour),
-		new Block(0, 0, 25, 725, wallColour),
-		new Block(1300, 0, 25, 725, wallColour),
+		new Block(0, c.h - w, c.w, w, wallColour),
+		new Block(0, 0, w, c.h, wallColour),
+		new Block(c.w - w, 0, w, c.h, wallColour),
 
 		// Top opening
-		new Block(0, 0, 562.5, 25, wallColour),
-		new Block(762.5, 0, 562.5, 25, wallColour)
+		new Block(0, 0, (c.w-gap)/2, w, wallColour),
+		new Block((c.w-gap)/2 + gap, 0, (c.w-gap)/2, w, wallColour)
 	],
 ]
 
-const claudius = new Interactable("Claudius", new Block(200, 600, 50, 50, "#1d697c"))
-const tiberius = new Interactable("Tiberius", new Block(1000, 600, 50, 50, "#48929b"))
+const claudius = new Interactable("Claudius", new Block(200, 600, c.s, c.s, "#1d697c"))
+const tiberius = new Interactable("Tiberius", new Block(1000, 600, c.s, c.s, "#48929b"))
 
 let scene = new Scene(dialogue.Claudius)
 scene.playing = false
@@ -142,35 +149,35 @@ class House {
 		if (this.room == 0 && player.x < 0)
 			return "Lerwick"
 
-		else if (this.room == 1 && player.x > 1275)
+		else if (this.room == 1 && player.x > c.w - c.s)
 			return "AugustusRoom"
 
-		else if (this.room == 0 && player.x > 1275) {
+		else if (this.room == 0 && player.x > c.w - c.s) {
 			player.x = 0
 			this.room = 1
 		}
 
 		else if (this.room == 1 && player.x < 0) {
-			player.x = 1275
+			player.x = c.w - c.s
 			this.room = 0
 		}
 
 		else if (this.room == 1 && player.y < 0) {
-			player.y = 675
+			player.y = c.h - c.s
 			this.room = 2
 		}
 
 		else if (this.room == 3 && player.y < 0) {
-			player.y = 675
+			player.y = c.h - c.s
 			this.room = 1
 		}
 
-		else if (this.room == 2 && player.y > 675) {
+		else if (this.room == 2 && player.y > c.h - c.s) {
 			player.y = 0
 			this.room = 1
 		}
 
-		else if (this.room == 1 && player.y > 675) {
+		else if (this.room == 1 && player.y > c.h - c.s) {
 			player.y = 0
 			this.room = 3
 		}
@@ -189,12 +196,12 @@ class House {
 	draw() {
 		// Floor
 		c.fillStyle = "#dba97d"
-		c.frect(0, 0, 1325, 725)
+		c.frect(0, 0, c.w, c.h)
 
 		// Black entrance floor to Augustus's room
 		if (this.room == 1) {
 			c.fillStyle = "#000"
-			c.frect(1312.5, 262.5, 12.5, 200)
+			c.frect(c.w - w/2, (c.h-gap)/2, w/2, gap)
 		}
 
 		for (const obj of this.collisions) {

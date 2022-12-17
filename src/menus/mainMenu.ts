@@ -23,8 +23,8 @@ class Particle {
 		this.speed = RNG(1, 5)
 		this.size = RNG(25, 100)
 
-		this.x = 1325
-		this.y = RNG(0 - this.size, 725)
+		this.x = c.w
+		this.y = RNG(0 - this.size, c.h)
 	}
 
 	draw() {
@@ -156,9 +156,9 @@ const mainMenu = {
 	draw() {
 		// Background
 		c.fillStyle = "white"
-		c.frect(0, 0, 500, 725)
+		c.frect(0, 0, 500, c.h)
 		c.fillStyle = "maroon"
-		c.frect(500, 0, 825, 725)
+		c.frect(500, 0, c.w-500, c.h)
 
 		// Background particles spawning
 		let time = Date.now()

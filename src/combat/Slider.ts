@@ -1,5 +1,9 @@
 import Enemy from "../combat/Enemy"
+import c from "../game/canvas"
 import { RNG } from "../util/functions"
+
+// Wall width inside augustusRoom
+const w = 25
 
 class Slider extends Enemy {
 	cx: number
@@ -17,12 +21,12 @@ class Slider extends Enemy {
 	move() {
 		this.x += this.cx
 
-		if (this.cx > 0 && this.x > 1250) {
-			this.x = 1250
+		if (this.cx > 0 && this.x > c.w - w - c.s) {
+			this.x = c.w - w - c.s
 			this.initSpeed(-1)
 		}
-		if (this.cx < 0 && this.x < 25) {
-			this.x = 25
+		if (this.cx < 0 && this.x < w) {
+			this.x = w
 			this.initSpeed(1)
 		}
 	}

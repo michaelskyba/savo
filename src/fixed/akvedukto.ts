@@ -22,8 +22,7 @@ function resetCombat() {
 
 	player.life = new Life(99, 5, 5)
 
-	// horizontal center based on canvas and player width
-	player.x = 637.5
+	player.x = c.w/2 - c.s
 	player.y = 625
 }
 
@@ -50,33 +49,37 @@ function setDialogue() {
 	scene = new Scene(next)
 }
 
+// Wall width and door gap
+const w = 25
+const gap = 300
+
 let wallColour = "#a69583"
 const walls = [
 	// Initial position with door blocked
 	[
-		new Block(0, 0, 1325, 25, wallColour),
-		new Block(0, 0, 25, 1325, wallColour),
+		new Block(0, 0, c.w, w, wallColour),
+		new Block(0, 0, w, c.h, wallColour),
 
-		// Bottom with intersection
-		new Block(0, 700, 512.5, 25, wallColour),
-		new Block(812.5, 700, 612.5, 25, wallColour),
+		// Bottom intersection
+		new Block(0, c.h - w, (c.w-gap)/2, w, wallColour),
+		new Block((c.w-gap)/2 + gap, c.h - w, (c.w-gap)/2, w, wallColour),
 
 		// Initially solid right wall
-		new Block(1300, 0, 25, 725, wallColour)
+		new Block(c.w - w, 0, w, c.h, wallColour)
 	],
 
 	// Door unblocked after tutorial
 	[
-		new Block(0, 0, 1325, 25, wallColour),
-		new Block(0, 0, 25, 1325, wallColour),
+		new Block(0, 0, c.w, w, wallColour),
+		new Block(0, 0, w, c.h, wallColour),
 
-		// Bottom with intersection
-		new Block(0, 700, 512.5, 25, wallColour),
-		new Block(812.5, 700, 612.5, 25, wallColour),
+		// Bottom intersection
+		new Block(0, c.h - w, (c.w-gap)/2, w, wallColour),
+		new Block((c.w-gap)/2 + gap, c.h - w, (c.w-gap)/2, w, wallColour),
 
-		// Intersection in right wall
-		new Block(1300, 0, 25, 212.5, wallColour),
-		new Block(1300, 512.5, 25, 212.5, wallColour)
+		// Right intersection
+		new Block(c.w - w, 0, w, (c.h-gap)/2, wallColour),
+		new Block(c.w - w, (c.h-gap)/2 + gap, w, (c.h-gap)/2, wallColour)
 	]
 ]
 
@@ -154,11 +157,8 @@ const akvedukto = {
 	},
 
 	transitions(): string {
-		// 675 = canvas height - player size
-		if (player.y > 675) return "Perinthus"
-
-		// 1275 = canvas width - player size
-		if (player.x > 1275) return "Lerwick"
+		if (player.x > c.w - c.s) return "Lerwick"
+		if (player.y > c.h - c.s) return "Perinthus"
 
 		return null
 	},
@@ -175,8 +175,8 @@ const akvedukto = {
 		let frontinusBlock = {
 			x: frontinus.x,
 			y: frontinus.y,
-			width: 50,
-			height: 50
+			width: c.s,
+			height: c.s
 		}
 
 		// Trapped collision: Frontinus and inner walls
@@ -224,7 +224,7 @@ const akvedukto = {
 	draw() {
 		// Background
 		c.fillStyle = "floralwhite"
-		c.frect(0, 0, 1325, 725)
+		c.frect(0, 0, c.w, c.h)
 		c.globalAlpha = 0.2
 		bg.draw()
 		c.globalAlpha = 1

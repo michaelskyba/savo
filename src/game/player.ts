@@ -23,7 +23,7 @@ class HealCooldown extends Cooldown {
 	constructor() {
 		// We need it to decrease by 725 in 1s
 		// So, that's 725/1000 = 0.725 per millisecond
-		super(331.25, 331.25, "#ffff00", 0.725)
+		super(c.w/4, c.w/4, "#ffff00", 0.725)
 	}
 
 	progress(time: number) {
@@ -48,15 +48,15 @@ const player = {
 	cooldowns: {
 		// We need it to decrease by 725 in 0.5s
 		// So, that's (725/0.5)/1000 = 1.45 per millisecond
-		damage: new Cooldown(0, 331.25, "#ff0000", 1.45),
+		damage: new Cooldown(0, c.w/4, "#ff0000", 1.45),
 
 		heal: new HealCooldown(),
 
 		// Same as damage: 725p/0.5s --> 1.45
-		dodge: new Cooldown(662.5, 331.25, "#00ffff", 1.45),
+		dodge: new Cooldown(c.w/2, c.w/4, "#00ffff", 1.45),
 
 		// Same as healing: 725p/s --> 0.725
-		action: new Cooldown(993.75, 331.25, "#0000ff", 0.725)
+		action: new Cooldown(c.w * 3/4, c.w/4, "#0000ff", 0.725)
 	},
 
 	keyPressed: deepClone(defaultKeys),
@@ -100,13 +100,8 @@ const player = {
 	},
 
 	fixedKeys(input: string) {
-		// Pressed Z: Dodge roll
 		if (input == "KeyZ") this.dodge()
-
-		// Pressed X: Attack
 		if (input == "KeyX") this.attack()
-
-		// Pressed C: Heal
 		if (input == "KeyC") this.heal()
 	},
 
@@ -157,16 +152,13 @@ const player = {
 
 			// Correct for overworld display shifting
 			if (mode == "overworld") {
-				// 637.5 = canvas width / 2 - player width / 2
-				// 337.5 = canvas height / 2 - player width / 2
-
-				colX -= 637.5
-				colY -= 337.5
+				colX -= c.w/2 - c.s/2
+				colY -= c.h/2 - c.s/2
 			}
 
-			if (this.x + 50 > colX &&
+			if (this.x + c.s > colX &&
 				this.x < colX + collision.width &&
-				this.y + 50 > colY &&
+				this.y + c.s > colY &&
 				this.y < colY + collision.height) {
 
 				// The way we correct the position depends on how the player collided
@@ -181,16 +173,16 @@ const player = {
 					this.x = colX + collision.width
 
 				if (this.keyPressed.right &&
-					this.x - speed + 50 <= colX)
-					this.x = colX - 50
+					this.x - speed + c.s <= colX)
+					this.x = colX - c.s
 
 				if (this.keyPressed.up &&
 					this.y + speed >= colY + collision.height)
 					this.y = colY + collision.height
 
 				if (this.keyPressed.down &&
-					this.y - speed + 50 <= colY)
-					this.y = colY - 50
+					this.y - speed + c.s <= colY)
+					this.y = colY - c.s
 			}
 		}
 	},
@@ -199,21 +191,16 @@ const player = {
 		c.fillStyle = "maroon"
 
 		if (mode == "fixed")
-			c.frect(this.x, this.y, 50, 50)
+			c.frect(this.x, this.y, c.s, c.s)
 
-		else {
-			// We want to draw it centered:
-			// 637.5 = canvas width / 2 - player width / 2
-			// 337.5 = canvas height / 2 - player width / 2
-
-			c.frect(637.5, 337.5, 50, 50)
-		}
+		// Centered
+		else c.frect(c.w/2 - c.s/2, c.h/2 - c.s/2, c.s, c.s)
 	},
 
 	// Player attack range
 	drawRange(enemyX, enemyY) {
 		let range = 100
-		let width = 50
+		let width = c.s
 		let widthOffset = width/2
 
 		if (enemyX + width > this.x + widthOffset - range &&
@@ -270,8 +257,8 @@ const player = {
 }
 
 // Have damage and dodge cooldowns go backwards
-let damage = player.cooldowns.damage
-damage.getY = (counter: number) => 725 - counter
-player.cooldowns.dodge.getY = damage.getY
+const getY = (counter: number) => c.h - counter
+player.cooldowns.damage.getY = getY
+player.cooldowns.dodge.getY = getY
 
 export default player

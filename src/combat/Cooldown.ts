@@ -18,7 +18,7 @@ class Cooldown {
 
 	start() {
 		this.lastFrame = 0
-		this.counter = 725
+		this.counter = c.h
 	}
 
 	getY = (counter: number) => 0
@@ -44,7 +44,6 @@ class Cooldown {
 		c.fillStyle = this.colour
 
 		c.frect(this.x, this.getY(this.counter), this.width, this.counter)
-
 		c.globalAlpha = 1
 	}
 }

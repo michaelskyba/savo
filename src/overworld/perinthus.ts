@@ -22,9 +22,9 @@ const buildings = [
 ]
 
 const interactables = [
-	new Interactable("Ovicula", new Block(550, -550, 50, 50, "#f3c13a")),
-	new Interactable("Dorus", new Block(175, 1100, 50, 50, "#763568")),
-	new Interactable("Palinurus", new Block(-300, 700, 50, 50, "#ebf6f7"))
+	new Interactable("Ovicula", new Block(550, -550, c.s, c.s, "#f3c13a")),
+	new Interactable("Dorus", new Block(175, 1100, c.s, c.s, "#763568")),
+	new Interactable("Palinurus", new Block(-300, 700, c.s, c.s, "#ebf6f7"))
 ]
 
 let prompt = {
@@ -121,7 +121,7 @@ const perinthus = {
 
 	draw() {
 		c.fillStyle = "#8fbc8f"
-		c.frect(0, 0, 1325, 725)
+		c.frect(0, 0, c.w, c.h)
 
 		for (const road of roads) {
 			road.draw(player.x, player.y)

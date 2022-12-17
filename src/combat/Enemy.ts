@@ -34,15 +34,15 @@ class Enemy {
 		this.bgColour = bgColour
 		this.fgColour = fgColour
 
-		// 1232 = canvas width - textbox width (~88) - padding (5)
-		this.life = new Life(HP, 1232, 5)
+		// canvas width - textbox width (~88) - padding (5)
+		this.life = new Life(HP, c.w - 88 - 5, 5)
 	}
 
 	collision(playerX: number, playerY: number): boolean {
 		// The enemy only attacks when its attack counter is at zero
 		if (this.counter != 0) return false
 
-		return this.sword.collision(this.x + 25, this.y + 25, playerX, playerY)
+		return this.sword.collision(this.x + c.s/2, this.y + c.s/2, playerX, playerY)
 	}
 
 	receiveDamage() {
@@ -103,11 +103,11 @@ class Enemy {
 	draw() {
 		c.fillStyle = this.bgColour
 
-		// 25 = enemy size / 2 (so the sword starts in the center)
+		// + (enemy size / 2) so that the sword starts in the center
 		if (this.status == "attack")
-			this.sword.draw(this.x + 25, this.y + 25)
+			this.sword.draw(this.x + c.s/2, this.y + c.s/2)
 
-		c.frect(this.x, this.y, 50, 50)
+		c.frect(this.x, this.y, c.s, c.s)
 
 		// Drawing the attack counter
 		let fontSize = 40

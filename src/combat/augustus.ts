@@ -6,6 +6,9 @@ import { RNG } from "../util/functions"
 // Move every 100 ms
 const threshold = 16.66
 
+// Width of walls
+const w = 25
+
 /*
 elapsed {
 	0: timer for movement (x,y manipulation)
@@ -66,10 +69,10 @@ class Augustus extends Enemy {
 
 	constraints() {
 		// Don't move through walls
-		if (this.x > 1250) this.x = 1250
-		if (this.y > 650) this.y = 650
-		if (this.x < 25) this.x = 25
-		if (this.y < 25) this.y = 25
+		if (this.x > c.w - w - c.s) this.x = c.w - w - c.s
+		if (this.y > c.h - w - c.s) this.y = c.h - w - c.s
+		if (this.x < w) this.x = w
+		if (this.y < w) this.y = w
 	}
 
 	// Generate the gliding destination and appropriate (x,y) movement speed
@@ -218,10 +221,10 @@ class Augustus extends Enemy {
 
 	collision(playerX: number, playerY: number): boolean {
 		// Augustus is physically overlapping Claudia
-		if (this.x + 50 > playerX &&
-			this.y + 50 > playerY &&
-			playerX + 50 > this.x &&
-			playerY + 50 > this.y) return true
+		if (this.x + c.s > playerX &&
+			this.y + c.s > playerY &&
+			playerX + c.s > this.x &&
+			playerY + c.s > this.y) return true
 
 		return super.collision(playerX, playerY)
 	}

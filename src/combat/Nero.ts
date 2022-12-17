@@ -1,5 +1,6 @@
 import Enemy from "./Enemy"
 import player from "../game/player"
+import c from "../game/canvas"
 import Powerup from "./Powerup"
 import { RNG } from "../util/functions"
 
@@ -11,6 +12,9 @@ elapsed {
 	1: timer for countdown (attack counter manipulation)
 }
 */
+
+// Width of wall
+const w = 25
 
 class Nero extends Enemy {
 	moveStatus = "approaching"
@@ -66,17 +70,17 @@ class Nero extends Enemy {
 	}
 
 	constraints() {
-		if (this.x > 1250) this.x = 1250
-		if (this.x < 25) this.x = 25
+		if (this.x > c.w - w - c.s) this.x = c.w - w - c.s
+		if (this.x < w) this.x = w
 
-		if (this.y > 650) this.y = 650
-		if (this.y < 25) this.y = 25
+		if (this.y > c.h - w - c.s) this.y = c.h - w - c.s
+		if (this.y < w) this.y = w
 
 		// Teleporting
-		if ((this.x == 25 && this.y == 25) ||
-			(this.x == 25 && this.y == 650) ||
-			(this.x == 1250 && this.y == 650) ||
-			(this.x == 1250 && this.y == 25)) {
+		if ((this.x == w && this.y == w) ||
+			(this.x == w && this.y == c.h - w - c.s) ||
+			(this.x == c.w - w - c.s && this.y == c.h - w - c.s) ||
+			(this.x == c.w - w - c.s && this.y == w)) {
 
 			this.x = 637.5
 			this.y = 337.5

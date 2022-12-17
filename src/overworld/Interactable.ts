@@ -1,6 +1,7 @@
 import Block from "./Block"
 import Img from "./Img"
 
+import c from "../game/canvas"
 import player from "../game/player"
 
 class Interactable {
@@ -20,14 +21,14 @@ class Interactable {
 	inRange(): boolean {
 		let obj = this.obj
 
-		let x = obj.x - 662.5 + 25
-		let y = obj.y - 362.5 + 25
+		let x = obj.x - (c.w/2) + (c.s/2)
+		let y = obj.y - (c.h/2) + (c.s/2)
 
-		// Made with the assumption that player is (50, 50) in width and height
-		return (player.x > x - 125 &&
-				player.x < x + obj.width + 75 &&
-				player.y > y - 125 &&
-				player.y < y + obj.height + 75)
+		let range = 100
+		return (player.x > x - range - c.s &&
+				player.x < x + obj.width + range - c.s &&
+				player.y > y - range - c.s &&
+				player.y < y + obj.height + range - c.s)
 	}
 }
 

@@ -14,93 +14,99 @@ import dialogue from "../events/6"
 
 let nero = new Nero()
 
+// Wall width
+const w = 25
+
+// Door gap
+const gap = 300
+
 let wallColour = "maroon"
 let objects = [
 	// First room
 	[
-		new Block(0, 0, 1325, 25, wallColour),
-		new Block(0, 0, 25, 1325, wallColour),
+		new Block(0, 0, c.w, w, wallColour),
+		new Block(0, 0, w, c.w, wallColour),
 
 		// Bottom intersection
-		new Block(0, 700, 512.5, 25, wallColour),
-		new Block(812.5, 700, 612.5, 25, wallColour),
+		new Block(0, c.h - w, (c.w-gap)/2, w, wallColour),
+		new Block((c.w-gap)/2 + gap, c.h - w, (c.w-gap)/2, w, wallColour),
 
 		// Right intersection
-		new Block(1300, 0, 25, 212.5, wallColour),
-		new Block(1300, 512.5, 25, 212.5, wallColour)
+		new Block(c.w - w, 0, w, (c.h-gap)/2, wallColour),
+		new Block(c.w - w, (c.h-gap)/2 + gap, w, (c.h-gap)/2, wallColour)
 	],
 
 	// Second room - entered through the right of first room
 	[
-		new Block(0, 700, 1325, 25, wallColour),
+		new Block(0, c.h - w, c.w, w, wallColour),
 
 		// Left intersection
-		new Block(0, 0, 25, 212.5, wallColour),
-		new Block(0, 512.5, 25, 212.5, wallColour),
+		new Block(0, 0, w, (c.h-gap)/2, wallColour),
+		new Block(0, (c.h-gap)/2 + gap, w, (c.h-gap)/2, wallColour),
 
 		// Top intersection
-		new Block(0, 0, 512.5, 25, wallColour),
-		new Block(812.5, 0, 612.5, 25, wallColour),
+		new Block(0, 0, (c.w-gap)/2, w, wallColour),
+		new Block((c.w-gap)/2 + gap, 0, (c.w-gap)/2, w, wallColour),
 
-		new Block(1300, 0, 25, 725, wallColour)
+		new Block(c.w - w, 0, w, c.h, wallColour)
 	],
 
 	// Third room - entered through the top of second room
 	[
-		new Block(0, 0, 1325, 25, wallColour),
+		new Block(0, 0, c.w, w, wallColour),
 
 		// Left intersection
-		new Block(0, 0, 25, 212.5, wallColour),
-		new Block(0, 512.5, 25, 212.5, wallColour),
+		new Block(0, 0, w, (c.h-gap)/2, wallColour),
+		new Block(0, (c.h-gap)/2 + gap, w, (c.h-gap)/2, wallColour),
 
 		// Bottom intersection
-		new Block(0, 700, 512.5, 25, wallColour),
-		new Block(812.5, 700, 612.5, 25, wallColour),
+		new Block(0, c.h - w, (c.w-gap)/2, w, wallColour),
+		new Block((c.w-gap)/2 + gap, c.h - w, (c.w-gap)/2, w, wallColour),
 
-		new Block(1300, 0, 25, 725, wallColour),
+		new Block(c.w - w, 0, w, c.h, wallColour),
 
 		new Img("armour", 1075, 60)
 	],
 
 	// Fourth room - entered through the left of third room
 	[
-		new Block(0, 0, 25, 1325, wallColour),
-		new Block(0, 0, 1325, 25, wallColour),
+		new Block(0, 0, w, c.w, wallColour),
+		new Block(0, 0, c.w, w, wallColour),
 
 		// Right intersection
-		new Block(1300, 0, 25, 212.5, wallColour),
-		new Block(1300, 512.5, 25, 212.5, wallColour),
+		new Block(c.w - w, 0, w, (c.h-gap)/2, wallColour),
+		new Block(c.w - w, (c.h-gap)/2 + gap, w, (c.h-gap)/2, wallColour),
 
 		// Bottom intersection
-		new Block(0, 700, 512.5, 25, wallColour),
-		new Block(812.5, 700, 612.5, 25, wallColour),
+		new Block(0, c.h - w, (c.w-gap)/2, w, wallColour),
+		new Block((c.w-gap)/2 + gap, c.h - w, (c.w-gap)/2, w, wallColour),
 	],
 
 	// Fifth (Nero's) room - entered through the bottom of the fourth room
 	[
-		new Block(0, 0, 25, 725, wallColour),
-		new Block(0, 700, 1325, 25, wallColour),
-		new Block(1300, 0, 25, 725, wallColour),
+		new Block(0, 0, w, c.h, wallColour),
+		new Block(0, c.h - w, c.w, w, wallColour),
+		new Block(c.w - w, 0, w, c.h, wallColour),
 
 		// Top intersection
-		new Block(0, 0, 512.5, 25, wallColour),
-		new Block(812.5, 0, 612.5, 25, wallColour),
+		new Block(0, 0, (c.w-gap)/2, w, wallColour),
+		new Block((c.w-gap)/2 + gap, 0, (c.w-gap)/2, w, wallColour),
 	],
 
 	// (Nero's) room - locked
 	[
-		new Block(0, 0, 1325, 25, wallColour),
-		new Block(0, 0, 25, 1325, wallColour),
-		new Block(1300, 0, 25, 725, wallColour),
-		new Block(0, 700, 1325, 25, wallColour)
+		new Block(0, 0, c.w, w, wallColour),
+		new Block(0, 0, w, c.w, wallColour),
+		new Block(c.w - w, 0, w, c.h, wallColour),
+		new Block(0, c.h - w, c.w, w, wallColour)
 	]
 ]
 
 const interactables = [
-	[new Interactable("Mercury", new Block(637.5, 337.5, 50, 50, "#776d5a"))],
+	[new Interactable("Mercury", new Block(637.5, 337.5, c.s, c.s, "#776d5a"))],
 	[],
-	[new Interactable("Hector", new Block(935, 80, 50, 50, "#16db93"))],
-	[new Interactable("Serapio", new Block(1100, 600, 50, 50, "#20063b"))],
+	[new Interactable("Hector", new Block(935, 80, c.s, c.s, "#16db93"))],
+	[new Interactable("Serapio", new Block(1100, 600, c.s, c.s, "#20063b"))],
 	[],
 	[]
 ]
@@ -187,53 +193,52 @@ const neroHouse = {
 
 	locationTransitions(): boolean {
 		// Claudia left Nero's house back to Lerwick
-		// 675 = canvas height - player height
-		return player.y > 675 && this.room == 0
+		return player.y > c.h - c.s && this.room == 0
 	},
 
 	roomTransitions() {
 		let oldRoom = this.room
 
-		if (this.room == 0 && player.x > 1275) {
+		if (this.room == 0 && player.x > c.w - c.s) {
 			this.room = 1
 			player.x = 0
 		}
 
 		else if (this.room == 1 && player.x < 0) {
 			this.room = 0
-			player.x = 1275
+			player.x = c.w - c.s
 		}
 
 		else if (this.room == 1 && player.y < 0) {
 			this.room = 2
-			player.y = 675
+			player.y = c.h - c.s
 		}
 
 		else if (this.room == 2 && player.x < 0) {
 			this.room = 3
-			player.x = 1275
+			player.x = c.w - c.s
 		}
 
-		else if (this.room == 2 && player.y > 675) {
+		else if (this.room == 2 && player.y > c.h - c.s) {
 			this.room = 1
 			player.y = 0
 		}
 
-		else if (this.room == 3 && player.y > 675) {
+		else if (this.room == 3 && player.y > c.h - c.s) {
 			this.room = 4
-			player.y = 50
+			player.y = c.s
 
 			scene = new Scene(dialogue.Nero)
 		}
 
-		else if (this.room == 3 && player.x > 1275) {
+		else if (this.room == 3 && player.x > c.w - c.s) {
 			this.room = 2
 			player.x = 0
 		}
 
 		else if (this.room == 4 && player.y < 0) {
 			this.room = 3
-			player.y = 675
+			player.y = c.h - c.s
 		}
 
 		// There was a room switch, so let's update the collisions
@@ -281,8 +286,10 @@ const neroHouse = {
 				neroHouse.gameState = "win"
 
 				// One-time drawing
+				// TODO: Make a better system than this. I remember being really
+				// rushed when I came up with it
 				c.fillStyle = "#fff"
-				c.frect(0, 0, 1325, 725)
+				c.frect(0, 0, c.w, c.h)
 				c.fillStyle = "#000"
 				c.font = "48px serif"
 				c.text("You win!", 100, 100)
@@ -315,7 +322,7 @@ const neroHouse = {
 	draw() {
 		// Background: floor
 		c.fillStyle = "#fcc9b9"
-		c.frect(0, 0, 1325, 725)
+		c.frect(0, 0, c.w, c.h)
 
 		player.draw("fixed")
 
@@ -335,7 +342,8 @@ const neroHouse = {
 				for (const int of interactables[this.room]) {
 					if (int.inRange()) {
 
-						// We only need to update the prompt box if it doesn't exist yet
+						// We only need to update the prompt box if it doesn't
+						// exist yet
 						if (!prompt.active)
 							prompt.box = new MenuOption("Press X to interact.", int.obj.x - 60, int.obj.y - 60)
 

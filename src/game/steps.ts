@@ -60,16 +60,16 @@ const steps = {
 
 			case "claudiaHouse":
 				claudiaHouse.init()
-				player.x = 1270
-				player.y = 337.5
+				player.x = c.w - c.s - 5
+				player.y = c.h/2 - c.s/2
 
 				window.requestAnimationFrame(this.claudiaHouse)
 				break
 
 			case "akvedukto":
 				akvedukto.init()
-				player.x = 637.5
-				player.y = 670
+				player.x = c.w/2 - c.s/2
+				player.y = c.h - c.s - 5
 
 				window.requestAnimationFrame(this.akvedukto)
 				break
@@ -116,16 +116,16 @@ const steps = {
 
 			case "akvedukto":
 				akvedukto.init()
-				player.x = 1270
-				player.y = 337.5
+				player.x = c.w - c.s - 5
+				player.y = c.h/2 - c.s/2
 
 				window.requestAnimationFrame(this.akvedukto)
 				break
 
 			case "neroHouse":
 				neroHouse.init()
-				player.x = 637.5
-				player.y = 670
+				player.x = c.w/2 - c.s/2
+				player.y = c.h - c.s - 5
 
 				window.requestAnimationFrame(this.neroHouse)
 				break
@@ -133,7 +133,7 @@ const steps = {
 			case "tiberiusHouse":
 				tiberiusHouse.init()
 				player.x = 0
-				player.y = 337.5
+				player.y = c.h/2 - c.s/2
 
 				// We can't have the music operations in tiberiusHouse.init() or
 				// else it will have to run when coming back from augustusRoom
@@ -148,7 +148,7 @@ const steps = {
 		if (neroHouse.gameState == "playing") return
 
 		c.fillStyle = "#000"
-		c.frect(0, 0, 1325, 725)
+		c.frect(0, 0, c.w, c.h)
 
 		c.font = "48px serif"
 		c.fillStyle = "red"
@@ -178,8 +178,8 @@ const steps = {
 					neroHouse.room = 3
 					neroHouse.init()
 
-					player.x = 637.5
-					player.y = 670
+					player.x = c.w/2 - c.s/2
+					player.y = c.h - c.s - 5
 
 					window.requestAnimationFrame(steps.neroHouse)
 				}

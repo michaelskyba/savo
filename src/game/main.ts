@@ -17,6 +17,7 @@ document.getElementById("load").onclick = () => {
 import steps from "./steps"
 import augustusRoom from "../fixed/augustusRoom"
 import password from "../events/password"
+import c from "./canvas"
 
 // Based qutebrowser doesn't require input, so I can leave it like this while testing
 document.getElementById("help").style.display = "none"

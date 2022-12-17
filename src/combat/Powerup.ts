@@ -2,6 +2,9 @@ import player from "../game/player"
 import c from "../game/canvas"
 import { RNG } from "../util/functions"
 
+// Size of Powerup
+const s = 50
+
 class Powerup {
 	x = 662.5
 	y = 1100
@@ -22,20 +25,20 @@ class Powerup {
 		if (this.activated) return
 
 		c.fillStyle = "#2b193d"
-		c.frect(this.x - 25, this.y - 25, 50, 50)
+		c.frect(this.x - s/2, this.y - s/2, s, s)
 	}
 
 	doesCollide(): boolean {
-		let x = this.x - 25
-		let y = this.y - 25
+		let x = this.x - s/2
+		let y = this.y - s/2
 
 		let colX = player.x
 		let colY = player.y
 
-		return (x + 50 > colX &&
-			x < colX + 50 &&
-			y + 50 > colY &&
-			y < colY + 50)
+		return (x + s > colX &&
+			x < colX + c.s &&
+			y + s > colY &&
+			y < colY + c.s)
 	}
 }
 

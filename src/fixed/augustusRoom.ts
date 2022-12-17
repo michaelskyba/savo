@@ -11,21 +11,25 @@ import password from "../events/password"
 
 let scene = new Scene(dialogue[0])
 
+// Wall width and door gap
+const w = 25
+const gap = 200
+
 const wallColour = "#8db255"
 const openWalls = [
-	new Block(0, 0, 1325, 25, wallColour),
-	new Block(0, 700, 1325, 25, wallColour),
+	new Block(0, 0, c.w, w, wallColour),
+	new Block(0, c.h - w, c.w, w, wallColour),
 
-	new Block(0, 0, 25, 262.5, wallColour),
-	new Block(0, 462.5, 25, 262.5, wallColour),
+	new Block(0, 0, w, (c.h-gap)/2, wallColour),
+	new Block(0, (c.h-gap)/2 + gap, w, (c.h-gap)/2, wallColour),
 
-	new Block(1300, 0, 25, 725, wallColour)
+	new Block(c.w - w, 0, w, c.h, wallColour)
 ]
 const closedWalls  = [
-	new Block(0, 0, 1325, 25, wallColour),
-	new Block(0, 700, 1325, 25, wallColour),
-	new Block(0, 0, 25, 725, wallColour),
-	new Block(1300, 0, 25, 725, wallColour)
+	new Block(0, 0, c.w, w, wallColour),
+	new Block(0, c.h - w, c.w, w, wallColour),
+	new Block(0, 0, w, c.h, wallColour),
+	new Block(c.w - w, 0, w, c.h, wallColour)
 ]
 let walls = openWalls
 
@@ -65,7 +69,7 @@ class Room {
 		walls = closedWalls
 
 		// In case the player thinks that they're smart
-		if (player.x < 25) player.x = 25
+		if (player.x < w) player.x = w
 	}
 
 	inputInit(event: KeyboardEvent) {
@@ -153,7 +157,7 @@ class Room {
 
 	draw() {
 		c.fillStyle = "#000"
-		c.frect(0, 0, 1325, 725)
+		c.frect(0, 0, c.w, c.h)
 
 		if (this.status == "waiting") {
 			this.drawTimer()

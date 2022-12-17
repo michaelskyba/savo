@@ -4,8 +4,8 @@ import BaseImg from "../util/BaseImg"
 class Img extends BaseImg {
 	constructor(id: string, x: number, y: number) {
 		super(id, x, y)
-		this.x += 662.5
-		this.y += 362.5
+		this.x += c.w/2
+		this.y += c.h/2
 	}
 
 	draw(scrollX: number, scrollY: number) {

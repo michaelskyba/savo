@@ -46,12 +46,12 @@ const doors = [
 ]
 
 const interactables = [
-	new Interactable("Hera", new Block(-185, 285, 50, 50, "#171412")),
-	new Interactable("Musawer", new Block(550, -1200, 50, 50, "#c91f37")),
-	new Interactable("Daria", new Block(1100, -275, 50, 50, "#817b69")),
-	new Interactable("Althea", new Block(1725, -600, 50, 50, "#374231")),
-	new Interactable("Corculum", new Block(910, -1400, 50, 50, "#d9b611")),
-	new Interactable("Calypso", new Block(315, -500, 50, 50, "#fff"))
+	new Interactable("Hera", new Block(-185, 285, c.s, c.s, "#171412")),
+	new Interactable("Musawer", new Block(550, -1200, c.s, c.s, "#c91f37")),
+	new Interactable("Daria", new Block(1100, -275, c.s, c.s, "#817b69")),
+	new Interactable("Althea", new Block(1725, -600, c.s, c.s, "#374231")),
+	new Interactable("Corculum", new Block(910, -1400, c.s, c.s, "#d9b611")),
+	new Interactable("Calypso", new Block(315, -500, c.s, c.s, "#fff"))
 ]
 
 let prompt = {
@@ -130,7 +130,7 @@ const lerwick = {
 
 	draw() {
 		c.fillStyle = "#ff8936"
-		c.frect(0, 0, 1325, 725)
+		c.frect(0, 0, c.w, c.h)
 
 		for (const road of roads) {
 			road.draw(player.x, player.y)
