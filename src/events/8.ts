@@ -12,7 +12,7 @@ const dialogue = [
 		["Augustus", "Does that fact intensely trouble you?"],
 		["Claudia", "It does. How can you be content with contradiction?"],
 		["Claudia", "Have you never heard of the explosion principle?"],
-		["Augustus", "I have, but it does not apply. Your view of 'logic' is too narrow-minded."],
+		["Augustus", "I have, but it does not apply. Your view of \"logic\" is too narrow-minded."],
 
 		["Augustus", "Regardless, I can already infer why you are here."],
 		["Claudia", "What's your conclusion?"],
@@ -28,7 +28,7 @@ const dialogue = [
 
 		["Claudia", "By the way, was that Tiberius Caesar Augustus in the other room?"],
 		["Augustus", "No, obviously. Don't get confused just because his name tag uses his first name."],
-		["Claudia", "But wouldn't 'Britannicus' be more accurate, then?"],
+		["Claudia", "But wouldn't \"Britannicus\" be more accurate, then?"],
 		["Augustus", "Who cares?"],
 		["Claudia", "..."],
 

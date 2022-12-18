@@ -56,7 +56,7 @@ const dialogue = {
 		["Messalina", "You've already forgotten what I said a minute ago?"],
 		["Messalina", "Forget your attachment to consistency instead!"],
 		["Messalina", "Once you arrive at Nova Anio-akvedukto, talk to Frontinus."],
-		["Messalina", "Tell him to 'show you the door'."],
+		["Messalina", "Tell him to \"show you the door\"."],
 		["Claudia", "Got it: Go to Nova Anio-akvedukto, tell Frontinus to show me the door."],
 		["Claudia", "Thanks, Mom!"],
 		["Messalina", "Your gratitude is misplaced."]

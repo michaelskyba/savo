@@ -37,6 +37,7 @@ class Scene {
 				bg = "#006442"
 				break
 
+			case "палинурус":
 			case "Palinurus":
 				bg = "#ebf6f7"
 				fg = "#111"
