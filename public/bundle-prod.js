@@ -1,9 +1,14 @@
 const canvas = document.getElementById("canvas");
+canvas.width = 1325;
+canvas.height = 725;
 let c = canvas.getContext("2d");
 // Abstractions
 c.textWidth = (text) => c.measureText(text).width;
 c.text = c.fillText;
 c.frect = c.fillRect;
+c.w = canvas.width;
+c.h = canvas.height;
+c.s = 50;
 
 class TextBox {
     constructor(text, x, y, fontSize, fontFamily, bgColour, fgColour) {
@@ -73,9 +78,7 @@ const music = {
 // Make all tracks loop
 Object.keys(music).forEach(name => music[name].loop = true);
 
-const RNG = (min, max) => {
-    return Math.round(Math.random() * (max - min)) + min;
-};
+const RNG = (min, max) => Math.round(Math.random() * (max - min)) + min;
 
 let password = {
     peanuts: false,
@@ -88,8 +91,8 @@ class Particle {
         this.id = id;
         this.speed = RNG(1, 5);
         this.size = RNG(25, 100);
-        this.x = 1325;
-        this.y = RNG(0 - this.size, 725);
+        this.x = c.w;
+        this.y = RNG(0 - this.size, c.h);
     }
     draw() {
         // I can't be bothered to implement a timing system: the movement speed is
@@ -193,9 +196,9 @@ const mainMenu = {
     draw() {
         // Background
         c.fillStyle = "white";
-        c.frect(0, 0, 500, 725);
+        c.frect(0, 0, 500, c.h);
         c.fillStyle = "maroon";
-        c.frect(500, 0, 825, 725);
+        c.frect(500, 0, c.w - 500, c.h);
         // Background particles spawning
         let time = Date.now();
         if (time - lastSpawn > 400) {
@@ -291,7 +294,7 @@ class Cooldown {
     }
     start() {
         this.lastFrame = 0;
-        this.counter = 725;
+        this.counter = c.h;
     }
     progress(time) {
         this.counter--;
@@ -330,7 +333,7 @@ class HealCooldown extends Cooldown {
     constructor() {
         // We need it to decrease by 725 in 1s
         // So, that's 725/1000 = 0.725 per millisecond
-        super(331.25, 331.25, "#ffff00", 0.725);
+        super(c.w / 4, c.w / 4, "#ffff00", 0.725);
     }
     progress(time) {
         if (this.counter < 1)
@@ -350,12 +353,12 @@ const player = {
     cooldowns: {
         // We need it to decrease by 725 in 0.5s
         // So, that's (725/0.5)/1000 = 1.45 per millisecond
-        damage: new Cooldown(0, 331.25, "#ff0000", 1.45),
+        damage: new Cooldown(0, c.w / 4, "#ff0000", 1.45),
         heal: new HealCooldown(),
         // Same as damage: 725p/0.5s --> 1.45
-        dodge: new Cooldown(662.5, 331.25, "#00ffff", 1.45),
+        dodge: new Cooldown(c.w / 2, c.w / 4, "#00ffff", 1.45),
         // Same as healing: 725p/s --> 0.725
-        action: new Cooldown(993.75, 331.25, "#0000ff", 0.725)
+        action: new Cooldown(c.w * 3 / 4, c.w / 4, "#0000ff", 0.725)
     },
     keyPressed: deepClone(defaultKeys),
     resetInput() {
@@ -390,13 +393,10 @@ const player = {
         }
     },
     fixedKeys(input) {
-        // Pressed Z: Dodge roll
         if (input == "KeyZ")
             this.dodge();
-        // Pressed X: Attack
         if (input == "KeyX")
             this.attack();
-        // Pressed C: Heal
         if (input == "KeyC")
             this.heal();
     },
@@ -448,14 +448,12 @@ const player = {
             // Object.assign([], myArray) is even slower than this, though.
             // Correct for overworld display shifting
             if (mode == "overworld") {
-                // 637.5 = canvas width / 2 - player width / 2
-                // 337.5 = canvas height / 2 - player width / 2
-                colX -= 637.5;
-                colY -= 337.5;
+                colX -= c.w / 2 - c.s / 2;
+                colY -= c.h / 2 - c.s / 2;
             }
-            if (this.x + 50 > colX &&
+            if (this.x + c.s > colX &&
                 this.x < colX + collision.width &&
-                this.y + 50 > colY &&
+                this.y + c.s > colY &&
                 this.y < colY + collision.height) {
                 // The way we correct the position depends on how the player collided
                 // We have to make sure that the previous value did NOT satisfy
@@ -466,32 +464,29 @@ const player = {
                     this.x + speed >= colX + collision.width)
                     this.x = colX + collision.width;
                 if (this.keyPressed.right &&
-                    this.x - speed + 50 <= colX)
-                    this.x = colX - 50;
+                    this.x - speed + c.s <= colX)
+                    this.x = colX - c.s;
                 if (this.keyPressed.up &&
                     this.y + speed >= colY + collision.height)
                     this.y = colY + collision.height;
                 if (this.keyPressed.down &&
-                    this.y - speed + 50 <= colY)
-                    this.y = colY - 50;
+                    this.y - speed + c.s <= colY)
+                    this.y = colY - c.s;
             }
         }
     },
     draw(mode) {
         c.fillStyle = "maroon";
         if (mode == "fixed")
-            c.frect(this.x, this.y, 50, 50);
-        else {
-            // We want to draw it centered:
-            // 637.5 = canvas width / 2 - player width / 2
-            // 337.5 = canvas height / 2 - player width / 2
-            c.frect(637.5, 337.5, 50, 50);
-        }
+            c.frect(this.x, this.y, c.s, c.s);
+        // Centered
+        else
+            c.frect(c.w / 2 - c.s / 2, c.h / 2 - c.s / 2, c.s, c.s);
     },
     // Player attack range
     drawRange(enemyX, enemyY) {
         let range = 100;
-        let width = 50;
+        let width = c.s;
         let widthOffset = width / 2;
         if (enemyX + width > this.x + widthOffset - range &&
             enemyY + width > this.y + widthOffset - range &&
@@ -539,9 +534,9 @@ const player = {
     }
 };
 // Have damage and dodge cooldowns go backwards
-let damage = player.cooldowns.damage;
-damage.getY = (counter) => 725 - counter;
-player.cooldowns.dodge.getY = damage.getY;
+const getY = (counter) => c.h - counter;
+player.cooldowns.damage.getY = getY;
+player.cooldowns.dodge.getY = getY;
 
 // Inside Claudia's house at the start of the game
 const dialogue$7 = {
@@ -594,7 +589,7 @@ const dialogue$7 = {
         ["Messalina", "You've already forgotten what I said a minute ago?"],
         ["Messalina", "Forget your attachment to consistency instead!"],
         ["Messalina", "Once you arrive at Nova Anio-akvedukto, talk to Frontinus."],
-        ["Messalina", "Tell him to 'show you the door'."],
+        ["Messalina", "Tell him to \"show you the door\"."],
         ["Claudia", "Got it: Go to Nova Anio-akvedukto, tell Frontinus to show me the door."],
         ["Claudia", "Thanks, Mom!"],
         ["Messalina", "Your gratitude is misplaced."]
@@ -625,6 +620,7 @@ class Scene {
             case "Messalina":
                 bg = "#006442";
                 break;
+            case "палинурус":
             case "Palinurus":
                 bg = "#ebf6f7";
                 fg = "#111";
@@ -754,12 +750,12 @@ let Interactable$1 = class Interactable {
     }
     // Is the player in range to interact?
     inRange() {
-        let obj = this.obj;
-        // Made with the assumption that player is (50, 50) in width and height
-        return (player.x > obj.x - 125 &&
-            player.x < obj.x + obj.width + 75 &&
-            player.y > obj.y - 125 &&
-            player.y < obj.y + obj.height + 75);
+        const obj = this.obj;
+        const range = 75;
+        return (player.x > obj.x - range - c.s &&
+            player.x < obj.x + obj.width + range &&
+            player.y > obj.y - range - c.s &&
+            player.y < obj.y + obj.height + range);
     }
 };
 
@@ -771,7 +767,7 @@ const dialogue$6 = {
         ["Claudia", "U-uh..."],
         ["Claudia", "No, I was just wondering if you had anything new and interesting to say."],
         ["Messalina", "I'll spare you the bullying and embarrassment."],
-        ["Messalina", "Go *up* to Nova Anio-akvedukto and meet Frontinus."],
+        ["Messalina", "Go 𝘶𝘱 to Nova Anio-akvedukto and meet Frontinus."],
         ["Messalina", "Got it this time?"],
         ["Claudia", "I already knew that, okay?"],
         ["Messalina", "Of course."]
@@ -782,7 +778,7 @@ const dialogue$6 = {
         ["Claudia", "How much am I losing?"],
         ["Claudia", "Hmm..."],
         ["Claudia", "Well, the market's been going up by 10% around here for 100 years."],
-        ["Claudia", "So, in twenty years, that $500 would be 500 * 1.1^20..."],
+        ["Claudia", "So, in twenty years, that $500 would be 500 × 1.1^20..."],
         ["Claudia", "... ~= $3363.75!"],
         ["Claudia", "Is this bed really worth that?"],
         ["Claudia", "Could I live without it?"],
@@ -800,7 +796,7 @@ const dialogue$6 = {
         ["Claudia", "What if new research has deprecated their contents?"],
         ["Claudia", "None are particularly recent, after all."],
         ["Claudia", "Additionally, research online is simply more convenient."],
-        ["Claudia", "Why, then, is 'knowledge' more (socially) paired with books than with the internet?"],
+        ["Claudia", "Why, then, is \"knowledge\" more (socially) paired with books than with the internet?"],
         ["Claudia", "Did the association appear before the world's knowledge made its way over?"],
         ["Claudia", "Does public impression take that long to shift?"],
         ["Claudia", "Or maybe the medium of books does have an important, inherent advantage..."],
@@ -833,11 +829,11 @@ const interactables$3 = [
     // Room 0 (left)
     [
         new Interactable$1("stove", new Img$1("stove", 150, 75)),
-        new Interactable$1("Claudius", new Wall(200, 600, 50, 50, "#1d697c"))
+        new Interactable$1("Claudius", new Wall(200, 600, c.s, c.s, "#1d697c"))
     ],
     // Room 1 (right)
     [
-        new Interactable$1("Messalina", new Wall(200, 75, 50, 50, "#006442")),
+        new Interactable$1("Messalina", new Wall(200, 75, c.s, c.s, "#006442")),
         new Interactable$1("bookshelf", new Img$1("bookshelf", 650, 75)),
         new Interactable$1("bed", new Img$1("bed", 150, 550))
     ]
@@ -849,24 +845,28 @@ let prompt$5 = {
     active: false,
     box: new MenuOption("=================================================", 0, 0)
 };
+// Wall width
+const w$7 = 25;
+// Door gap
+const gap$4 = 200;
 let wallColour$4 = "#bf823e";
 const walls$3 = [
     // Room 0 (left)
     [
-        new Wall(0, 0, 1325, 25, wallColour$4),
-        new Wall(0, 0, 25, 1325, wallColour$4),
-        new Wall(0, 700, 1325, 25, wallColour$4),
-        new Wall(1300, 0, 25, 262.5, wallColour$4),
-        new Wall(1300, 462.5, 25, 262.5, wallColour$4)
+        new Wall(0, 0, c.w, w$7, wallColour$4),
+        new Wall(0, 0, w$7, c.w, wallColour$4),
+        new Wall(0, c.h - w$7, c.w, w$7, wallColour$4),
+        new Wall(c.w - w$7, 0, w$7, (c.h - gap$4) / 2, wallColour$4),
+        new Wall(c.w - w$7, (c.h - gap$4) / 2 + gap$4, w$7, (c.h - gap$4) / 2, wallColour$4)
     ],
     // Room 1 (right)
     [
-        new Wall(0, 0, 1325, 25, wallColour$4),
-        new Wall(0, 700, 1325, 25, wallColour$4),
-        new Wall(0, 0, 25, 262.5, wallColour$4),
-        new Wall(0, 462.5, 25, 262.5, wallColour$4),
-        new Wall(1300, 0, 25, 262.5, wallColour$4),
-        new Wall(1300, 462.5, 25, 262.5, wallColour$4)
+        new Wall(0, 0, c.w, w$7, wallColour$4),
+        new Wall(0, c.h - w$7, c.w, w$7, wallColour$4),
+        new Wall(0, 0, w$7, (c.h - gap$4) / 2, wallColour$4),
+        new Wall(0, (c.h - gap$4) / 2 + gap$4, w$7, (c.h - gap$4) / 2, wallColour$4),
+        new Wall(c.w - w$7, 0, w$7, (c.h - gap$4) / 2, wallColour$4),
+        new Wall(c.w - w$7, (c.h - gap$4) / 2 + gap$4, w$7, (c.h - gap$4) / 2, wallColour$4)
     ]
 ];
 let collision$2;
@@ -946,13 +946,13 @@ class ClaudiaHouse {
             bindows.draw();
         else {
             c.fillStyle = "#ddd";
-            c.frect(0, 0, 1325, 725);
+            c.frect(0, 0, c.w, c.h);
         }
         scene$6.draw();
     }
     drawRoom() {
         c.fillStyle = "#f0e68c";
-        c.frect(0, 0, 1325, 725);
+        c.frect(0, 0, c.w, c.h);
         player.draw("fixed");
         for (const wall of walls$3[this.room]) {
             wall.draw();
@@ -1017,9 +1017,8 @@ class Sword {
         let y2 = y1 + this.offsetY;
         let x3 = playerX;
         let y3 = playerY;
-        // Player size = 50
-        let x4 = x3 + 50;
-        let y4 = y3 + 50;
+        let x4 = x3 + c.s;
+        let y4 = y3 + c.s;
         // Quick rejects: player out of range of diagonal box
         if (Math.min(x1, x2) > x4 || Math.max(x1, x2) < x3 ||
             Math.min(y1, y2) > y4 || Math.max(y1, y2) < y3)
@@ -1033,12 +1032,12 @@ class Sword {
         // Special case if the sword is straight down or straight up
         if (dx == 0) {
             // Player's center point Y
-            let y = y3 + 25;
+            let y = y3 + c.s / 2;
             // If the enemy center point --> play center point distance is less
             // than the sword length, we know that it's touching. Otherwise, it
             // can't be. We don't have to worry about the fact that the player is a
             // square instead of a circle because the x values are aligned.
-            return Math.abs(y1 - y) < this.length - 25;
+            return Math.abs(y1 - y) < this.length - c.s / 2;
         }
         let m = dy / dx;
         /*
@@ -1053,7 +1052,7 @@ class Sword {
         // Check if the line intersects the left side of the player
         if (intersectLeft >= y3 && intersectLeft <= y4)
             return true;
-        // y value of equation when x = player right side (x + 50)
+        // y value of equation when x = player right side (x + c.s)
         let intersectRight = m * x4 + b;
         // Check if the line intersects the right side of the player
         if (intersectRight >= y3 && intersectRight <= y4)
@@ -1069,7 +1068,7 @@ class Sword {
         // Check if line intersects the top side of the player
         if (intersectTop >= x3 && intersectTop <= x4)
             return true;
-        // x value of equation when y = player bottom side (y + 50)
+        // x value of equation when y = player bottom side (y + c.s)
         let intersectBottom = (y4 - b) / m;
         // Check if line intersects the bottom side of the player
         if (intersectBottom >= x3 && intersectBottom <= x4)
@@ -1098,14 +1097,14 @@ class Enemy {
         this.elapsed = elapsed;
         this.bgColour = bgColour;
         this.fgColour = fgColour;
-        // 1232 = canvas width - textbox width (~88) - padding (5)
-        this.life = new Life(HP, 1232, 5);
+        // canvas width - textbox width (~88) - padding (5)
+        this.life = new Life(HP, c.w - 88 - 5, 5);
     }
     collision(playerX, playerY) {
         // The enemy only attacks when its attack counter is at zero
         if (this.counter != 0)
             return false;
-        return this.sword.collision(this.x + 25, this.y + 25, playerX, playerY);
+        return this.sword.collision(this.x + c.s / 2, this.y + c.s / 2, playerX, playerY);
     }
     receiveDamage() {
         this.life.hit();
@@ -1152,10 +1151,10 @@ class Enemy {
     }
     draw() {
         c.fillStyle = this.bgColour;
-        // 25 = enemy size / 2 (so the sword starts in the center)
+        // + (enemy size / 2) so that the sword starts in the center
         if (this.status == "attack")
-            this.sword.draw(this.x + 25, this.y + 25);
-        c.frect(this.x, this.y, 50, 50);
+            this.sword.draw(this.x + c.s / 2, this.y + c.s / 2);
+        c.frect(this.x, this.y, c.s, c.s);
         // Drawing the attack counter
         let fontSize = 40;
         c.font = fontSize + "px monospace";
@@ -1233,10 +1232,10 @@ const dialogue$5 = {
     // Frontinus explains how Claudia can use X to attack him
     attacking: [
         ["Frontinus", "First things first: attacking."],
-        ["Frontinus", "Do you see the '05' in the top right of the screen?"],
+        ["Frontinus", "Do you see the \"05\" in the top right of the screen?"],
         ["Frontinus", "Those are the pretend life points that I've created."],
         ["Frontinus", "To kill an enemy, you must reduce their life points to zero, of course."],
-        ["Claudia", "If I do that, wouldn't it make *me* the mortal danger?"],
+        ["Claudia", "If I do that, wouldn't it make 𝘮𝘦 the mortal danger?"],
         ["Frontinus", "No, because it's self-defense."],
         ["Claudia", "How can I determine whether an attack will be self-defense or not?"],
         ["Frontinus", "Don't worry about that."],
@@ -1246,7 +1245,7 @@ const dialogue$5 = {
         ["Claudia", "Are you really telling me to kill you?"],
         ["Frontinus", "Don't misunderstand: I am actually invincible."],
         ["Frontinus", "These life points are only for the convenience of the tutorial."],
-        ["Frontinus", "Anyway, you can't spam X five times to 'kill' me instantly."],
+        ["Frontinus", "Anyway, you can't spam X five times to \"kill\" me instantly."],
         ["Claudia", "Who's going to stop me?"],
         ["Frontinus", "You will stop yourself."],
         ["Frontinus", "After an attack, or any other action, for that matter, you'll have a cooldown."],
@@ -1270,27 +1269,27 @@ const dialogue$5 = {
         ["Frontinus", "You really have no problem abusing a civil engineer like that?"],
         ["Claudia", "You're the one who urged me to do so..."],
         ["Frontinus", "The next concept is timing."],
-        ["Frontinus", "You have noticed the '05' printed on my face, haven't you?"],
+        ["Frontinus", "You have noticed the \"05\" printed on my face, haven't you?"],
         ["Claudia", "I initially assumed that that was a second display of life points."],
         ["Claudia", "The number never changed while I attacked you, however."],
         ["Frontinus", "That's because this number is not directly connected to life points at all."],
         ["Frontinus", "Instead, it's my attack counter!"],
         ["Frontinus", "During combat, I will decrement this number."],
         ["Frontinus", "Then, once it hits zero, I will swing my sword and attack you back."],
-        ["Claudia", "Ah, so *you* are the mortal danger."],
+        ["Claudia", "Ah, so 𝘺𝘰𝘶 are the mortal danger."],
         ["Claudia", "Wouldn't chaining yourself up be the more surefire way of removing risk?"],
         ["Frontinus", "Again, don't jump to unfortunate conclusions."],
         ["Frontinus", "My weapon is incapable of creating real hurt."],
         ["Frontinus", "Instead, its purpose is practice; I can simulate damage."],
         ["Claudia", "Well then, do I have life points too? Would they decrease if I was to get hit?"],
-        ["Frontinus", "Are you referencing the '99' in the top left? We'll get to that later."],
+        ["Frontinus", "Are you referencing the \"99\" in the top left? We'll get to that later."],
         ["Frontinus", "For now, try to completely avoid being hit."],
         ["Frontinus", "Remember: I strike when my attack counter hits zero."],
         ["Claudia", "And the only way it changes is by a decrease of one, it sounds like?"],
         ["Claudia", "Why would you make it so predictable?"],
         ["Frontinus", "Hey, I don't control it myself."],
         ["Frontinus", "The pattern of a foe's attack counter is determined by the foe's conviction."],
-        ["Claudia", "Foe? Wouldn't I be a 'foe' from my opponent's perspective?"],
+        ["Claudia", "Foe? Wouldn't I be a \"foe\" from my opponent's perspective?"],
         ["Claudia", "Why don't I have an attack counter to go along with that?"],
         ["Frontinus", "Well, you're special. The world revolves around you, Claudia."],
         ["Claudia", "What kind of answer is that?"],
@@ -1307,7 +1306,7 @@ const dialogue$5 = {
     // Frontinus explains being hit and healing
     healing: [
         ["Frontinus", "Great, your brain is capable of grasping the concept of counting."],
-        ["Claudia", "You say that as if your ability to 'grasp concepts' is superior to mine."],
+        ["Claudia", "You say that as if your ability to \"grasp concepts\" is superior to mine."],
         ["Frontinus", "Is it not?"],
         ["Claudia", "It's not."],
         ["Claudia", "Next time you consider making such a nefarious implication, think again."],
@@ -1320,9 +1319,9 @@ const dialogue$5 = {
         ["Frontinus", "You do have life points, Claudia."],
         ["Frontinus", "However, they work slightly differently from that of your enemies."],
         ["Frontinus", "When I hit you, your life points will decrease, but that's not all."],
-        ["Frontinus", "Additionally, your life will become 'threatened'."],
+        ["Frontinus", "Additionally, your life will become \"threatened\"."],
         ["Claudia", "Isn't it threatened the second combat starts?"],
-        ["Frontinus", "'Threatened' is a specific, identifiable state."],
+        ["Frontinus", "\"Threatened\" is a specific, identifiable state."],
         ["Frontinus", "You'll know you're threatened because your life points display will turn red."],
         ["Claudia", "Why should I care if it's red or not?"],
         ["Frontinus", "I was about to get to that."],
@@ -1332,7 +1331,7 @@ const dialogue$5 = {
         ["Frontinus", "This is where healing comes into play."],
         ["Frontinus", "You're incapable of raising your life points, but you can do something else."],
         ["Claudia", "Unthreaten myself?"],
-        ["Frontinus", "That's right. Pressing C will heal you, removing the 'threatened' state."],
+        ["Frontinus", "That's right. Pressing C will heal you, removing the \"threatened\" state."],
         ["Claudia", "Hmm..."],
         ["Claudia", "Wait, so does that mean it's optimal to spam C during your attack?"],
         ["Claudia", "That's unfun, annoying, nonsensical, etc."],
@@ -1345,7 +1344,7 @@ const dialogue$5 = {
         ["Claudia", "How fast is the healing cooldown compared to the action cooldown?"],
         ["Frontinus", "Figure it out yourself."],
         ["Frontinus", "Also, your movement speed will be halved while the cooldown is running."],
-        ["Claudia", "What if I *want* to move slowly?"],
+        ["Claudia", "What if I 𝘸𝘢𝘯𝘵 to move slowly?"],
         ["Frontinus", "In that case, you should hold Shift while moving, but it has nothing to do with healing."],
         ["Frontinus", "Alright, it's time for you to try healing on your own."],
         ["Frontinus", "I will cut off your means of escape using some walls, forcing you to take damage."],
@@ -1369,8 +1368,8 @@ const dialogue$5 = {
         ["Claudia", "Anyway, am I done?"],
         ["Frontinus", "Not quite. There is one last element: dodging."],
         ["Claudia", "Didn't I already dodge your attacks during the attack counter practice?"],
-        ["Frontinus", "You dodged them, but you didn't *dodge* them."],
-        ["Frontinus", "'Dodging' is a specific action triggered by the Z key."],
+        ["Frontinus", "You dodged them, but you didn't 𝘥𝘰𝘥𝘨𝘦 them."],
+        ["Frontinus", "\"Dodging\" is a specific action triggered by the Z key."],
         ["Frontinus", "When pressing Z, a dodge cooldown will start."],
         ["Frontinus", "This one is green and positioned in the third quarter of the screen."],
         ["Frontinus", "While the dodge cooldown is running, you will be immune to all damage."],
@@ -1428,7 +1427,7 @@ const dialogue$5 = {
         ["Frontinus", "In the meantime, I'll show you the door that you came for."],
         ["Frontinus", "When you pass through, you sacrifice your sense of safety."],
         ["Frontinus", "On the other side is Lerwick, a place containing concerns."],
-        ["Frontinus", "Unlike me, dwellers *are* capable of hurting."],
+        ["Frontinus", "Unlike me, dwellers 𝘢𝘳𝘦 capable of hurting."],
         ["Claudia", "I've lost 15% of my brain cells from speaking to you."],
         ["Claudia", "It's safe to say that you're plenty cable of damaging others."],
         ["Frontinus", "I'm not joking."],
@@ -1445,8 +1444,7 @@ function resetCombat() {
     frontinus = new Frontinus(5);
     player.resetCooldowns();
     player.life = new Life(99, 5, 5);
-    // horizontal center based on canvas and player width
-    player.x = 637.5;
+    player.x = c.w / 2 - c.s;
     player.y = 625;
 }
 // Set the dialogue based on the phase
@@ -1468,28 +1466,31 @@ function setDialogue() {
     }
     scene$5 = new Scene(next);
 }
+// Wall width and door gap
+const w$6 = 25;
+const gap$3 = 300;
 let wallColour$3 = "#a69583";
 const walls$2 = [
     // Initial position with door blocked
     [
-        new Wall(0, 0, 1325, 25, wallColour$3),
-        new Wall(0, 0, 25, 1325, wallColour$3),
-        // Bottom with intersection
-        new Wall(0, 700, 512.5, 25, wallColour$3),
-        new Wall(812.5, 700, 612.5, 25, wallColour$3),
+        new Wall(0, 0, c.w, w$6, wallColour$3),
+        new Wall(0, 0, w$6, c.h, wallColour$3),
+        // Bottom intersection
+        new Wall(0, c.h - w$6, (c.w - gap$3) / 2, w$6, wallColour$3),
+        new Wall((c.w - gap$3) / 2 + gap$3, c.h - w$6, (c.w - gap$3) / 2, w$6, wallColour$3),
         // Initially solid right wall
-        new Wall(1300, 0, 25, 725, wallColour$3)
+        new Wall(c.w - w$6, 0, w$6, c.h, wallColour$3)
     ],
     // Door unblocked after tutorial
     [
-        new Wall(0, 0, 1325, 25, wallColour$3),
-        new Wall(0, 0, 25, 1325, wallColour$3),
-        // Bottom with intersection
-        new Wall(0, 700, 512.5, 25, wallColour$3),
-        new Wall(812.5, 700, 612.5, 25, wallColour$3),
-        // Intersection in right wall
-        new Wall(1300, 0, 25, 212.5, wallColour$3),
-        new Wall(1300, 512.5, 25, 212.5, wallColour$3)
+        new Wall(0, 0, c.w, w$6, wallColour$3),
+        new Wall(0, 0, w$6, c.h, wallColour$3),
+        // Bottom intersection
+        new Wall(0, c.h - w$6, (c.w - gap$3) / 2, w$6, wallColour$3),
+        new Wall((c.w - gap$3) / 2 + gap$3, c.h - w$6, (c.w - gap$3) / 2, w$6, wallColour$3),
+        // Right intersection
+        new Wall(c.w - w$6, 0, w$6, (c.h - gap$3) / 2, wallColour$3),
+        new Wall(c.w - w$6, (c.h - gap$3) / 2 + gap$3, w$6, (c.h - gap$3) / 2, wallColour$3)
     ]
 ];
 // This is the barrier from the tutorial, trapping Claudia into Frontinus's
@@ -1556,12 +1557,10 @@ const akvedukto = {
         music.summer_salt.play();
     },
     transitions() {
-        // 675 = canvas height - player size
-        if (player.y > 675)
-            return "Perinthus";
-        // 1275 = canvas width - player size
-        if (player.x > 1275)
+        if (player.x > c.w - c.s)
             return "Lerwick";
+        if (player.y > c.h - c.s)
+            return "Perinthus";
         return null;
     },
     move(time) {
@@ -1576,8 +1575,8 @@ const akvedukto = {
         let frontinusBlock = {
             x: frontinus.x,
             y: frontinus.y,
-            width: 50,
-            height: 50
+            width: c.s,
+            height: c.s
         };
         // Trapped collision: Frontinus and inner walls
         if (this.phase == 6 || this.phase == 8)
@@ -1616,7 +1615,7 @@ const akvedukto = {
     draw() {
         // Background
         c.fillStyle = "floralwhite";
-        c.frect(0, 0, 1325, 725);
+        c.frect(0, 0, c.w, c.h);
         c.globalAlpha = 0.2;
         bg.draw();
         c.globalAlpha = 1;
@@ -1644,6 +1643,8 @@ const akvedukto = {
     }
 };
 
+// Size of Powerup
+const s = 50;
 class Powerup {
     constructor() {
         this.x = 662.5;
@@ -1660,17 +1661,17 @@ class Powerup {
         if (this.activated)
             return;
         c.fillStyle = "#2b193d";
-        c.frect(this.x - 25, this.y - 25, 50, 50);
+        c.frect(this.x - s / 2, this.y - s / 2, s, s);
     }
     doesCollide() {
-        let x = this.x - 25;
-        let y = this.y - 25;
+        let x = this.x - s / 2;
+        let y = this.y - s / 2;
         let colX = player.x;
         let colY = player.y;
-        return (x + 50 > colX &&
-            x < colX + 50 &&
-            y + 50 > colY &&
-            y < colY + 50);
+        return (x + s > colX &&
+            x < colX + c.s &&
+            y + s > colY &&
+            y < colY + c.s);
     }
 }
 
@@ -1681,6 +1682,8 @@ elapsed {
     1: timer for countdown (attack counter manipulation)
 }
 */
+// Width of wall
+const w$5 = 25;
 class Nero extends Enemy {
     constructor() {
         super(637.5, 445, [0, 0], 50, "maroon", "#ffb5b5");
@@ -1722,19 +1725,19 @@ class Nero extends Enemy {
         }
     }
     constraints() {
-        if (this.x > 1250)
-            this.x = 1250;
-        if (this.x < 25)
-            this.x = 25;
-        if (this.y > 650)
-            this.y = 650;
-        if (this.y < 25)
-            this.y = 25;
+        if (this.x > c.w - w$5 - c.s)
+            this.x = c.w - w$5 - c.s;
+        if (this.x < w$5)
+            this.x = w$5;
+        if (this.y > c.h - w$5 - c.s)
+            this.y = c.h - w$5 - c.s;
+        if (this.y < w$5)
+            this.y = w$5;
         // Teleporting
-        if ((this.x == 25 && this.y == 25) ||
-            (this.x == 25 && this.y == 650) ||
-            (this.x == 1250 && this.y == 650) ||
-            (this.x == 1250 && this.y == 25)) {
+        if ((this.x == w$5 && this.y == w$5) ||
+            (this.x == w$5 && this.y == c.h - w$5 - c.s) ||
+            (this.x == c.w - w$5 - c.s && this.y == c.h - w$5 - c.s) ||
+            (this.x == c.w - w$5 - c.s && this.y == w$5)) {
             this.x = 637.5;
             this.y = 337.5;
         }
@@ -1840,7 +1843,7 @@ const dialogue$4 = {
         ["Mercury", "Halt!"],
         ["Mercury", "Who dares disturb the slumber of the emperor!"],
         ["Claudia", "I've made 0 dB of sound while you're here yelling across the room."],
-        ["Claudia", "Are you familiar with the concept of 'inside vs outside voice'?"],
+        ["Claudia", "Are you familiar with the concept of \"inside vs outside voice\"?"],
         ["Mercury", "Are you certain that that's how the decibel system works?"],
         ["Mercury", "How many times have you spoken to Alexander Bell? I'm his best friend."],
         ["Claudia", "He doesn't exist yet. Regardless, Bell Labs made the system."],
@@ -1852,7 +1855,7 @@ const dialogue$4 = {
         ["Mercury", "Wait, you're Octavia?"],
         ["Claudia", "Y-yes?"],
         ["Mercury", "O-ohh... Then, uh, move on ahead..."],
-        ["Mercury", "Btw, after you get banished, start 'preparing'."],
+        ["Mercury", "Btw, after you get banished, start \"preparing\"."],
         ["Claudia", "What? From where, and by whom?"],
         ["Mercury", "Actually... never mind, sorry. Good luck."],
         ["Claudia", "...?"]
@@ -1889,8 +1892,8 @@ const dialogue$4 = {
         ["Serapio", "What's a good website for learning about arbitrary topics?"],
         ["Claudia", "..."],
         ["Claudia", "How is that a riddle?"],
-        ["Serapio", "Oh? Are you so easily stumped that you need to jump to the 'it's not a riddle' strategy?"],
-        ["Claudia", "I mean, I can tell you my opinion on the topic, but that wouldn't 'solve' any riddle."],
+        ["Serapio", "Oh? Are you so easily stumped that you need to jump to the \"it's not a riddle\" strategy?"],
+        ["Claudia", "I mean, I can tell you my opinion on the topic, but that wouldn't \"solve\" any riddle."],
         ["Serapio", "...Can you solve it or not?"],
         ["Claudia", "..."],
         ["Claudia", "Wikipedia is a good website for learning."],
@@ -1911,10 +1914,10 @@ const dialogue$4 = {
         ["Claudia", "If the source is non-existent or uncredible, your edit would be reverted."],
         ["Serapio", "Wait, really? Who is there to moderate that?"],
         ["Claudia", "As I already said, it's run by the community."],
-        ["Claudia", "People like you and me can edit and 'watch' pages for further edits."],
+        ["Claudia", "People like you and me can edit and \"watch\" pages for further edits."],
         ["Claudia", "Then, when I see a malicious edit, I can quickly revert it."],
         ["Claudia", "For example, take a look at the edit history of the Enbridge article."],
-        ["Serapio", "No... there must be some mistake. There's no way... *Wikipedia*... actually works..."],
+        ["Serapio", "No... there must be some mistake. There's no way... 𝘞𝘪𝘬𝘪𝘱𝘦𝘥𝘪𝘢... actually works..."],
         ["Claudia", "It's seeming more and more to me that you're overwhelmingly biased on the topic."],
         ["Claudia", "Why not solve the riddle of your own intellectual dishonesty before attacking others?"],
         ["Serapio", "..."],
@@ -1927,21 +1930,21 @@ const dialogue$4 = {
         ["Claudia", "When d-"],
         ["Nero", "Wrong! Lemme give you some truth:"],
         ["Nero", "Your notion of direction is the literal definition of narrow-minded!"],
-        ["Nero", "How dare you declare that the ceiling is 'up'?"],
+        ["Nero", "How dare you declare that the ceiling is \"up\"?"],
         ["Nero", "You implying that our perspective is significant?"],
         ["Nero", "From the perspective of Musawer's alligators, only the sky is up."],
         ["Claudia", "Have you ever heard of implication before?"],
-        ["Claudia", "Your original question, 'What's up?', sta-"],
+        ["Claudia", "Your original question, \"What's up?\", sta-"],
         ["Nero", "OBJECTION"],
-        ["Nero", "My question was 'Wassup?'."],
+        ["Nero", "My question was \"Wassup?\"."],
         ["Claudia", "Okay."],
         ["Claudia", "Our perspective was implied by the fact that you were asking me with no stated context."],
-        ["Claudia", "If I enter the room and ask 'Do you have an apple?', do you see what's being implied?"],
+        ["Claudia", "If I enter the room and ask \"Do you have an apple?\", do you see what's being implied?"],
         ["Nero", "...That you want an apple?"],
         ["Claudia", "Yes, but you missed the point."],
         ["Claudia", "I'm implying that you, Nero, are responsible for answering."],
         ["Claudia", "You wouldn't then say..."],
-        ["Claudia", "'Oh, how narrow-minded of me to assume that the question is intended for me.'"],
+        ["Claudia", "\"Oh, how narrow-minded of me to assume that the question is intended for me.\""],
         ["Nero", "H-huh?"],
         ["Claudia", "Whatever, I don't care about that anymore."],
         ["Claudia", "Where's your ROM?"],
@@ -1967,7 +1970,7 @@ const dialogue$4 = {
         ["Nero", "Hah. I have no sympathy for fools like you...."],
         ["Nero", "Allowing yourself to be governed by the laws of geometry? PATHETIC"],
         ["Nero", "I've transcended such formalities. I can teleport."],
-        ["Nero", "So, the more important discussion is *whether* you can kill me."],
+        ["Nero", "So, the more important discussion is 𝘸𝘩𝘦𝘵𝘩𝘦𝘳 you can kill me."],
         ["Claudia", "That won't be a problem."],
         ["Claudia", "Nero Claudius Caesar Augustus Germanicus! Prepare for the end of your short life."],
         ["Nero", "Ha ha ha... fool..."],
@@ -1981,75 +1984,79 @@ const dialogue$4 = {
 };
 
 let nero = new Nero();
+// Wall width
+const w$4 = 25;
+// Door gap
+const gap$2 = 300;
 let wallColour$2 = "maroon";
 let objects = [
     // First room
     [
-        new Wall(0, 0, 1325, 25, wallColour$2),
-        new Wall(0, 0, 25, 1325, wallColour$2),
+        new Wall(0, 0, c.w, w$4, wallColour$2),
+        new Wall(0, 0, w$4, c.w, wallColour$2),
         // Bottom intersection
-        new Wall(0, 700, 512.5, 25, wallColour$2),
-        new Wall(812.5, 700, 612.5, 25, wallColour$2),
+        new Wall(0, c.h - w$4, (c.w - gap$2) / 2, w$4, wallColour$2),
+        new Wall((c.w - gap$2) / 2 + gap$2, c.h - w$4, (c.w - gap$2) / 2, w$4, wallColour$2),
         // Right intersection
-        new Wall(1300, 0, 25, 212.5, wallColour$2),
-        new Wall(1300, 512.5, 25, 212.5, wallColour$2)
+        new Wall(c.w - w$4, 0, w$4, (c.h - gap$2) / 2, wallColour$2),
+        new Wall(c.w - w$4, (c.h - gap$2) / 2 + gap$2, w$4, (c.h - gap$2) / 2, wallColour$2)
     ],
     // Second room - entered through the right of first room
     [
-        new Wall(0, 700, 1325, 25, wallColour$2),
+        new Wall(0, c.h - w$4, c.w, w$4, wallColour$2),
         // Left intersection
-        new Wall(0, 0, 25, 212.5, wallColour$2),
-        new Wall(0, 512.5, 25, 212.5, wallColour$2),
+        new Wall(0, 0, w$4, (c.h - gap$2) / 2, wallColour$2),
+        new Wall(0, (c.h - gap$2) / 2 + gap$2, w$4, (c.h - gap$2) / 2, wallColour$2),
         // Top intersection
-        new Wall(0, 0, 512.5, 25, wallColour$2),
-        new Wall(812.5, 0, 612.5, 25, wallColour$2),
-        new Wall(1300, 0, 25, 725, wallColour$2)
+        new Wall(0, 0, (c.w - gap$2) / 2, w$4, wallColour$2),
+        new Wall((c.w - gap$2) / 2 + gap$2, 0, (c.w - gap$2) / 2, w$4, wallColour$2),
+        new Wall(c.w - w$4, 0, w$4, c.h, wallColour$2)
     ],
     // Third room - entered through the top of second room
     [
-        new Wall(0, 0, 1325, 25, wallColour$2),
+        new Wall(0, 0, c.w, w$4, wallColour$2),
         // Left intersection
-        new Wall(0, 0, 25, 212.5, wallColour$2),
-        new Wall(0, 512.5, 25, 212.5, wallColour$2),
+        new Wall(0, 0, w$4, (c.h - gap$2) / 2, wallColour$2),
+        new Wall(0, (c.h - gap$2) / 2 + gap$2, w$4, (c.h - gap$2) / 2, wallColour$2),
         // Bottom intersection
-        new Wall(0, 700, 512.5, 25, wallColour$2),
-        new Wall(812.5, 700, 612.5, 25, wallColour$2),
-        new Wall(1300, 0, 25, 725, wallColour$2),
+        new Wall(0, c.h - w$4, (c.w - gap$2) / 2, w$4, wallColour$2),
+        new Wall((c.w - gap$2) / 2 + gap$2, c.h - w$4, (c.w - gap$2) / 2, w$4, wallColour$2),
+        new Wall(c.w - w$4, 0, w$4, c.h, wallColour$2),
         new Img$1("armour", 1075, 60)
     ],
     // Fourth room - entered through the left of third room
     [
-        new Wall(0, 0, 25, 1325, wallColour$2),
-        new Wall(0, 0, 1325, 25, wallColour$2),
+        new Wall(0, 0, w$4, c.w, wallColour$2),
+        new Wall(0, 0, c.w, w$4, wallColour$2),
         // Right intersection
-        new Wall(1300, 0, 25, 212.5, wallColour$2),
-        new Wall(1300, 512.5, 25, 212.5, wallColour$2),
+        new Wall(c.w - w$4, 0, w$4, (c.h - gap$2) / 2, wallColour$2),
+        new Wall(c.w - w$4, (c.h - gap$2) / 2 + gap$2, w$4, (c.h - gap$2) / 2, wallColour$2),
         // Bottom intersection
-        new Wall(0, 700, 512.5, 25, wallColour$2),
-        new Wall(812.5, 700, 612.5, 25, wallColour$2),
+        new Wall(0, c.h - w$4, (c.w - gap$2) / 2, w$4, wallColour$2),
+        new Wall((c.w - gap$2) / 2 + gap$2, c.h - w$4, (c.w - gap$2) / 2, w$4, wallColour$2),
     ],
     // Fifth (Nero's) room - entered through the bottom of the fourth room
     [
-        new Wall(0, 0, 25, 725, wallColour$2),
-        new Wall(0, 700, 1325, 25, wallColour$2),
-        new Wall(1300, 0, 25, 725, wallColour$2),
+        new Wall(0, 0, w$4, c.h, wallColour$2),
+        new Wall(0, c.h - w$4, c.w, w$4, wallColour$2),
+        new Wall(c.w - w$4, 0, w$4, c.h, wallColour$2),
         // Top intersection
-        new Wall(0, 0, 512.5, 25, wallColour$2),
-        new Wall(812.5, 0, 612.5, 25, wallColour$2),
+        new Wall(0, 0, (c.w - gap$2) / 2, w$4, wallColour$2),
+        new Wall((c.w - gap$2) / 2 + gap$2, 0, (c.w - gap$2) / 2, w$4, wallColour$2),
     ],
     // (Nero's) room - locked
     [
-        new Wall(0, 0, 1325, 25, wallColour$2),
-        new Wall(0, 0, 25, 1325, wallColour$2),
-        new Wall(1300, 0, 25, 725, wallColour$2),
-        new Wall(0, 700, 1325, 25, wallColour$2)
+        new Wall(0, 0, c.w, w$4, wallColour$2),
+        new Wall(0, 0, w$4, c.w, wallColour$2),
+        new Wall(c.w - w$4, 0, w$4, c.h, wallColour$2),
+        new Wall(0, c.h - w$4, c.w, w$4, wallColour$2)
     ]
 ];
 const interactables$2 = [
-    [new Interactable$1("Mercury", new Wall(637.5, 337.5, 50, 50, "#776d5a"))],
+    [new Interactable$1("Mercury", new Wall(637.5, 337.5, c.s, c.s, "#776d5a"))],
     [],
-    [new Interactable$1("Hector", new Wall(935, 80, 50, 50, "#16db93"))],
-    [new Interactable$1("Serapio", new Wall(1100, 600, 50, 50, "#20063b"))],
+    [new Interactable$1("Hector", new Wall(935, 80, c.s, c.s, "#16db93"))],
+    [new Interactable$1("Serapio", new Wall(1100, 600, c.s, c.s, "#20063b"))],
     [],
     []
 ];
@@ -2120,43 +2127,42 @@ const neroHouse = {
     },
     locationTransitions() {
         // Claudia left Nero's house back to Lerwick
-        // 675 = canvas height - player height
-        return player.y > 675 && this.room == 0;
+        return player.y > c.h - c.s && this.room == 0;
     },
     roomTransitions() {
         let oldRoom = this.room;
-        if (this.room == 0 && player.x > 1275) {
+        if (this.room == 0 && player.x > c.w - c.s) {
             this.room = 1;
             player.x = 0;
         }
         else if (this.room == 1 && player.x < 0) {
             this.room = 0;
-            player.x = 1275;
+            player.x = c.w - c.s;
         }
         else if (this.room == 1 && player.y < 0) {
             this.room = 2;
-            player.y = 675;
+            player.y = c.h - c.s;
         }
         else if (this.room == 2 && player.x < 0) {
             this.room = 3;
-            player.x = 1275;
+            player.x = c.w - c.s;
         }
-        else if (this.room == 2 && player.y > 675) {
+        else if (this.room == 2 && player.y > c.h - c.s) {
             this.room = 1;
             player.y = 0;
         }
-        else if (this.room == 3 && player.y > 675) {
+        else if (this.room == 3 && player.y > c.h - c.s) {
             this.room = 4;
-            player.y = 50;
+            player.y = c.s;
             scene$4 = new Scene(dialogue$4.Nero);
         }
-        else if (this.room == 3 && player.x > 1275) {
+        else if (this.room == 3 && player.x > c.w - c.s) {
             this.room = 2;
             player.x = 0;
         }
         else if (this.room == 4 && player.y < 0) {
             this.room = 3;
-            player.y = 675;
+            player.y = c.h - c.s;
         }
         // There was a room switch, so let's update the collisions
         if (oldRoom != this.room)
@@ -2193,8 +2199,10 @@ const neroHouse = {
             if (nero.life.hp < 1) {
                 neroHouse.gameState = "win";
                 // One-time drawing
+                // TODO: Make a better system than this. I remember being really
+                // rushed when I came up with it
                 c.fillStyle = "#fff";
-                c.frect(0, 0, 1325, 725);
+                c.frect(0, 0, c.w, c.h);
                 c.fillStyle = "#000";
                 c.font = "48px serif";
                 c.text("You win!", 100, 100);
@@ -2222,7 +2230,7 @@ const neroHouse = {
     draw() {
         // Background: floor
         c.fillStyle = "#fcc9b9";
-        c.frect(0, 0, 1325, 725);
+        c.frect(0, 0, c.w, c.h);
         player.draw("fixed");
         for (const wall of objects[this.room]) {
             wall.draw();
@@ -2236,7 +2244,8 @@ const neroHouse = {
                 let wasSet = false;
                 for (const int of interactables$2[this.room]) {
                     if (int.inRange()) {
-                        // We only need to update the prompt box if it doesn't exist yet
+                        // We only need to update the prompt box if it doesn't
+                        // exist yet
                         if (!prompt$4.active)
                             prompt$4.box = new MenuOption("Press X to interact.", int.obj.x - 60, int.obj.y - 60);
                         prompt$4.int = int;
@@ -2285,10 +2294,10 @@ const dialogue$3 = {
         ["Claudia", "The literal string?"],
         ["Claudius", "No, of course not."],
         ["Claudius", "It's not supposed to be difficult to figure out, okay?"],
-        ["Claudia", "Then, what is 'b'?"],
+        ["Claudia", "Then, what is \"b\"?"],
         ["Claudius", "Hmm, let's pick a number."],
         ["Claudia", "9.9?"],
-        ["Claudius", "Sure, 'b' can be 9.9."],
+        ["Claudius", "Sure, \"b\" can be 9.9."],
         ["Claudius", "The rest is simple."],
         ["Claudia", "Hmm... I wonder if this is necessary..."]
     ],
@@ -2372,13 +2381,13 @@ const dialogue$3 = {
         ["Tiberius", "probably"],
         ["Claudia", "Judging from your response, it seems like you do believe that suffering is wrong."],
         ["Claudia", "However, because you don't like that idea (for some reason), you hide behind psychological egoism."],
-        ["Claudia", "When you propose that seeing the person makes you 'sad', it means that you see it as wrong."],
+        ["Claudia", "When you propose that seeing the person makes you \"sad\", it means that you see it as wrong."],
         ["Tiberius", "nope"],
-        ["Claudia", "With this logic, you would probably feel 'sad' for person B from earlier."],
+        ["Claudia", "With this logic, you would probably feel \"sad\" for person B from earlier."],
         ["Claudia", "If you saw it in real life, that is. You're just in denial about your ideas."],
         ["Tiberius", "u rly arnt giving any good points lol"],
         ["Tiberius", "ppl like u come here everyday w ith this stuff"],
-        ["Claudia", "You mean 'every day'? How are you this illiterate?"],
+        ["Claudia", "You mean \"every day\"? How are you this illiterate?"],
         ["Claudia", "It's honestly difficult to understand you."],
         ["Tiberius", "lmfaooooo"],
         ["Tiberius", "ur so bad at arguing that u have to start attackign me"],
@@ -2391,9 +2400,9 @@ const dialogue$3 = {
         ["Claudia", "Tell me about yourself. What kinds of foods do you like to eat?"],
         ["Tiberius", "uh, i like candy"],
         ["Tiberius", "especially aspertane"],
-        ["Claudia", "Do you mean 'Aspartame'?"],
+        ["Claudia", "Do you mean \"Aspartame\"?"],
         ["Tiberius", "idk probably"],
-        ["Claudia", "Nobody would call that 'candy'."],
+        ["Claudia", "Nobody would call that \"candy\"."],
         ["Tiberius", "dc bro"],
         ["Claudia", "I'm guessing you like processed meat as well..."],
         ["Tiberius", "o but there is stuff that i rly wouldnt eat"],
@@ -2430,7 +2439,7 @@ const dialogue$3 = {
         ["Tiberius", "it doesnt matter if it makes sense"],
         ["Claudia", "What? Why?"],
         ["Tiberius", "just because we dont think something makes sense, it doesnt mean it cant exist"],
-        ["Claudia", "So, if a = b, you don't *know* that b = a?"],
+        ["Claudia", "So, if a = b, you don't 𝘬𝘯𝘰𝘸 that b = a?"],
         ["Tiberius", "it makes sense under my logical system"],
         ["Tiberius", "but i cant prove that my logical system is true"],
         ["Claudia", "How would it not be?"],
@@ -2479,56 +2488,61 @@ const dialogue$3 = {
     ]
 };
 
+// Width of the wall
+// I'm going to hardcode it because I don't think it /has/ to be c.s/2
+const w$3 = 25;
+// Door gap
+const gap$1 = 200;
 const wallColour$1 = "#c3272b";
 const walls$1 = [
     // Initial room after entering from Lerwick
     // Includes Claudius and door to room 1
     [
-        new Wall(0, 0, 1325, 25, wallColour$1),
-        new Wall(0, 700, 1325, 25, wallColour$1),
-        new Wall(0, 0, 25, 262.5, wallColour$1),
-        new Wall(0, 462.5, 25, 262.5, wallColour$1),
-        new Wall(1300, 0, 25, 262.5, wallColour$1),
-        new Wall(1300, 462.5, 25, 262.5, wallColour$1)
+        new Wall(0, 0, c.w, w$3, wallColour$1),
+        new Wall(0, c.h - w$3, c.w, w$3, wallColour$1),
+        new Wall(0, 0, w$3, (c.h - gap$1) / 2, wallColour$1),
+        new Wall(0, (c.h - gap$1) / 2 + gap$1, w$3, (c.h - gap$1) / 2, wallColour$1),
+        new Wall(c.w - w$3, 0, w$3, (c.h - gap$1) / 2, wallColour$1),
+        new Wall(c.w - w$3, (c.h - gap$1) / 2 + gap$1, w$3, (c.h - gap$1) / 2, wallColour$1)
     ],
     // To the right of room 0
     // Includes Tiberius - is the center room that touches all other rooms
     [
         // Right opening
         // Needs to be drawn first so it's behind the other walls
-        new Wall(1300, 0, 25, 262.5, "#8db255"),
-        new Wall(1300, 462.5, 25, 262.5, "#8db255"),
+        new Wall(c.w - w$3, 0, w$3, (c.h - gap$1) / 2, "#8db255"),
+        new Wall(c.w - w$3, (c.h - gap$1) / 2 + gap$1, w$3, (c.h - gap$1) / 2, "#8db255"),
         // Top opening
-        new Wall(0, 0, 562.5, 25, wallColour$1),
-        new Wall(762.5, 0, 562.5, 25, wallColour$1),
+        new Wall(0, 0, (c.w - gap$1) / 2, w$3, wallColour$1),
+        new Wall((c.w - gap$1) / 2 + gap$1, 0, (c.w - gap$1) / 2, w$3, wallColour$1),
         // Bottom opening
-        new Wall(0, 700, 562.5, 25, wallColour$1),
-        new Wall(762.5, 700, 562.5, 25, wallColour$1),
+        new Wall(0, c.h - w$3, (c.w - gap$1) / 2, w$3, wallColour$1),
+        new Wall((c.w - gap$1) / 2 + gap$1, c.h - w$3, (c.w - gap$1) / 2, w$3, wallColour$1),
         // Left opening
-        new Wall(0, 0, 25, 262.5, wallColour$1),
-        new Wall(0, 462.5, 25, 262.5, wallColour$1)
+        new Wall(0, 0, w$3, (c.h - gap$1) / 2, wallColour$1),
+        new Wall(0, (c.h - gap$1) / 2 + gap$1, w$3, (c.h - gap$1) / 2, wallColour$1)
     ],
     // The room which is above room 1
     [
-        new Wall(0, 0, 1325, 25, wallColour$1),
-        new Wall(0, 0, 25, 725, wallColour$1),
-        new Wall(1300, 0, 25, 725, wallColour$1),
+        new Wall(0, 0, c.w, w$3, wallColour$1),
+        new Wall(0, 0, w$3, c.h, wallColour$1),
+        new Wall(c.w - w$3, 0, w$3, c.h, wallColour$1),
         // Bottom opening
-        new Wall(0, 700, 562.5, 25, wallColour$1),
-        new Wall(762.5, 700, 562.5, 25, wallColour$1)
+        new Wall(0, c.h - w$3, (c.w - gap$1) / 2, w$3, wallColour$1),
+        new Wall((c.w - gap$1) / 2 + gap$1, c.h - w$3, (c.w - gap$1) / 2, w$3, wallColour$1)
     ],
     // The room which is below room 1
     [
-        new Wall(0, 700, 1325, 25, wallColour$1),
-        new Wall(0, 0, 25, 725, wallColour$1),
-        new Wall(1300, 0, 25, 725, wallColour$1),
+        new Wall(0, c.h - w$3, c.w, w$3, wallColour$1),
+        new Wall(0, 0, w$3, c.h, wallColour$1),
+        new Wall(c.w - w$3, 0, w$3, c.h, wallColour$1),
         // Top opening
-        new Wall(0, 0, 562.5, 25, wallColour$1),
-        new Wall(762.5, 0, 562.5, 25, wallColour$1)
+        new Wall(0, 0, (c.w - gap$1) / 2, w$3, wallColour$1),
+        new Wall((c.w - gap$1) / 2 + gap$1, 0, (c.w - gap$1) / 2, w$3, wallColour$1)
     ],
 ];
-const claudius = new Interactable$1("Claudius", new Wall(200, 600, 50, 50, "#1d697c"));
-const tiberius = new Interactable$1("Tiberius", new Wall(1000, 600, 50, 50, "#48929b"));
+const claudius = new Interactable$1("Claudius", new Wall(200, 600, c.s, c.s, "#1d697c"));
+const tiberius = new Interactable$1("Tiberius", new Wall(1000, 600, c.s, c.s, "#48929b"));
 let scene$3 = new Scene(dialogue$3.Claudius);
 scene$3.playing = false;
 let prompt$3 = {
@@ -2587,29 +2601,29 @@ class House {
         let oldRoom = this.room;
         if (this.room == 0 && player.x < 0)
             return "Lerwick";
-        else if (this.room == 1 && player.x > 1275)
+        else if (this.room == 1 && player.x > c.w - c.s)
             return "AugustusRoom";
-        else if (this.room == 0 && player.x > 1275) {
+        else if (this.room == 0 && player.x > c.w - c.s) {
             player.x = 0;
             this.room = 1;
         }
         else if (this.room == 1 && player.x < 0) {
-            player.x = 1275;
+            player.x = c.w - c.s;
             this.room = 0;
         }
         else if (this.room == 1 && player.y < 0) {
-            player.y = 675;
+            player.y = c.h - c.s;
             this.room = 2;
         }
         else if (this.room == 3 && player.y < 0) {
-            player.y = 675;
+            player.y = c.h - c.s;
             this.room = 1;
         }
-        else if (this.room == 2 && player.y > 675) {
+        else if (this.room == 2 && player.y > c.h - c.s) {
             player.y = 0;
             this.room = 1;
         }
-        else if (this.room == 1 && player.y > 675) {
+        else if (this.room == 1 && player.y > c.h - c.s) {
             player.y = 0;
             this.room = 3;
         }
@@ -2626,11 +2640,11 @@ class House {
     draw() {
         // Floor
         c.fillStyle = "#dba97d";
-        c.frect(0, 0, 1325, 725);
+        c.frect(0, 0, c.w, c.h);
         // Black entrance floor to Augustus's room
         if (this.room == 1) {
             c.fillStyle = "#000";
-            c.frect(1312.5, 262.5, 12.5, 200);
+            c.frect(c.w - w$3 / 2, (c.h - gap$1) / 2, w$3 / 2, gap$1);
         }
         for (const obj of this.collisions) {
             obj.draw();
@@ -2769,6 +2783,8 @@ class House {
 }
 const house = new House();
 
+// Wall width inside augustusRoom
+const w$2 = 25;
 class Slider extends Enemy {
     constructor(y) {
         super(-100, y, [0, 0], 0, "#111", "#eee");
@@ -2780,12 +2796,12 @@ class Slider extends Enemy {
     }
     move() {
         this.x += this.cx;
-        if (this.cx > 0 && this.x > 1250) {
-            this.x = 1250;
+        if (this.cx > 0 && this.x > c.w - w$2 - c.s) {
+            this.x = c.w - w$2 - c.s;
             this.initSpeed(-1);
         }
-        if (this.cx < 0 && this.x < 25) {
-            this.x = 25;
+        if (this.cx < 0 && this.x < w$2) {
+            this.x = w$2;
             this.initSpeed(1);
         }
     }
@@ -2793,6 +2809,8 @@ class Slider extends Enemy {
 
 // Move every 100 ms
 const threshold = 16.66;
+// Width of walls
+const w$1 = 25;
 /*
 elapsed {
     0: timer for movement (x,y manipulation)
@@ -2843,14 +2861,14 @@ class Augustus extends Enemy {
     }
     constraints() {
         // Don't move through walls
-        if (this.x > 1250)
-            this.x = 1250;
-        if (this.y > 650)
-            this.y = 650;
-        if (this.x < 25)
-            this.x = 25;
-        if (this.y < 25)
-            this.y = 25;
+        if (this.x > c.w - w$1 - c.s)
+            this.x = c.w - w$1 - c.s;
+        if (this.y > c.h - w$1 - c.s)
+            this.y = c.h - w$1 - c.s;
+        if (this.x < w$1)
+            this.x = w$1;
+        if (this.y < w$1)
+            this.y = w$1;
     }
     // Generate the gliding destination and appropriate (x,y) movement speed
     genGlide() {
@@ -2970,10 +2988,10 @@ class Augustus extends Enemy {
     }
     collision(playerX, playerY) {
         // Augustus is physically overlapping Claudia
-        if (this.x + 50 > playerX &&
-            this.y + 50 > playerY &&
-            playerX + 50 > this.x &&
-            playerY + 50 > this.y)
+        if (this.x + c.s > playerX &&
+            this.y + c.s > playerY &&
+            playerX + c.s > this.x &&
+            playerY + c.s > this.y)
             return true;
         return super.collision(playerX, playerY);
     }
@@ -3005,7 +3023,7 @@ const dialogue$2 = [
         ["Augustus", "Does that fact intensely trouble you?"],
         ["Claudia", "It does. How can you be content with contradiction?"],
         ["Claudia", "Have you never heard of the explosion principle?"],
-        ["Augustus", "I have, but it does not apply. Your view of 'logic' is too narrow-minded."],
+        ["Augustus", "I have, but it does not apply. Your view of \"logic\" is too narrow-minded."],
         ["Augustus", "Regardless, I can already infer why you are here."],
         ["Claudia", "What's your conclusion?"],
         ["Augustus", "You're here to suffer, are you not?"],
@@ -3019,7 +3037,7 @@ const dialogue$2 = [
         ["Claudia", "You'll probably even fail to provide a sufficient amount of suffering..."],
         ["Claudia", "By the way, was that Tiberius Caesar Augustus in the other room?"],
         ["Augustus", "No, obviously. Don't get confused just because his name tag uses his first name."],
-        ["Claudia", "But wouldn't 'Britannicus' be more accurate, then?"],
+        ["Claudia", "But wouldn't \"Britannicus\" be more accurate, then?"],
         ["Augustus", "Who cares?"],
         ["Claudia", "..."],
         ["Augustus", "Here is my proposal."],
@@ -3038,19 +3056,22 @@ const dialogue$2 = [
 ];
 
 let scene$2 = new Scene(dialogue$2[0]);
+// Wall width and door gap
+const w = 25;
+const gap = 200;
 const wallColour = "#8db255";
 const openWalls = [
-    new Wall(0, 0, 1325, 25, wallColour),
-    new Wall(0, 700, 1325, 25, wallColour),
-    new Wall(0, 0, 25, 262.5, wallColour),
-    new Wall(0, 462.5, 25, 262.5, wallColour),
-    new Wall(1300, 0, 25, 725, wallColour)
+    new Wall(0, 0, c.w, w, wallColour),
+    new Wall(0, c.h - w, c.w, w, wallColour),
+    new Wall(0, 0, w, (c.h - gap) / 2, wallColour),
+    new Wall(0, (c.h - gap) / 2 + gap, w, (c.h - gap) / 2, wallColour),
+    new Wall(c.w - w, 0, w, c.h, wallColour)
 ];
 const closedWalls = [
-    new Wall(0, 0, 1325, 25, wallColour),
-    new Wall(0, 700, 1325, 25, wallColour),
-    new Wall(0, 0, 25, 725, wallColour),
-    new Wall(1300, 0, 25, 725, wallColour)
+    new Wall(0, 0, c.w, w, wallColour),
+    new Wall(0, c.h - w, c.w, w, wallColour),
+    new Wall(0, 0, w, c.h, wallColour),
+    new Wall(c.w - w, 0, w, c.h, wallColour)
 ];
 let walls = openWalls;
 class Room {
@@ -3081,8 +3102,8 @@ class Room {
         music.climax_reasoning.play();
         walls = closedWalls;
         // In case the player thinks that they're smart
-        if (player.x < 25)
-            player.x = 25;
+        if (player.x < w)
+            player.x = w;
     }
     inputInit(event) {
         let code = event.code;
@@ -3155,7 +3176,7 @@ class Room {
     }
     draw() {
         c.fillStyle = "#000";
-        c.frect(0, 0, 1325, 725);
+        c.frect(0, 0, c.w, c.h);
         if (this.status == "waiting") {
             this.drawTimer();
             if (password.timeMachine)
@@ -3180,13 +3201,13 @@ room.inputInit = room.inputInit.bind(room);
 room.inputFight = room.inputFight.bind(room);
 
 // A "Block" is just a coloured rectangle. Since it's in overworld/, it's meant
-// to be placed in the overworld, which is why it keeps scroll(X,Y) in mind.
+// to be placed in the overworld, which is why it keeps scroll xy in mind.
 // There's also the respective fixed/Block.ts for fixed locations.
 class Block {
     constructor(x, y, width, height, colour) {
-        // So, (0, 0) would be the center of the player
-        this.x = x + 662.5;
-        this.y = y + 362.5;
+        // We want (0, 0) to be the center of the player
+        this.x = x + c.w / 2;
+        this.y = y + c.h / 2;
         this.width = width;
         this.height = height;
         this.colour = colour;
@@ -3200,8 +3221,8 @@ class Block {
 class Img extends Img$2 {
     constructor(id, x, y) {
         super(id, x, y);
-        this.x += 662.5;
-        this.y += 362.5;
+        this.x += c.w / 2;
+        this.y += c.h / 2;
     }
     draw(scrollX, scrollY) {
         this.checkDimensions();
@@ -3251,13 +3272,13 @@ class Interactable {
     // Is the player in range to interact?
     inRange() {
         let obj = this.obj;
-        let x = obj.x - 662.5 + 25;
-        let y = obj.y - 362.5 + 25;
-        // Made with the assumption that player is (50, 50) in width and height
-        return (player.x > x - 125 &&
-            player.x < x + obj.width + 75 &&
-            player.y > y - 125 &&
-            player.y < y + obj.height + 75);
+        let x = obj.x - (c.w / 2) + (c.s / 2);
+        let y = obj.y - (c.h / 2) + (c.s / 2);
+        let range = 100;
+        return (player.x > x - range - c.s &&
+            player.x < x + obj.width + range - c.s &&
+            player.y > y - range - c.s &&
+            player.y < y + obj.height + range - c.s);
     }
 }
 
@@ -3272,14 +3293,14 @@ const dialogue$1 = {
         ["Dorus", "Greetings, Claudia. I figured something pretty important out recently."],
         ["Claudia", "Important in what context and for whom?"],
         ["Dorus", "You find that question more interesting than what it is I actually figured out...?"],
-        ["Dorus", "I'll keep that brief and say that it's 'important' for *me*, in every sense."],
+        ["Dorus", "I'll keep that brief and say that it's \"important\" for 𝘮𝘦, in every sense."],
         ["Claudia", "Okay, well, what is it?"],
         ["Dorus", "First, name a superhuman ability. Please stay intellectually honest this time."],
         ["Claudia", "Sure, sure. Uh, how about the ability to make arbitrary physical objects levitate?"],
         ["Dorus", "Great example! What I've figured out how to do... is just that."],
         ["Claudia", "Huh? What if I had named a totally different ability instead?"],
         ["Claudia", "Surely my words in this moment aren't determining prior events, are they?"],
-        ["Dorus", "You're overthinking it. I've figured out *every* ability."],
+        ["Dorus", "You're overthinking it. I've figured out 𝘦𝘷𝘦𝘳𝘺 ability."],
         ["Dorus", "Therefore, anything you would have stated would apply."],
         ["Claudia", "I've been going along for amusement, but this is starting to sound ridiculous."],
         ["Dorus", "Of course it is."],
@@ -3289,8 +3310,8 @@ const dialogue$1 = {
         ["Claudia", "Is this something religious? I thought you were against that."],
         ["Claudia", "Just last week you were explaining your anti-Pascal's wager..."],
         ["Dorus", "Don't take this the wrong way. Let me give you an example to clear it up."],
-        ["Dorus", "Think about the concept of 'getting rich'."],
-        ["Dorus", "It's something almost anybody 'wishes', isn't it?"],
+        ["Dorus", "Think about the concept of \"getting rich\"."],
+        ["Dorus", "It's something almost anybody \"wishes\", isn't it?"],
         ["Claudia", "Sure...?"],
         ["Dorus", "Well, why do they actually want to get rich?"],
         ["Dorus", "It's because they believe that being rich will make them happier and more satisfied."],
@@ -3304,12 +3325,12 @@ const dialogue$1 = {
         ["Claudia", "You'd do it to gain some kind of satisfaction, as the person who strives to be rich does."],
         ["Dorus", "Bingo! Whether it's to impress a person, make an honorable act, simply amuse myself..."],
         ["Dorus", "The levitation's only ultimate purpose, from my perspective, is to bring me happiness."],
-        ["Claudia", "And therefore, if you're 'happy', it means you can levitate? Hold on... I object."],
+        ["Claudia", "And therefore, if you're \"happy\", it means you can levitate? Hold on... I object."],
         ["Claudia", "Let's go back to the wealth example."],
-        ["Claudia", "Wanting to be rich doesn't mean that your 'happy' state is identical to your 'rich' state."],
+        ["Claudia", "Wanting to be rich doesn't mean that your \"happy\" state is identical to your \"rich\" state."],
         ["Claudia", "I might be a generally happy person, but I could still want to pursue wealth."],
         ["Claudia", "In that case, the wealth isn't necessary for happiness, but it's still a goal."],
-        ["Claudia", "One that is *not* met."],
+        ["Claudia", "One that is 𝘯𝘰𝘵 met."],
         ["Claudia", "Do you see what I'm saying?"],
         ["Dorus", "Oh ho! I was actually trying to simplify the idea for you."],
         ["Dorus", "You've exceeded my expectations, however. So, let us drop the useless, regressive abstraction."],
@@ -3323,11 +3344,11 @@ const dialogue$1 = {
         ["Claudia", "Okay, well there's still the matter of the elephant in the room."],
         ["Claudia", "Is it really true that you're perfectly satisfied with not having superpowers?"],
         ["Claudia", "That would mean that you don't care about your own life, wouldn't it?"],
-        ["Dorus", "No, I *do* want superpowers."],
+        ["Dorus", "No, I 𝘥𝘰 want superpowers."],
         ["Claudia", "So then it all breaks down! You want to levitate but can't, so you can't!"],
-        ["Dorus", "Hold on! What I said was that I figured out *how*..."],
+        ["Dorus", "Hold on! What I said was that I figured out 𝘩𝘰𝘸..."],
         ["Dorus", "Each aspect of want is psychological, is it not?"],
-        ["Dorus", "And I've figured out *how* to control my psychology."],
+        ["Dorus", "And I've figured out 𝘩𝘰𝘸 to control my psychology."],
         ["Dorus", "So, I know how to stop caring about levitating, which means that I've figured out how to levitate."],
         ["Claudia", "And you can apply the same method anywhere?"],
         ["Dorus", "Yes. Take the aversion to death, for example."],
@@ -3347,9 +3368,9 @@ const dialogue$1 = {
         ["Dorus", "Here, I'll give you a hint."],
         ["Dorus", "The strategy I've discovered, you already know its name."],
         ["Dorus", "You just don't know that it's its name."],
-        ["Dorus", "And of this name, the first two letters are 'Me'."],
-        ["Claudia", "Does 'first' imply that it consists of more than two letters?"],
-        ["Claudia", "If it's just 'Me', that would be stupid, right?"],
+        ["Dorus", "And of this name, the first two letters are \"Me\"."],
+        ["Claudia", "Does \"first\" imply that it consists of more than two letters?"],
+        ["Claudia", "If it's just \"Me\", that would be stupid, right?"],
         ["Dorus", "Yes, there are more than two letters."],
         ["Dorus", "Well, go figure it out."],
         [null, "Claudia sighs deeply."],
@@ -3380,9 +3401,9 @@ const buildings$1 = [
     new Img("akvedukto_overworld", 50, -1150)
 ];
 const interactables$1 = [
-    new Interactable("Ovicula", new Block(550, -550, 50, 50, "#f3c13a")),
-    new Interactable("Dorus", new Block(175, 1100, 50, 50, "#763568")),
-    new Interactable("Palinurus", new Block(-300, 700, 50, 50, "#ebf6f7"))
+    new Interactable("Ovicula", new Block(550, -550, c.s, c.s, "#f3c13a")),
+    new Interactable("Dorus", new Block(175, 1100, c.s, c.s, "#763568")),
+    new Interactable("Palinurus", new Block(-300, 700, c.s, c.s, "#ebf6f7"))
 ];
 let prompt$2 = {
     int: interactables$1[0],
@@ -3465,7 +3486,7 @@ const perinthus = {
     },
     draw() {
         c.fillStyle = "#8fbc8f";
-        c.frect(0, 0, 1325, 725);
+        c.frect(0, 0, c.w, c.h);
         for (const road of roads$1) {
             road.draw(player.x, player.y);
         }
@@ -3529,7 +3550,7 @@ const dialogue = {
         ["Calypso", "Please don't tell me to dream lower..."],
         ["Claudia", "Let me think for a second."],
         [null, "..."],
-        ["Claudia", "First of all, what gave you the idea that you *have* to fit it into one day?"],
+        ["Claudia", "First of all, what gave you the idea that you 𝘩𝘢𝘷𝘦 to fit it into one day?"],
         ["Calypso", "Huh? Are you not familiar with the concept of microhabits?"],
         ["Calypso", "The idea is to shorten each activity down into a small chunk, which can be performed every day."],
         ["Calypso", "It's not a particularly well-defined term, though. This is my interpretation."],
@@ -3550,9 +3571,9 @@ const dialogue = {
         ["Claudia", "Well, then why not apply it to everything?"],
         ["Calypso", "Everything? What..."],
         ["Claudia", "Take your goal of learning programming, for example."],
-        ["Claudia", "Why not choose a 'programming' day, where you spend all free time in that day on programming?"],
+        ["Claudia", "Why not choose a \"programming day\", where you spend all free time in that day on programming?"],
         ["Claudia", "You'll accomplish far more than if you had spent the same amount of time distributed in tiny periods."],
-        ["Calypso", "That's true! Why did I only think of batching in the context of things I 'had' to do?"],
+        ["Calypso", "That's true! Why did I only think of batching in the context of things I \"had\" to do?"],
         ["Claudia", "However, you need to be careful in adapting the strategy to the habit."],
         ["Claudia", "Take exercise, for instance."],
         ["Claudia", "One day of batched exercise would be less effective, rather than more effective, wouldn't it?"],
@@ -3569,7 +3590,7 @@ const dialogue = {
         ["Calypso", "But how do I decide what to do on which day?"],
         ["Claudia", "Hey, you need to be able to largely figure out your systems on your own."],
         ["Claudia", "I'd use a digital calendar and a frequency-importance schedule."],
-        ["Claudia", "But *you* have to do what works best for you."],
+        ["Claudia", "But 𝘺𝘰𝘶 have to do what works best for you."],
         ["Claudia", "Then, reflect on your performance to see what to change and what to stick with."],
         ["Calypso", "You're right. If I can't figure this out, how will I get anywhere?"],
         ["Calypso", "Thank you, stranger."],
@@ -3583,14 +3604,14 @@ const dialogue = {
         ["Claudia", "Hey now, you don't need to get violent just yet."],
         ["Claudia", "First, you need to answer an important question."],
         ["Corculum", "Huh? What are you talking about?"],
-        ["Claudia", "Think about the supposed number '0.999...'."],
-        ["Claudia", "The 9s repeat *infinitely*!"],
+        ["Claudia", "Think about the supposed number \"0.999...\"."],
+        ["Claudia", "The 9s repeat 𝘪𝘯𝘧𝘪𝘯𝘪𝘵𝘦𝘭𝘺!"],
         ["Corculum", "What does this have to do with money?"],
         ["Claudia", "Well, this 0.999... number - would it be equal to 1.0?"],
         ["Corculum", "Of course not. It's slightly smaller. What's your point?"],
         ["Claudia", "HAHAH"],
         ["Claudia", "Sorry, got carried away for a second."],
-        ["Claudia", "Well, here's the thing. It *is* actually equal to 1.0."],
+        ["Claudia", "Well, here's the thing. It 𝘪𝘴 actually equal to 1.0."],
         ["Corculum", "Are you so rich that you can afford to skip math class? What's with this nonsense?"],
         ["Claudia", "Think about it. I'll give you three example explanations."],
         ["Corculum", "I don't need an explanation! It's obviously wrong!"],
@@ -3609,10 +3630,10 @@ const dialogue = {
         ["Claudia", "And how many 0s are there in that chain?"],
         ["Corculum", "A ton! Millions!"],
         ["Claudia", "Ha ha! No, that's not quite correct."],
-        ["Claudia", "'Millions' is nothing in the face of infinity, which is how many 9s there are in 0.999..."],
-        ["Claudia", "So, in your 'solution', there should be infinite 0s."],
+        ["Claudia", "\"Millions\" is nothing in the face of infinity, which is how many 9s there are in 0.999..."],
+        ["Claudia", "So, in your \"solution\", there should be infinite 0s."],
         ["Corculum", "Okay, well there you have it, then. If you already know, why ask me?"],
-        ["Claudia", "No, that's wrong! There *can't* be infinite 0s, because there's a 1 at the end."],
+        ["Claudia", "No, that's wrong! There 𝘤𝘢𝘯𝘯𝘰𝘵 be infinite 0s, because there's a 1 at the end."],
         ["Corculum", "What's wrong with that?"],
         ["Claudia", "What digit would the 1 be at? It can't possibly be there if there are infinite 0s first."],
         ["Corculum", "Your argument is unconvincing. It's obvious to me that 1 - 0.999... = 0.000...1."],
@@ -3640,10 +3661,10 @@ const dialogue = {
         ["Claudia", "Don't worry, it's a simple one. You like simple, don't you? It must be familiar."],
         ["Corculum", "Stop..."],
         ["Claudia", "Consider the fraction 1/3."],
-        ["Claudia", "When you multiply by 3, you get 1/3 * 3 = 1, simply through the definition of a reciprocal."],
+        ["Claudia", "When you multiply by 3, you get 1/3 × 3 = 1, simply through the definition of a reciprocal."],
         ["Claudia", "But, what's the decimal form of 1/3? It's 0.333..."],
         ["Claudia", "And, what happens when you multiply 0.333... by 3? You get 0.999..., which hence has to equal 1."],
-        ["Corculum", "No, that can't be right. 0.333... * 3 must be 1.0, not 0.999."],
+        ["Corculum", "No, that can't be right. 0.333... × 3 must be 1.0, not 0.999."],
         ["Claudia", "Are you even listening to yourself?"],
         ["Corculum", "Or, or, maybe 0.333... isn't actually equal to 1/3. It's slightly too small..."],
         ["Claudia", "That's false too. What else would it be equal to?"],
@@ -3656,33 +3677,33 @@ const dialogue = {
     Althea: [
         ["Althea", "Is there any real worth in learning a new language?"],
         ["Claudia", "Before the real clarification question comes, we need to clear up some context."],
-        ["Claudia", "Well, what do you define as 'worth'?"],
+        ["Claudia", "Well, what do you define as \"worth\"?"],
         ["Claudia", "If it's completely subjective, how can you expect me to answer for you?"],
         ["Althea", "I'm talking about practical applications."],
         ["Claudia", "That idea is still kind of blurry..."],
         ["Claudia", "Can doing something for the sake of enjoyment and amusement..."],
-        ["Claudia", "...really be deemed 'practical' or 'impractical'?"],
+        ["Claudia", "...really be deemed \"practical\" or \"impractical\"?"],
         ["Claudia", "Still, I think I generally understand what you're talking about."],
         ["Althea", "Hopefully."],
         ["Althea", "It seems..."],
-        ["Althea", "...You haven't heard the word 'practical' used in enough contexts to intuitively grasp the meaning."],
+        ["Althea", "...You haven't heard the word \"practical\" used in enough contexts to intuitively grasp the meaning."],
         ["Claudia", "Regardless, there are other clarification questions."],
         ["Claudia", "Is this hypothetical language-learner already fluent in English?"],
         ["Claudia", "What about their country's language?"],
-        ["Althea", "Are you implying that English is more or less 'worth' learning than an arbitrary other language?"],
+        ["Althea", "Are you implying that English is more or less \"worth\" learning than an arbitrary other language?"],
         ["Claudia", "Of course I am."],
         ["Claudia", "English is easily the most practical language to learn in terms of business opportunities."],
         ["Claudia", "This is such an obvious point... there's no way you disagree, right?"],
         ["Althea", "No, I was just wondering."],
         ["Althea", "Anyway, let's say that it's a person who speaks English and lives here in Lerwick."],
         ["Althea", "(...where English is the predominant language.)"],
-        ["Althea", "No other language around here would provide significant 'business opportunities', as you put it."],
+        ["Althea", "No other language around here would provide significant \"business opportunities\", as you put it."],
         ["Althea", "So, is it worth learning for them?"],
         ["Claudia", "That's slightly different from your original question."],
         ["Claudia", "I guess it'd be hypocritical to say otherwise, though, considering that I'm already learning Rust."],
         ["Althea", "Rust is n-"],
-        ["Claudia", "You're mistaken. Anyway, the point is that I still do it 'for fun'."],
-        ["Claudia", "Do you consider that as 'worth'?"],
+        ["Claudia", "You're mistaken. Anyway, the point is that I still do it \"for fun\"."],
+        ["Claudia", "Do you consider that as \"worth\"?"],
         ["Althea", "Hey, I brought up the topic theoretically."],
         ["Althea", "If you're crazy enough to actually partake in the activity..."],
         ["Althea", "...there's another side I'm more interested in."],
@@ -3703,7 +3724,7 @@ const dialogue = {
         ["Althea", "Your final goal is to be fluent in Rust."],
         ["Althea", "So, it makes sense to measure success in fluency in Rust, right?"],
         ["Claudia", "That's what I did..."],
-        ["Althea", "No, no you didn't. First, what do we mean by 'fluency'?"],
+        ["Althea", "No, no you didn't. First, what do we mean by \"fluency\"?"],
         ["Claudia", "There are different aspects, each of which I'm striving for..."],
         ["Althea", "That's right."],
         ["Althea", "Fundamentally, the four broader categories are reading, writing, speaking, and listening."],
@@ -3712,15 +3733,15 @@ const dialogue = {
         ["Claudia", "It measured reading, listening, and a bit of writing?"],
         ["Althea", "No, that's not true. In reality, it measured none of them."],
         ["Claudia", "...?"],
-        ["Althea", "Think back to the format of the test. The key point is that none of the material was *natural*."],
-        ["Claudia", "What do you mean by 'natural', and why is it significant?"],
+        ["Althea", "Think back to the format of the test. The key point is that none of the material was 𝘯𝘢𝘵𝘶𝘳𝘢𝘭."],
+        ["Claudia", "What do you mean by \"natural\", and why is it significant?"],
         ["Althea", "I mean that all the language used as part of the test is fake."],
         ["Althea", "It's made for a learner taking the test, not for a native speaker of Rust."],
         ["Claudia", "So? I still passed."],
         ["Althea", "What you passed wasn't a test on real Rust, but a test on test Rust."],
         ["Althea", "Are you getting this or do you need me to explain it again?"],
         ["Claudia", "Oh, I think I see what you mean."],
-        ["Claudia", "But, you're implying that 'test Rust' is somehow completely different from 'real Rust'."],
+        ["Claudia", "But, you're implying that \"test Rust\" is somehow completely different from \"real Rust\"."],
         ["Claudia", "I'm assuming that native Rust speakers still wrote the test, so how can that be?"],
         ["Althea", "The distinction is greater than you would think. Real speech can't simply be crafted on paper."],
         ["Claudia", "But can you prove that?"],
@@ -3736,7 +3757,7 @@ const dialogue = {
         ["Althea", "    (2..=i).product()"],
         ["Althea", "}"],
         ["Claudia", "Uhh, what was that?"],
-        ["Althea", "That was *real* Rust, which you've never even heard before!"],
+        ["Althea", "That was 𝘳𝘦𝘢𝘭 Rust, which you've never even heard before!"],
         ["Claudia", "Wait, you know the language?"],
         ["Althea", "Of course! I grew up with it!"],
         ["Althea", "That's why it pains me to see you hoping to learn but going nowhere."],
@@ -3750,11 +3771,11 @@ const dialogue = {
         ["Claudia", "W-what? No, they swore that I was good."],
         ["Althea", "That's just the polite nature of the Rust culture! Get over yourself, Claudia!"],
         ["Claudia", "Okay, okay. I've heard enough of your complaining."],
-        ["Claudia", "What, then, do *you* think is the better way to learn?"],
+        ["Claudia", "What, then, do 𝘺𝘰𝘶 think is the better way to learn?"],
         ["Althea", "Well, think about your own experience."],
-        ["Althea", "You've failed to learn Rust with this 'skill building' method, but you *have* had success in the past."],
+        ["Althea", "You've failed to learn Rust with this \"skill building\" method, but you 𝘩𝘢𝘷𝘦 had success in the past."],
         ["Claudia", "When? What are you talking about?"],
-        ["Althea", "What other language you have already learned? One where you *did* reach fluency?"],
+        ["Althea", "What other language you have already learned? One where you 𝘥𝘪𝘥 reach fluency?"],
         ["Claudia", "Hmmm..."],
         ["Claudia", "I genuinely don't know. How would you if I don't?"],
         ["Althea", "Because I can hear it! You've learned English!"],
@@ -3773,7 +3794,7 @@ const dialogue = {
         ["Claudia", "Oh... then..."],
         ["Althea", "Exactly: you have no answer, because you have no reason to think you're incapable."],
         ["Claudia", "So, what, then? I just have to hear a bit of Rust?"],
-        ["Althea", "Not 'a bit'. You need thousands of hours of Rust."],
+        ["Althea", "Not \"a bit\". You need thousands of hours of Rust."],
         ["Claudia", "Thousands of hours? W-What?"],
         ["Claudia", "Also, wait. I've been picking up English for many years..."],
         ["Claudia", "You want me to spend that long on Rust?"],
@@ -3787,7 +3808,7 @@ const dialogue = {
         ["Althea", "So, you need to supplement it with conscious study, as you've been doing."],
         ["Claudia", "Wait, what? But you just spent the last ten hours dunking on what I've been doing."],
         ["Althea", "The problem wasn't that you were doing conscious study."],
-        ["Althea", "The problem is that it was the *only* study you were doing."],
+        ["Althea", "The problem is that it was the 𝘰𝘯𝘭𝘺 study you were doing."],
         ["Althea", "Most of your time has to be dedicated to input."],
         ["Claudia", "I still have many questions..."],
         ["Claudia", "Can I hear about people who have learned through input successfully?"],
@@ -3802,7 +3823,7 @@ const dialogue = {
         ["Althea", "The reason I'm promoting Refold is because I believe it can help you."],
         ["Althea", "If you tell somebody that drinking water for optimal hydration is a good idea..."],
         ["Althea", "...Does it mean that you are suddenly sponsored by water?"],
-        ["Claudia", "Well, 'water' itself is not an actual brand or organization, but I get your point."],
+        ["Claudia", "Well, \"water\" itself is not an actual brand or organization, but I get your point."],
         ["Claudia", "Thank you for informing me."],
         ["Claudia", "After I install Nero Linux, I'll check it out."],
         ["Althea", "Of course. Thank you for your interest in Rust."]
@@ -3835,7 +3856,7 @@ const dialogue = {
         ["Claudia", "The other, more favourable option, is to start climbing down."],
         ["Claudia", "Once you're sufficiently low in altitude, jump into the grass, not the rock."],
         ["Daria", "But where would the cushion of grass appear from? I am no Dorus..."],
-        ["Claudia", "The grass comes from special magic called 'investing'."],
+        ["Claudia", "The grass comes from special magic called \"investing\"."],
         ["Daria", "Investing? I beg you, enlighten me."],
         ["Claudia", "Right now, where are your savings sitting?"],
         ["Daria", "They reside in my Asiagenus bank account."],
@@ -3849,7 +3870,7 @@ const dialogue = {
         ["Daria", "You dare insult Asiagenus!?"],
         ["Claudia", "Instead, you need a much higher return."],
         ["Claudia", "This way, you can not only match inflation but surpass it, making a profit."],
-        ["Claudia", "Then, you can keep earning without 'enduring' your 'grueling job'."],
+        ["Claudia", "Then, you can keep earning without \"enduring\" your \"grueling job\"."],
         ["Daria", "Of course, the fantasy appears pleasant."],
         ["Daria", "But, a higher return than 0.0001%? Don't tell jokes, now!"],
         ["Claudia", "I mean it genuinely. You can invest in the stock market!"],
@@ -3859,7 +3880,7 @@ const dialogue = {
         ["Daria", "Even poor Daria understands that the selection of individual stocks is a mere delusion!"],
         ["Daria", "You cannot time any market, even that of Lerwick!"],
         ["Claudia", "I agree with your impressions of investing. However, you've failed to acknowledge something."],
-        ["Claudia", "There exists a specific investment known as an 'index fund'."],
+        ["Claudia", "There exists a specific investment known as an \"index fund\"."],
         ["Daria", "Index fund? What kind of nonsense are you spouting?"],
         ["Claudia", "None, for the words I speak reflect the truth of reality."],
         ["Claudia", "An index fund is an algorithmic selection of stocks."],
@@ -3873,7 +3894,7 @@ const dialogue = {
         ["Daria", "But how is the S&P 500 formed?"],
         ["Claudia", "The top 500 companies in the United States are gathered for the index."],
         ["Claudia", "The bigger the company, the higher the stake."],
-        ["Daria", "Which god decides whether a company is 'big', or is bigger than another?"],
+        ["Daria", "Which god decides whether a company is \"big\", or is bigger than another?"],
         ["Claudia", "I'm not sure what the exact process is. I'd assume it's based on market cap?"],
         ["Claudia", "(That answers the second question. The first question is irrelevant.)"],
         ["Daria", "This news is largely cherishable, but I am yet to be sold..."],
@@ -3889,7 +3910,7 @@ const dialogue = {
         ["Daria", "If your cluelessness reaches such heights, why did you bother in the first place?"],
         ["Daria", "How can you teach what you do not understand yourself?"],
         ["Claudia", "Come on, surely this has be-"],
-        ["Daria", "I hereby declare your input 'ignorable'."],
+        ["Daria", "I hereby declare your input \"ignorable\"."],
         ["Daria", "Next time you talk to somebody, consider the idea that their time should be respected."],
         ["Daria", "Now, leave."],
         ["Claudia", "..."],
@@ -3898,7 +3919,7 @@ const dialogue = {
         ["Musawer", "Hey, is it hard for you to memorize the cosine law?"],
         ["Claudia", "Yes, actually. I keep confusing the variables."],
         ["Musawer", "Well, do I have the mnemonic for you!"],
-        ["Musawer", "Consider this *amazing* story:"],
+        ["Musawer", "Consider this 𝘢𝘮𝘢𝘻𝘪𝘯𝘨 story:"],
         ["Musawer", "Crocodile squared..."],
         ["Musawer", "Is equal to alligator squared plus bread squared..."],
         ["Musawer", "minus two alligator breads..."],
@@ -3962,12 +3983,12 @@ const doors = [
     new Block(1850, -500, 25, 100, "brown")
 ];
 const interactables = [
-    new Interactable("Hera", new Block(-185, 285, 50, 50, "#171412")),
-    new Interactable("Musawer", new Block(550, -1200, 50, 50, "#c91f37")),
-    new Interactable("Daria", new Block(1100, -275, 50, 50, "#817b69")),
-    new Interactable("Althea", new Block(1725, -600, 50, 50, "#374231")),
-    new Interactable("Corculum", new Block(910, -1400, 50, 50, "#d9b611")),
-    new Interactable("Calypso", new Block(315, -500, 50, 50, "#fff"))
+    new Interactable("Hera", new Block(-185, 285, c.s, c.s, "#171412")),
+    new Interactable("Musawer", new Block(550, -1200, c.s, c.s, "#c91f37")),
+    new Interactable("Daria", new Block(1100, -275, c.s, c.s, "#817b69")),
+    new Interactable("Althea", new Block(1725, -600, c.s, c.s, "#374231")),
+    new Interactable("Corculum", new Block(910, -1400, c.s, c.s, "#d9b611")),
+    new Interactable("Calypso", new Block(315, -500, c.s, c.s, "#fff"))
 ];
 let prompt$1 = {
     int: interactables[0],
@@ -4034,7 +4055,7 @@ const lerwick = {
     },
     draw() {
         c.fillStyle = "#ff8936";
-        c.frect(0, 0, 1325, 725);
+        c.frect(0, 0, c.w, c.h);
         for (const road of roads) {
             road.draw(player.x, player.y);
         }
@@ -4113,14 +4134,14 @@ const steps = {
                 break;
             case "claudiaHouse":
                 claudiaHouse.init();
-                player.x = 1270;
-                player.y = 337.5;
+                player.x = c.w - c.s - 5;
+                player.y = c.h / 2 - c.s / 2;
                 window.requestAnimationFrame(this.claudiaHouse);
                 break;
             case "akvedukto":
                 akvedukto.init();
-                player.x = 637.5;
-                player.y = 670;
+                player.x = c.w / 2 - c.s / 2;
+                player.y = c.h - c.s - 5;
                 window.requestAnimationFrame(this.akvedukto);
                 break;
         }
@@ -4155,20 +4176,20 @@ const steps = {
                 break;
             case "akvedukto":
                 akvedukto.init();
-                player.x = 1270;
-                player.y = 337.5;
+                player.x = c.w - c.s - 5;
+                player.y = c.h / 2 - c.s / 2;
                 window.requestAnimationFrame(this.akvedukto);
                 break;
             case "neroHouse":
                 neroHouse.init();
-                player.x = 637.5;
-                player.y = 670;
+                player.x = c.w / 2 - c.s / 2;
+                player.y = c.h - c.s - 5;
                 window.requestAnimationFrame(this.neroHouse);
                 break;
             case "tiberiusHouse":
                 house.init();
                 player.x = 0;
-                player.y = 337.5;
+                player.y = c.h / 2 - c.s / 2;
                 // We can't have the music operations in tiberiusHouse.init() or
                 // else it will have to run when coming back from augustusRoom
                 music.reset();
@@ -4180,7 +4201,7 @@ const steps = {
         if (neroHouse.gameState == "playing")
             return;
         c.fillStyle = "#000";
-        c.frect(0, 0, 1325, 725);
+        c.frect(0, 0, c.w, c.h);
         c.font = "48px serif";
         c.fillStyle = "red";
         c.text("YOU DIED", 100, 100);
@@ -4203,8 +4224,8 @@ const steps = {
                     neroHouse.gameState = "playing";
                     neroHouse.room = 3;
                     neroHouse.init();
-                    player.x = 637.5;
-                    player.y = 670;
+                    player.x = c.w / 2 - c.s / 2;
+                    player.y = c.h - c.s - 5;
                     window.requestAnimationFrame(steps.neroHouse);
                 }
             };
