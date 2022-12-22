@@ -13,13 +13,18 @@ elapsed {
 */
 
 class Slider extends Enemy {
-	cx: number
+	travelTime: number
 	counterThreshold: number
+	direction: string
+
+	// Buffer for elapsed[0]
+	buffer: number
 
 	constructor(y: number) {
 		super(-100, y, [0, 0], 0, "#8db255", "#111")
 		this.initCounter()
 		this.initSpeed(1)
+		this.direction = "right"
 	}
 
 	initCounter() {
@@ -28,7 +33,7 @@ class Slider extends Enemy {
 	}
 
 	initSpeed(direction: number) {
-		this.cx = RNG(1, 3) * direction
+		this.travelTime = RNG(2000, 4000)
 	}
 
 	attackCounter() {
@@ -36,8 +41,10 @@ class Slider extends Enemy {
 			this.counter -= 1
 			this.elapsed[1] = 0
 
-			if (this.counter == 0)
+			if (this.counter == 0) {
 				this.startSwing()
+				this.buffer = this.elapsed[0]
+			}
 		}
 	}
 
@@ -49,23 +56,26 @@ class Slider extends Enemy {
 		if (this.elapsed[1] > 200) {
 			// Reset to old, pre-attack values
 			this.status = "countdown"
-			this.elapsed[0] = 500
+			this.elapsed[0] = this.buffer
 			this.elapsed[1] = 0
-			this.counter = 20
+			this.initCounter()
 		}
 	}
 
 	countdown() {
-		this.x += this.cx
+		let progress = this.elapsed[0] / this.travelTime
+		this.x = (c.w - 2*w) * progress
 
-		if (this.cx > 0 && this.x > c.w - w - c.s) {
+		if (this.direction == "right" && this.x > c.w - w - c.s) {
 			this.x = c.w - w - c.s
 			this.initSpeed(-1)
+			this.elapsed[0] = 0
 		}
 
-		if (this.cx < 0 && this.x < w) {
+		if (this.direction == "left" && this.x < w) {
 			this.x = w
 			this.initSpeed(1)
+			this.elapsed[0] = 0
 		}
 
 		this.attackCounter()
