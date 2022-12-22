@@ -14,11 +14,17 @@ elapsed {
 
 class Slider extends Enemy {
 	cx: number
+	counterThreshold: number
 
 	constructor(y: number) {
 		super(-100, y, [0, 0], 0, "#8db255", "#111")
-		this.counter = RNG(10, 15) * 2
+		this.initCounter()
 		this.initSpeed(1)
+	}
+
+	initCounter() {
+		this.counter = RNG(10, 15) * 2
+		this.counterThreshold = RNG(200, 400)
 	}
 
 	initSpeed(direction: number) {
@@ -26,7 +32,7 @@ class Slider extends Enemy {
 	}
 
 	attackCounter() {
-		if (this.elapsed[1] > 350) {
+		if (this.elapsed[1] > this.counterThreshold) {
 			this.counter -= 1
 			this.elapsed[1] = 0
 
