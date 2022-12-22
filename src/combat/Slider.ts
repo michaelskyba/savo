@@ -16,7 +16,7 @@ class Slider extends Enemy {
 	cx: number
 
 	constructor(y: number) {
-		super(-100, y, [0, 0], 0, "#111", "#eee")
+		super(-100, y, [0, 0], 0, "#8db255", "#111")
 		this.counter = RNG(10, 15) * 2
 		this.initSpeed(1)
 	}
