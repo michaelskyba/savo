@@ -215,7 +215,7 @@ class Augustus extends Enemy {
 		this.timer("end", time)
 
 		this.sliders.forEach(slider => {
-			slider.move()
+			slider.move(time)
 		})
 	}
 
