@@ -23,8 +23,7 @@ class Slider extends Enemy {
 	constructor(y: number) {
 		super(-100, y, [0, 0], 0, "#8db255", "#111")
 		this.initCounter()
-		this.initSpeed(1)
-		this.direction = "right"
+		this.initSpeed("right")
 	}
 
 	initCounter() {
@@ -32,8 +31,9 @@ class Slider extends Enemy {
 		this.counterThreshold = RNG(200, 400)
 	}
 
-	initSpeed(direction: number) {
+	initSpeed(direction: string) {
 		this.travelTime = RNG(2000, 4000)
+		this.direction = direction
 	}
 
 	attackCounter() {
@@ -64,17 +64,20 @@ class Slider extends Enemy {
 
 	countdown() {
 		let progress = this.elapsed[0] / this.travelTime
+		if (this.direction == "left")
+			progress = 1 - progress
+
 		this.x = (c.w - 2*w) * progress
 
 		if (this.direction == "right" && this.x > c.w - w - c.s) {
 			this.x = c.w - w - c.s
-			this.initSpeed(-1)
+			this.initSpeed("left")
 			this.elapsed[0] = 0
 		}
 
 		if (this.direction == "left" && this.x < w) {
 			this.x = w
-			this.initSpeed(1)
+			this.initSpeed("right")
 			this.elapsed[0] = 0
 		}
 
