@@ -13,6 +13,7 @@ const w = 25
 elapsed {
 	0: timer for movement (x,y manipulation)
 	1: timer for countdown (attack counter manipulation)
+	2: music progression
 }
 
 status
@@ -21,7 +22,6 @@ status
 	"attacking" = swinging sword
 
 Times
-	19, 37, 54.5, 1:12
 */
 
 class Augustus extends Enemy {
@@ -30,11 +30,9 @@ class Augustus extends Enemy {
 		change: 0
 	}
 
-	sliders = [
-		new Slider(100),
-		new Slider(337.5),
-		new Slider(575)
-	]
+	phase = 0
+	sliders = []
+	phases = [19, 36.8, 54.5, 72]
 
 	// Radius of rotation circle
 	radius = 200
@@ -59,7 +57,7 @@ class Augustus extends Enemy {
 	dir = "right"
 
 	constructor() {
-		super(993.75, 337.5, [0, 0], 99, "#eee", "#111")
+		super(993.75, 337.5, [0, 0, 0], 99, "#eee", "#111")
 
 		this.counter = 63
 		this.radius = RNG(100, 250)
@@ -204,6 +202,29 @@ class Augustus extends Enemy {
 		}
 	}
 
+	musicProgress() {
+		// We're done
+		if (this.phase == this.phases.length)
+			return
+
+		if (this.elapsed[2] / 1000 > this.phases[this.phase]) {
+			this.phase++
+
+			switch(this.phase) {
+			case 1:
+				this.sliders = [
+					new Slider(100),
+					new Slider(575)
+				]
+				break
+
+			case 3:
+				this.sliders.push(new Slider(337.5))
+				break
+			}
+		}
+	}
+
 	move(time: number) {
 		this.timer("start", time)
 
@@ -211,6 +232,7 @@ class Augustus extends Enemy {
 
 		if (this.status != "attack")
 			this.attackCounter()
+		this.musicProgress()
 
 		this.timer("end", time)
 
