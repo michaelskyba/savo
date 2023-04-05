@@ -1,7 +1,8 @@
 import c from "../game/canvas"
+import { RNG } from "../util/functions"
+
 import Enemy from "./Enemy"
 import Slider from "./Slider"
-import { RNG } from "../util/functions"
 
 // Move every 100 ms
 const threshold = 16.66
@@ -17,11 +18,9 @@ elapsed {
 }
 
 status
-	"circle" = moving in a circle
-	"glide" = moving in a straight line towards the next rotation origin
-	"attacking" = swinging sword
-
-Times
+	"circle"   : moving in a circle
+	"glide"    : moving in a straight line towards the next rotation origin
+	"attacking": swinging sword
 */
 
 class Augustus extends Enemy {
@@ -213,13 +212,21 @@ class Augustus extends Enemy {
 			switch(this.phase) {
 			case 1:
 				this.sliders = [
-					new Slider(100),
-					new Slider(575)
+					new Slider(0, 100, {x: 1, y: 0}),
+					new Slider(0, 575, {x: 1, y: 0})
 				]
 				break
 
+			case 2:
+				this.sliders.push(
+					new Slider(0, c.h, {x: 1, y: -1}),
+					new Slider(c.w, c.h, {x: -1, y: -1})
+				)
+				break
+
+
 			case 3:
-				this.sliders.push(new Slider(337.5))
+				this.sliders.push(new Slider(0, 337.5, {x: 1, y: 0}))
 				break
 			}
 		}
