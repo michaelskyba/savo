@@ -1,4 +1,14 @@
 #!/bin/sh
+missing() {
+	if ! which $1 > /dev/null 2>&1
+	then
+		echo "Missing $2 dependency" >&2
+		exit 1
+	fi
+}
+missing tsc typescript
+missing npx npm
+missing entr entr
 
 echo "./build: Check/install rollup"
 npx rollup -v
