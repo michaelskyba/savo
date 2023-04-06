@@ -3,6 +3,7 @@ import { RNG } from "../util/functions"
 
 import Enemy from "./Enemy"
 import Slider from "./Slider"
+import Homer from "./Homer"
 
 // Move every 100 ms
 const threshold = 16.66
@@ -30,7 +31,7 @@ class Augustus extends Enemy {
 	}
 
 	phase = 0
-	sliders = []
+	minions = []
 	phases = [19, 36.8, 54.5, 72]
 
 	// Radius of rotation circle
@@ -211,14 +212,14 @@ class Augustus extends Enemy {
 
 			switch(this.phase) {
 			case 1:
-				this.sliders = [
+				this.minions.push(
 					new Slider(0, 100, {x: 1, y: 0}),
 					new Slider(0, 575, {x: 1, y: 0})
-				]
+				)
 				break
 
 			case 2:
-				this.sliders.push(
+				this.minions.push(
 					new Slider(0, c.h, {x: 1, y: -1}),
 					new Slider(c.w, c.h, {x: -1, y: -1})
 				)
@@ -226,7 +227,11 @@ class Augustus extends Enemy {
 
 
 			case 3:
-				this.sliders.push(new Slider(0, 337.5, {x: 1, y: 0}))
+				this.minions.push(new Slider(0, 337.5, {x: 1, y: 0}))
+				break
+
+			case 4:
+				this.minions.push(new Homer(0, 0))
 				break
 			}
 		}
@@ -243,8 +248,8 @@ class Augustus extends Enemy {
 
 		this.timer("end", time)
 
-		this.sliders.forEach(slider => {
-			slider.move(time)
+		this.minions.forEach(minion => {
+			minion.move(time)
 		})
 	}
 
@@ -268,8 +273,8 @@ class Augustus extends Enemy {
 		c.strokeStyle = "#eee"
 		c.stroke()
 
-		this.sliders.forEach(slider => {
-			slider.draw()
+		this.minions.forEach(minion => {
+			minion.draw()
 		})
 	}
 }
