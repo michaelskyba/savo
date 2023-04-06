@@ -57,9 +57,9 @@ class Augustus extends Enemy {
 	dir = "right"
 
 	constructor() {
-		super(993.75, 337.5, [0, 0, 0], 99, "#eee", "#111")
+		super(993.75, 337.5, [0, 0, 0], 75, "#eee", "#111")
 
-		this.counter = 63
+		this.counter = 75
 		this.radius = RNG(100, 250)
 
 		this.genGlide()
@@ -198,7 +198,7 @@ class Augustus extends Enemy {
 			this.status = this.buffer.status
 			this.elapsed[0] = this.buffer.elapsed
 			this.elapsed[1] = 0
-			this.counter = 63
+			this.counter = 75
 		}
 	}
 

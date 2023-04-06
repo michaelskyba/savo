@@ -6,14 +6,11 @@ import steps from "./steps"
 document.getElementById("load").onclick = () => {
 	mainMenu.init()
 	window.requestAnimationFrame(steps.mainMenu)
-
-	// Hide load button
 	document.getElementById("load").style.display = "none"
 }
 */
 
 // Testing Augustus fight
-
 import steps from "./steps"
 import augustusRoom from "../fixed/augustusRoom"
 import password from "../events/password"
