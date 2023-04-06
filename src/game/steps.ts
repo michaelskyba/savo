@@ -220,14 +220,36 @@ const steps = {
 		augustusRoom.draw()
 
 		switch(augustusRoom.transitions()) {
-			case null:
-				window.requestAnimationFrame(this.augustusRoom)
-				break
-
 			case "TiberiusHouse":
 				tiberiusHouse.init()
 				player.x = 1220
 				window.requestAnimationFrame(this.tiberiusHouse)
+				break
+
+			case "win":
+				document.onkeydown = function(event) {
+					if (event.code == "Space") {
+						augustusRoom.gameRestart()
+						window.requestAnimationFrame(steps.augustusRoom)
+					}
+				}
+
+				window.requestAnimationFrame(gameOver.augustusWin)
+				break
+
+			case "lose":
+				document.onkeydown = function(event) {
+					if (event.code == "Space") {
+						augustusRoom.gameRestart()
+						window.requestAnimationFrame(steps.augustusRoom)
+					}
+				}
+
+				window.requestAnimationFrame(gameOver.augustusLose)
+				break
+
+			default:
+				window.requestAnimationFrame(this.augustusRoom)
 				break
 		}
 	}

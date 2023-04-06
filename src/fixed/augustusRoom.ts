@@ -3,13 +3,11 @@ import c from "../game/canvas"
 import Block from "./Block"
 
 import music from "../game/music"
-import augustus from "../combat/augustus"
+import Augustus from "../combat/Augustus"
 
 import dialogue from "../events/8"
 import Scene from "../menus/Scene"
 import password from "../events/password"
-
-let scene = new Scene(dialogue[0])
 
 // Wall width and door gap
 const w = 25
@@ -31,20 +29,37 @@ const closedWalls  = [
 	new Block(0, 0, w, c.h, wallColour),
 	new Block(c.w - w, 0, w, c.h, wallColour)
 ]
-let walls = openWalls
+let walls: Block[]
+
+let scene: Scene
+let augustus: Augustus
 
 class Room {
-	status = "dialogue_0"
-	gameState = "playing"
+	status: string
+	initBaseDone = false
 
 	// The timestamp of the timer starting
-	initTime = 0
+	initTime: number
 
 	// How many ms have passed since the timer started
 	time = 0
 
+	initBase() {
+		this.status = "dialogue_0"
+		this.initTime = 0
+		this.initBaseDone = true
+
+		scene = new Scene(dialogue[0])
+		augustus = new Augustus()
+		walls = openWalls
+	}
+
 	init() {
+		if (!this.initBaseDone) this.initBase()
+
 		player.x = 30
+		player.life.hp = 10
+		player.life.threatened = false
 
 		document.onkeydown = this.inputInit
 
@@ -59,9 +74,6 @@ class Room {
 	fightInit() {
 		this.status = "fighting"
 		document.onkeydown = this.inputFight
-
-		player.life.hp = 10
-		player.life.threatened = false
 
 		music.reset()
 		music.climax_reasoning.play()
@@ -128,18 +140,16 @@ class Room {
 				augustus.receiveDamage()
 
 			// Have the player take damage if Augustus hits (sword) or overlaps
-			if (augustus.collision(player.x, player.y)) {
+			if (augustus.collision(player.x, player.y))
 				player.receiveDamage()
-
-				// Tell steps.ts to render the lose screen
-				if (player.life.hp < 1) this.gameState = "lose"
-			}
 		}
 	}
 
 	transitions() {
 		if (player.x < 0) return "TiberiusHouse"
-		else return null
+		if (player.life.hp < 1) return "lose"
+		if (augustus.life.hp < 1) return "win"
+		else return undefined
 	}
 
 	drawTimer() {
@@ -182,6 +192,14 @@ class Room {
 		}
 
 		scene.draw()
+	}
+
+	gameRestart() {
+		this.initBaseDone = false
+		this.init()
+
+		player.y = (c.h - w*2)/2 + w - c.s/2
+		player.resetCooldowns()
 	}
 }
 

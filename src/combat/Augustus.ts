@@ -279,5 +279,4 @@ class Augustus extends Enemy {
 	}
 }
 
-const augustus = new Augustus()
-export default augustus
+export default Augustus
