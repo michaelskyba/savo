@@ -196,6 +196,7 @@ class Room {
 	}
 
 	gameRestart() {
+		music.reset()
 		this.initBaseDone = false
 		this.init()
 
