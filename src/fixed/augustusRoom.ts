@@ -140,6 +140,7 @@ class Room {
 				augustus.receiveDamage()
 
 			// Have the player take damage if Augustus hits (sword) or overlaps
+			// (Including minions)
 			if (augustus.collision(player.x, player.y))
 				player.receiveDamage()
 		}

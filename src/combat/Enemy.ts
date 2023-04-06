@@ -38,11 +38,27 @@ class Enemy {
 		this.life = new Life(HP, c.w - 88 - 5, 5)
 	}
 
-	collision(playerX: number, playerY: number): boolean {
+	// The Enemy itself is overlapping Claudia
+	bodyCollision(playerX: number, playerY: number): boolean {
+		return (this.x + c.s > playerX &&
+			this.y + c.s > playerY &&
+			playerX + c.s > this.x &&
+			playerY + c.s > this.y)
+	}
+
+	swordCollision(playerX: number, playerY: number) {
 		// The enemy only attacks when its attack counter is at zero
-		if (this.counter != 0) return false
+		if (this.counter != 0)
+			return false
 
 		return this.sword.collision(this.x + c.s/2, this.y + c.s/2, playerX, playerY)
+	}
+
+	collision(playerX: number, playerY: number): boolean {
+		if (this.bodyCollision(playerX, playerY))
+			return true
+
+		return this.swordCollision(playerX, playerY)
 	}
 
 	receiveDamage() {

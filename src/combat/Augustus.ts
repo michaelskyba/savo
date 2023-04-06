@@ -254,13 +254,16 @@ class Augustus extends Enemy {
 	}
 
 	collision(playerX: number, playerY: number): boolean {
-		// Augustus is physically overlapping Claudia
-		if (this.x + c.s > playerX &&
-			this.y + c.s > playerY &&
-			playerX + c.s > this.x &&
-			playerY + c.s > this.y) return true
+		if (super.collision(playerX, playerY))
+			return true
 
-		return super.collision(playerX, playerY)
+		// We have to use a for loop and not forEach so that we can return
+		for (let i = 0; i < this.minions.length; i++) {
+			if (this.minions[i].collision(playerX, playerY))
+				return true
+		}
+
+		return false
 	}
 
 	draw() {
