@@ -8,6 +8,7 @@ import perinthus from "../overworld/perinthus"
 import lerwick from "../overworld/lerwick"
 
 import mainMenu from "../menus/mainMenu"
+import gameOver from "../menus/gameOver"
 import player from "../game/player"
 import music from "../game/music"
 
@@ -144,54 +145,8 @@ const steps = {
 		}
 	},
 
-	gameOver() {
-		if (neroHouse.gameState == "playing") return
-
-		c.fillStyle = "#000"
-		c.frect(0, 0, c.w, c.h)
-
-		c.font = "48px serif"
-		c.fillStyle = "red"
-		c.text("YOU DIED", 100, 100)
-
-		c.font = "20px serif"
-		c.fillStyle = "white"
-
-		c.text("Nero has killed you! Are you this bad at video games?", 100, 200)
-		c.text("Just log off if you're not even going to try.", 100, 230)
-		c.text("Installing Linux is only for real gamers.", 100, 260)
-
-		c.text("Press Space to reset back before the fight to try again...", 100, 350)
-	},
-
 	neroHouse(time: number) {
 		neroHouse.move(time)
-
-		if (neroHouse.gameState == "win") return
-		if (neroHouse.gameState == "lose") {
-			window.requestAnimationFrame(this.gameOver)
-
-			// Space to try again
-			document.onkeydown = function(event) {
-				if (event.code == "Space") {
-					neroHouse.gameState = "playing"
-					neroHouse.room = 3
-					neroHouse.init()
-
-					player.x = c.w/2 - c.s/2
-					player.y = c.h - c.s - 5
-
-					window.requestAnimationFrame(steps.neroHouse)
-				}
-			}
-
-			// Reset cooldowns - this is important so that the healing cooldown
-			// isn't active. Otherwise, after pressing Space to return to the game,
-			// you'll be stuck with slower movement speed
-			player.resetCooldowns()
-
-			return
-		}
 
 		neroHouse.draw()
 
@@ -203,9 +158,37 @@ const steps = {
 			player.y = -970
 
 			window.requestAnimationFrame(this.lerwick)
+			return
 		}
 
-		else window.requestAnimationFrame(this.neroHouse)
+		// Win or lose screen
+		switch (neroHouse.gameOverTransitions()) {
+			case "win":
+				document.onkeydown = function(event) {
+					if (event.code == "Space") {
+						neroHouse.gameRestart()
+						window.requestAnimationFrame(steps.neroHouse)
+					}
+				}
+
+				window.requestAnimationFrame(gameOver.neroWin)
+				break
+
+			case "lose":
+				document.onkeydown = function(event) {
+					if (event.code == "Space") {
+						neroHouse.gameRestart()
+						window.requestAnimationFrame(steps.neroHouse)
+					}
+				}
+
+				window.requestAnimationFrame(gameOver.neroLose)
+				break
+
+			// No win or lose, so we are still in the house
+			default:
+				window.requestAnimationFrame(this.neroHouse)
+		}
 	},
 
 	tiberiusHouse(time: number) {

@@ -145,9 +145,11 @@ function genCollisions() {
 
 const neroHouse = {
 	room: 0,
-	gameState: "playing",
 
 	init() {
+		player.life.hp = 10
+		player.life.threatened = false
+
 		document.onkeydown = event => {
 			let key = event.code
 
@@ -183,9 +185,6 @@ const neroHouse = {
 			player.handleKey("keydown", event.code)
 			player.fixedKeys(event.code)
 		}
-
-		player.life.hp = 10
-		player.life.threatened = false
 
 		neroHouse.room = 5
 		collisions = genCollisions()
@@ -278,45 +277,20 @@ const neroHouse = {
 		// @ts-ignore
 		collisions[0].y = nero.y
 
-		if (player.status == "attacking") {
+		if (player.status == "attacking")
 			nero.receiveDamage()
-
-			// You won the game
-			if (nero.life.hp < 1) {
-				neroHouse.gameState = "win"
-
-				// One-time drawing
-				// TODO: Make a better system than this. I remember being really
-				// rushed when I came up with it
-				c.fillStyle = "#fff"
-				c.frect(0, 0, c.w, c.h)
-				c.fillStyle = "#000"
-				c.font = "48px serif"
-				c.text("You win!", 100, 100)
-				c.font = "20px serif"
-				c.text("You have successfully killed Nero.", 100, 300)
-				c.text("But, will you be able to sucessfully burn his body and generate the Linux CD-ROM?", 100, 330)
-				c.text("Will you be able to program your GPU driver?", 100, 360)
-
-				c.text("How come the pause key (Backspace) wasn't working?", 100, 420)
-				c.text("How come Frontinus said you could replay the tutorial but you actually couldn't without restarting?", 100, 450)
-				c.text("Find the answer to these questions in the full version of the game!", 100, 480)
-
-				c.text("Available now! To access, send your parents' credit card numbers to nop04824@xcoxc.com!", 100, 550)
-				c.text("Don't forget the expiration date and the three numbers on the back!", 100, 580)
-				c.text("I definitely won't make any bank transactions! The game is free!", 100, 610)
-			}
-		}
 
 		player.move(time, "fixed", collisions)
 
 		// Have the player take damage if Frontinus' sword hits them
-		if (nero.collision(player.x, player.y)) {
+		if (nero.collision(player.x, player.y))
 			player.receiveDamage()
+	},
 
-			// Tell steps.ts to render the lose screen
-			if (player.life.hp < 1) neroHouse.gameState = "lose"
-		}
+	gameOverTransitions(): string {
+		if (player.life.hp < 1) return "lose"
+		if (nero.life.hp < 1) return "win"
+		return "none"
 	},
 
 	draw() {
@@ -382,6 +356,19 @@ const neroHouse = {
 
 		nero.life.draw()
 		player.life.draw()
+	},
+
+	gameRestart() {
+		this.room = 3
+		this.init()
+
+		player.x = c.w/2 - c.s/2
+		player.y = c.h - c.s - 5
+
+		// Reset cooldowns - this is important so that the healing cooldown
+		// isn't active. Otherwise, after pressing Space to return to the game,
+		// you'll be stuck with slower movement speed
+		player.resetCooldowns()
 	}
 }
 
