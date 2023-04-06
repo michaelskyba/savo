@@ -57,6 +57,8 @@ class Room {
 	init() {
 		if (!this.initBaseDone) this.initBase()
 
+		c.bgBlack()
+
 		player.x = 30
 		player.life.hp = 10
 		player.life.threatened = false

@@ -8,6 +8,9 @@ interface Context2 extends CanvasRenderingContext2D {
 	text(text: string, x: number, y: number, maxWidth?: number): void
 	frect(x: number, y: number, w: number, h: number): void
 
+	bgBlack(): void
+	bgWhite(): void
+
 	// [w]idth, [h]eight, player/enemy [s]ize
 	w: number
 	h: number
@@ -24,5 +27,15 @@ c.frect = c.fillRect
 c.w = canvas.width
 c.h = canvas.height
 c.s = 50
+
+// The "default" is here so that people with dark mode extensions don't have
+// white forced
+const bgDefault = document.body.style.backgroundColor
+c.bgBlack = () => {
+	document.body.style.backgroundColor = "black"
+}
+c.bgWhite = () => {
+	document.body.style.backgroundColor = bgDefault
+}
 
 export default c

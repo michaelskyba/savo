@@ -93,6 +93,8 @@ class House {
 	collisions = []
 
 	init() {
+		c.bgWhite()
+
 		document.onkeydown = event => {
 			let code = event.code
 
