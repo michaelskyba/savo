@@ -4,6 +4,7 @@ import { RNG } from "../util/functions"
 import Enemy from "./Enemy"
 import Slider from "./Slider"
 import Homer from "./Homer"
+import WallHugger from "./WallHugger"
 
 // Move every 100 ms
 const threshold = 16.66
@@ -206,6 +207,9 @@ class Augustus extends Enemy {
 		// We're done
 		if (this.phase == this.phases.length)
 			return
+
+		if (this.minions.length == 0)
+			this.minions.push(new WallHugger(c.w - c.s - w, w, 1))
 
 		if (this.elapsed[2] / 1000 > this.phases[this.phase]) {
 			this.phase++

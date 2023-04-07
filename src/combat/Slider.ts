@@ -93,7 +93,6 @@ class Slider extends Enemy {
 		this.x = (c.w - 2*w - c.s) * progress + w
 
 		const rightThreshold = c.w - w - c.s
-
 		if (direction == 1 && this.x >= rightThreshold) {
 			this.x = rightThreshold
 			this.direction.x = -1
