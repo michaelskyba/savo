@@ -9,6 +9,15 @@ c.frect = c.fillRect;
 c.w = canvas.width;
 c.h = canvas.height;
 c.s = 50;
+// The "default" is here so that people with dark mode extensions don't have
+// white forced
+const bgDefault = document.body.style.backgroundColor;
+c.bgBlack = () => {
+    document.body.style.backgroundColor = "black";
+};
+c.bgWhite = () => {
+    document.body.style.backgroundColor = bgDefault;
+};
 
 class TextBox {
     constructor(text, x, y, fontSize, fontFamily, bgColour, fgColour) {
@@ -846,27 +855,27 @@ let prompt$5 = {
     box: new MenuOption("=================================================", 0, 0)
 };
 // Wall width
-const w$7 = 25;
+const w$8 = 25;
 // Door gap
 const gap$4 = 200;
 let wallColour$4 = "#bf823e";
 const walls$3 = [
     // Room 0 (left)
     [
-        new Wall(0, 0, c.w, w$7, wallColour$4),
-        new Wall(0, 0, w$7, c.w, wallColour$4),
-        new Wall(0, c.h - w$7, c.w, w$7, wallColour$4),
-        new Wall(c.w - w$7, 0, w$7, (c.h - gap$4) / 2, wallColour$4),
-        new Wall(c.w - w$7, (c.h - gap$4) / 2 + gap$4, w$7, (c.h - gap$4) / 2, wallColour$4)
+        new Wall(0, 0, c.w, w$8, wallColour$4),
+        new Wall(0, 0, w$8, c.w, wallColour$4),
+        new Wall(0, c.h - w$8, c.w, w$8, wallColour$4),
+        new Wall(c.w - w$8, 0, w$8, (c.h - gap$4) / 2, wallColour$4),
+        new Wall(c.w - w$8, (c.h - gap$4) / 2 + gap$4, w$8, (c.h - gap$4) / 2, wallColour$4)
     ],
     // Room 1 (right)
     [
-        new Wall(0, 0, c.w, w$7, wallColour$4),
-        new Wall(0, c.h - w$7, c.w, w$7, wallColour$4),
-        new Wall(0, 0, w$7, (c.h - gap$4) / 2, wallColour$4),
-        new Wall(0, (c.h - gap$4) / 2 + gap$4, w$7, (c.h - gap$4) / 2, wallColour$4),
-        new Wall(c.w - w$7, 0, w$7, (c.h - gap$4) / 2, wallColour$4),
-        new Wall(c.w - w$7, (c.h - gap$4) / 2 + gap$4, w$7, (c.h - gap$4) / 2, wallColour$4)
+        new Wall(0, 0, c.w, w$8, wallColour$4),
+        new Wall(0, c.h - w$8, c.w, w$8, wallColour$4),
+        new Wall(0, 0, w$8, (c.h - gap$4) / 2, wallColour$4),
+        new Wall(0, (c.h - gap$4) / 2 + gap$4, w$8, (c.h - gap$4) / 2, wallColour$4),
+        new Wall(c.w - w$8, 0, w$8, (c.h - gap$4) / 2, wallColour$4),
+        new Wall(c.w - w$8, (c.h - gap$4) / 2 + gap$4, w$8, (c.h - gap$4) / 2, wallColour$4)
     ]
 ];
 let collision$2;
@@ -1100,11 +1109,23 @@ class Enemy {
         // canvas width - textbox width (~88) - padding (5)
         this.life = new Life(HP, c.w - 88 - 5, 5);
     }
-    collision(playerX, playerY) {
+    // The Enemy itself is overlapping Claudia
+    bodyCollision(playerX, playerY) {
+        return (this.x + c.s > playerX &&
+            this.y + c.s > playerY &&
+            playerX + c.s > this.x &&
+            playerY + c.s > this.y);
+    }
+    swordCollision(playerX, playerY) {
         // The enemy only attacks when its attack counter is at zero
         if (this.counter != 0)
             return false;
         return this.sword.collision(this.x + c.s / 2, this.y + c.s / 2, playerX, playerY);
+    }
+    collision(playerX, playerY) {
+        if (this.bodyCollision(playerX, playerY))
+            return true;
+        return this.swordCollision(playerX, playerY);
     }
     receiveDamage() {
         this.life.hit();
@@ -1467,30 +1488,30 @@ function setDialogue() {
     scene$5 = new Scene(next);
 }
 // Wall width and door gap
-const w$6 = 25;
+const w$7 = 25;
 const gap$3 = 300;
 let wallColour$3 = "#a69583";
 const walls$2 = [
     // Initial position with door blocked
     [
-        new Wall(0, 0, c.w, w$6, wallColour$3),
-        new Wall(0, 0, w$6, c.h, wallColour$3),
+        new Wall(0, 0, c.w, w$7, wallColour$3),
+        new Wall(0, 0, w$7, c.h, wallColour$3),
         // Bottom intersection
-        new Wall(0, c.h - w$6, (c.w - gap$3) / 2, w$6, wallColour$3),
-        new Wall((c.w - gap$3) / 2 + gap$3, c.h - w$6, (c.w - gap$3) / 2, w$6, wallColour$3),
+        new Wall(0, c.h - w$7, (c.w - gap$3) / 2, w$7, wallColour$3),
+        new Wall((c.w - gap$3) / 2 + gap$3, c.h - w$7, (c.w - gap$3) / 2, w$7, wallColour$3),
         // Initially solid right wall
-        new Wall(c.w - w$6, 0, w$6, c.h, wallColour$3)
+        new Wall(c.w - w$7, 0, w$7, c.h, wallColour$3)
     ],
     // Door unblocked after tutorial
     [
-        new Wall(0, 0, c.w, w$6, wallColour$3),
-        new Wall(0, 0, w$6, c.h, wallColour$3),
+        new Wall(0, 0, c.w, w$7, wallColour$3),
+        new Wall(0, 0, w$7, c.h, wallColour$3),
         // Bottom intersection
-        new Wall(0, c.h - w$6, (c.w - gap$3) / 2, w$6, wallColour$3),
-        new Wall((c.w - gap$3) / 2 + gap$3, c.h - w$6, (c.w - gap$3) / 2, w$6, wallColour$3),
+        new Wall(0, c.h - w$7, (c.w - gap$3) / 2, w$7, wallColour$3),
+        new Wall((c.w - gap$3) / 2 + gap$3, c.h - w$7, (c.w - gap$3) / 2, w$7, wallColour$3),
         // Right intersection
-        new Wall(c.w - w$6, 0, w$6, (c.h - gap$3) / 2, wallColour$3),
-        new Wall(c.w - w$6, (c.h - gap$3) / 2 + gap$3, w$6, (c.h - gap$3) / 2, wallColour$3)
+        new Wall(c.w - w$7, 0, w$7, (c.h - gap$3) / 2, wallColour$3),
+        new Wall(c.w - w$7, (c.h - gap$3) / 2 + gap$3, w$7, (c.h - gap$3) / 2, wallColour$3)
     ]
 ];
 // This is the barrier from the tutorial, trapping Claudia into Frontinus's
@@ -1683,7 +1704,7 @@ elapsed {
 }
 */
 // Width of wall
-const w$5 = 25;
+const w$6 = 25;
 class Nero extends Enemy {
     constructor() {
         super(637.5, 445, [0, 0], 50, "maroon", "#ffb5b5");
@@ -1725,19 +1746,19 @@ class Nero extends Enemy {
         }
     }
     constraints() {
-        if (this.x > c.w - w$5 - c.s)
-            this.x = c.w - w$5 - c.s;
-        if (this.x < w$5)
-            this.x = w$5;
-        if (this.y > c.h - w$5 - c.s)
-            this.y = c.h - w$5 - c.s;
-        if (this.y < w$5)
-            this.y = w$5;
+        if (this.x > c.w - w$6 - c.s)
+            this.x = c.w - w$6 - c.s;
+        if (this.x < w$6)
+            this.x = w$6;
+        if (this.y > c.h - w$6 - c.s)
+            this.y = c.h - w$6 - c.s;
+        if (this.y < w$6)
+            this.y = w$6;
         // Teleporting
-        if ((this.x == w$5 && this.y == w$5) ||
-            (this.x == w$5 && this.y == c.h - w$5 - c.s) ||
-            (this.x == c.w - w$5 - c.s && this.y == c.h - w$5 - c.s) ||
-            (this.x == c.w - w$5 - c.s && this.y == w$5)) {
+        if ((this.x == w$6 && this.y == w$6) ||
+            (this.x == w$6 && this.y == c.h - w$6 - c.s) ||
+            (this.x == c.w - w$6 - c.s && this.y == c.h - w$6 - c.s) ||
+            (this.x == c.w - w$6 - c.s && this.y == w$6)) {
             this.x = 637.5;
             this.y = 337.5;
         }
@@ -1985,71 +2006,71 @@ const dialogue$4 = {
 
 let nero = new Nero();
 // Wall width
-const w$4 = 25;
+const w$5 = 25;
 // Door gap
 const gap$2 = 300;
 let wallColour$2 = "maroon";
 let objects = [
     // First room
     [
-        new Wall(0, 0, c.w, w$4, wallColour$2),
-        new Wall(0, 0, w$4, c.w, wallColour$2),
+        new Wall(0, 0, c.w, w$5, wallColour$2),
+        new Wall(0, 0, w$5, c.w, wallColour$2),
         // Bottom intersection
-        new Wall(0, c.h - w$4, (c.w - gap$2) / 2, w$4, wallColour$2),
-        new Wall((c.w - gap$2) / 2 + gap$2, c.h - w$4, (c.w - gap$2) / 2, w$4, wallColour$2),
+        new Wall(0, c.h - w$5, (c.w - gap$2) / 2, w$5, wallColour$2),
+        new Wall((c.w - gap$2) / 2 + gap$2, c.h - w$5, (c.w - gap$2) / 2, w$5, wallColour$2),
         // Right intersection
-        new Wall(c.w - w$4, 0, w$4, (c.h - gap$2) / 2, wallColour$2),
-        new Wall(c.w - w$4, (c.h - gap$2) / 2 + gap$2, w$4, (c.h - gap$2) / 2, wallColour$2)
+        new Wall(c.w - w$5, 0, w$5, (c.h - gap$2) / 2, wallColour$2),
+        new Wall(c.w - w$5, (c.h - gap$2) / 2 + gap$2, w$5, (c.h - gap$2) / 2, wallColour$2)
     ],
     // Second room - entered through the right of first room
     [
-        new Wall(0, c.h - w$4, c.w, w$4, wallColour$2),
+        new Wall(0, c.h - w$5, c.w, w$5, wallColour$2),
         // Left intersection
-        new Wall(0, 0, w$4, (c.h - gap$2) / 2, wallColour$2),
-        new Wall(0, (c.h - gap$2) / 2 + gap$2, w$4, (c.h - gap$2) / 2, wallColour$2),
+        new Wall(0, 0, w$5, (c.h - gap$2) / 2, wallColour$2),
+        new Wall(0, (c.h - gap$2) / 2 + gap$2, w$5, (c.h - gap$2) / 2, wallColour$2),
         // Top intersection
-        new Wall(0, 0, (c.w - gap$2) / 2, w$4, wallColour$2),
-        new Wall((c.w - gap$2) / 2 + gap$2, 0, (c.w - gap$2) / 2, w$4, wallColour$2),
-        new Wall(c.w - w$4, 0, w$4, c.h, wallColour$2)
+        new Wall(0, 0, (c.w - gap$2) / 2, w$5, wallColour$2),
+        new Wall((c.w - gap$2) / 2 + gap$2, 0, (c.w - gap$2) / 2, w$5, wallColour$2),
+        new Wall(c.w - w$5, 0, w$5, c.h, wallColour$2)
     ],
     // Third room - entered through the top of second room
     [
-        new Wall(0, 0, c.w, w$4, wallColour$2),
+        new Wall(0, 0, c.w, w$5, wallColour$2),
         // Left intersection
-        new Wall(0, 0, w$4, (c.h - gap$2) / 2, wallColour$2),
-        new Wall(0, (c.h - gap$2) / 2 + gap$2, w$4, (c.h - gap$2) / 2, wallColour$2),
+        new Wall(0, 0, w$5, (c.h - gap$2) / 2, wallColour$2),
+        new Wall(0, (c.h - gap$2) / 2 + gap$2, w$5, (c.h - gap$2) / 2, wallColour$2),
         // Bottom intersection
-        new Wall(0, c.h - w$4, (c.w - gap$2) / 2, w$4, wallColour$2),
-        new Wall((c.w - gap$2) / 2 + gap$2, c.h - w$4, (c.w - gap$2) / 2, w$4, wallColour$2),
-        new Wall(c.w - w$4, 0, w$4, c.h, wallColour$2),
+        new Wall(0, c.h - w$5, (c.w - gap$2) / 2, w$5, wallColour$2),
+        new Wall((c.w - gap$2) / 2 + gap$2, c.h - w$5, (c.w - gap$2) / 2, w$5, wallColour$2),
+        new Wall(c.w - w$5, 0, w$5, c.h, wallColour$2),
         new Img$1("armour", 1075, 60)
     ],
     // Fourth room - entered through the left of third room
     [
-        new Wall(0, 0, w$4, c.w, wallColour$2),
-        new Wall(0, 0, c.w, w$4, wallColour$2),
+        new Wall(0, 0, w$5, c.w, wallColour$2),
+        new Wall(0, 0, c.w, w$5, wallColour$2),
         // Right intersection
-        new Wall(c.w - w$4, 0, w$4, (c.h - gap$2) / 2, wallColour$2),
-        new Wall(c.w - w$4, (c.h - gap$2) / 2 + gap$2, w$4, (c.h - gap$2) / 2, wallColour$2),
+        new Wall(c.w - w$5, 0, w$5, (c.h - gap$2) / 2, wallColour$2),
+        new Wall(c.w - w$5, (c.h - gap$2) / 2 + gap$2, w$5, (c.h - gap$2) / 2, wallColour$2),
         // Bottom intersection
-        new Wall(0, c.h - w$4, (c.w - gap$2) / 2, w$4, wallColour$2),
-        new Wall((c.w - gap$2) / 2 + gap$2, c.h - w$4, (c.w - gap$2) / 2, w$4, wallColour$2),
+        new Wall(0, c.h - w$5, (c.w - gap$2) / 2, w$5, wallColour$2),
+        new Wall((c.w - gap$2) / 2 + gap$2, c.h - w$5, (c.w - gap$2) / 2, w$5, wallColour$2),
     ],
     // Fifth (Nero's) room - entered through the bottom of the fourth room
     [
-        new Wall(0, 0, w$4, c.h, wallColour$2),
-        new Wall(0, c.h - w$4, c.w, w$4, wallColour$2),
-        new Wall(c.w - w$4, 0, w$4, c.h, wallColour$2),
+        new Wall(0, 0, w$5, c.h, wallColour$2),
+        new Wall(0, c.h - w$5, c.w, w$5, wallColour$2),
+        new Wall(c.w - w$5, 0, w$5, c.h, wallColour$2),
         // Top intersection
-        new Wall(0, 0, (c.w - gap$2) / 2, w$4, wallColour$2),
-        new Wall((c.w - gap$2) / 2 + gap$2, 0, (c.w - gap$2) / 2, w$4, wallColour$2),
+        new Wall(0, 0, (c.w - gap$2) / 2, w$5, wallColour$2),
+        new Wall((c.w - gap$2) / 2 + gap$2, 0, (c.w - gap$2) / 2, w$5, wallColour$2),
     ],
     // (Nero's) room - locked
     [
-        new Wall(0, 0, c.w, w$4, wallColour$2),
-        new Wall(0, 0, w$4, c.w, wallColour$2),
-        new Wall(c.w - w$4, 0, w$4, c.h, wallColour$2),
-        new Wall(0, c.h - w$4, c.w, w$4, wallColour$2)
+        new Wall(0, 0, c.w, w$5, wallColour$2),
+        new Wall(0, 0, w$5, c.w, wallColour$2),
+        new Wall(c.w - w$5, 0, w$5, c.h, wallColour$2),
+        new Wall(0, c.h - w$5, c.w, w$5, wallColour$2)
     ]
 ];
 const interactables$2 = [
@@ -2090,8 +2111,9 @@ function genCollisions() {
 }
 const neroHouse = {
     room: 0,
-    gameState: "playing",
     init() {
+        player.life.hp = 10;
+        player.life.threatened = false;
         document.onkeydown = event => {
             let key = event.code;
             // The player pressed Z to progress the dialogue
@@ -2120,8 +2142,6 @@ const neroHouse = {
             player.handleKey("keydown", event.code);
             player.fixedKeys(event.code);
         };
-        player.life.hp = 10;
-        player.life.threatened = false;
         neroHouse.room = 5;
         collisions = genCollisions();
     },
@@ -2193,39 +2213,19 @@ const neroHouse = {
         collisions[0].x = nero.x;
         // @ts-ignore
         collisions[0].y = nero.y;
-        if (player.status == "attacking") {
+        if (player.status == "attacking")
             nero.receiveDamage();
-            // You won the game
-            if (nero.life.hp < 1) {
-                neroHouse.gameState = "win";
-                // One-time drawing
-                // TODO: Make a better system than this. I remember being really
-                // rushed when I came up with it
-                c.fillStyle = "#fff";
-                c.frect(0, 0, c.w, c.h);
-                c.fillStyle = "#000";
-                c.font = "48px serif";
-                c.text("You win!", 100, 100);
-                c.font = "20px serif";
-                c.text("You have successfully killed Nero.", 100, 300);
-                c.text("But, will you be able to sucessfully burn his body and generate the Linux CD-ROM?", 100, 330);
-                c.text("Will you be able to program your GPU driver?", 100, 360);
-                c.text("How come the pause key (Backspace) wasn't working?", 100, 420);
-                c.text("How come Frontinus said you could replay the tutorial but you actually couldn't without restarting?", 100, 450);
-                c.text("Find the answer to these questions in the full version of the game!", 100, 480);
-                c.text("Available now! To access, send your parents' credit card numbers to nop04824@xcoxc.com!", 100, 550);
-                c.text("Don't forget the expiration date and the three numbers on the back!", 100, 580);
-                c.text("I definitely won't make any bank transactions! The game is free!", 100, 610);
-            }
-        }
         player.move(time, "fixed", collisions);
         // Have the player take damage if Frontinus' sword hits them
-        if (nero.collision(player.x, player.y)) {
+        if (nero.collision(player.x, player.y))
             player.receiveDamage();
-            // Tell steps.ts to render the lose screen
-            if (player.life.hp < 1)
-                neroHouse.gameState = "lose";
-        }
+    },
+    gameOverTransitions() {
+        if (player.life.hp < 1)
+            return "lose";
+        if (nero.life.hp < 1)
+            return "win";
+        return "none";
     },
     draw() {
         // Background: floor
@@ -2277,6 +2277,16 @@ const neroHouse = {
         player.drawCooldowns();
         nero.life.draw();
         player.life.draw();
+    },
+    gameRestart() {
+        this.room = 3;
+        this.init();
+        player.x = c.w / 2 - c.s / 2;
+        player.y = c.h - c.s - 5;
+        // Reset cooldowns - this is important so that the healing cooldown
+        // isn't active. Otherwise, after pressing Space to return to the game,
+        // you'll be stuck with slower movement speed
+        player.resetCooldowns();
     }
 };
 let collisions = genCollisions();
@@ -2490,7 +2500,7 @@ const dialogue$3 = {
 
 // Width of the wall
 // I'm going to hardcode it because I don't think it /has/ to be c.s/2
-const w$3 = 25;
+const w$4 = 25;
 // Door gap
 const gap$1 = 200;
 const wallColour$1 = "#c3272b";
@@ -2498,47 +2508,47 @@ const walls$1 = [
     // Initial room after entering from Lerwick
     // Includes Claudius and door to room 1
     [
-        new Wall(0, 0, c.w, w$3, wallColour$1),
-        new Wall(0, c.h - w$3, c.w, w$3, wallColour$1),
-        new Wall(0, 0, w$3, (c.h - gap$1) / 2, wallColour$1),
-        new Wall(0, (c.h - gap$1) / 2 + gap$1, w$3, (c.h - gap$1) / 2, wallColour$1),
-        new Wall(c.w - w$3, 0, w$3, (c.h - gap$1) / 2, wallColour$1),
-        new Wall(c.w - w$3, (c.h - gap$1) / 2 + gap$1, w$3, (c.h - gap$1) / 2, wallColour$1)
+        new Wall(0, 0, c.w, w$4, wallColour$1),
+        new Wall(0, c.h - w$4, c.w, w$4, wallColour$1),
+        new Wall(0, 0, w$4, (c.h - gap$1) / 2, wallColour$1),
+        new Wall(0, (c.h - gap$1) / 2 + gap$1, w$4, (c.h - gap$1) / 2, wallColour$1),
+        new Wall(c.w - w$4, 0, w$4, (c.h - gap$1) / 2, wallColour$1),
+        new Wall(c.w - w$4, (c.h - gap$1) / 2 + gap$1, w$4, (c.h - gap$1) / 2, wallColour$1)
     ],
     // To the right of room 0
     // Includes Tiberius - is the center room that touches all other rooms
     [
         // Right opening
         // Needs to be drawn first so it's behind the other walls
-        new Wall(c.w - w$3, 0, w$3, (c.h - gap$1) / 2, "#8db255"),
-        new Wall(c.w - w$3, (c.h - gap$1) / 2 + gap$1, w$3, (c.h - gap$1) / 2, "#8db255"),
+        new Wall(c.w - w$4, 0, w$4, (c.h - gap$1) / 2, "#8db255"),
+        new Wall(c.w - w$4, (c.h - gap$1) / 2 + gap$1, w$4, (c.h - gap$1) / 2, "#8db255"),
         // Top opening
-        new Wall(0, 0, (c.w - gap$1) / 2, w$3, wallColour$1),
-        new Wall((c.w - gap$1) / 2 + gap$1, 0, (c.w - gap$1) / 2, w$3, wallColour$1),
+        new Wall(0, 0, (c.w - gap$1) / 2, w$4, wallColour$1),
+        new Wall((c.w - gap$1) / 2 + gap$1, 0, (c.w - gap$1) / 2, w$4, wallColour$1),
         // Bottom opening
-        new Wall(0, c.h - w$3, (c.w - gap$1) / 2, w$3, wallColour$1),
-        new Wall((c.w - gap$1) / 2 + gap$1, c.h - w$3, (c.w - gap$1) / 2, w$3, wallColour$1),
+        new Wall(0, c.h - w$4, (c.w - gap$1) / 2, w$4, wallColour$1),
+        new Wall((c.w - gap$1) / 2 + gap$1, c.h - w$4, (c.w - gap$1) / 2, w$4, wallColour$1),
         // Left opening
-        new Wall(0, 0, w$3, (c.h - gap$1) / 2, wallColour$1),
-        new Wall(0, (c.h - gap$1) / 2 + gap$1, w$3, (c.h - gap$1) / 2, wallColour$1)
+        new Wall(0, 0, w$4, (c.h - gap$1) / 2, wallColour$1),
+        new Wall(0, (c.h - gap$1) / 2 + gap$1, w$4, (c.h - gap$1) / 2, wallColour$1)
     ],
     // The room which is above room 1
     [
-        new Wall(0, 0, c.w, w$3, wallColour$1),
-        new Wall(0, 0, w$3, c.h, wallColour$1),
-        new Wall(c.w - w$3, 0, w$3, c.h, wallColour$1),
+        new Wall(0, 0, c.w, w$4, wallColour$1),
+        new Wall(0, 0, w$4, c.h, wallColour$1),
+        new Wall(c.w - w$4, 0, w$4, c.h, wallColour$1),
         // Bottom opening
-        new Wall(0, c.h - w$3, (c.w - gap$1) / 2, w$3, wallColour$1),
-        new Wall((c.w - gap$1) / 2 + gap$1, c.h - w$3, (c.w - gap$1) / 2, w$3, wallColour$1)
+        new Wall(0, c.h - w$4, (c.w - gap$1) / 2, w$4, wallColour$1),
+        new Wall((c.w - gap$1) / 2 + gap$1, c.h - w$4, (c.w - gap$1) / 2, w$4, wallColour$1)
     ],
     // The room which is below room 1
     [
-        new Wall(0, c.h - w$3, c.w, w$3, wallColour$1),
-        new Wall(0, 0, w$3, c.h, wallColour$1),
-        new Wall(c.w - w$3, 0, w$3, c.h, wallColour$1),
+        new Wall(0, c.h - w$4, c.w, w$4, wallColour$1),
+        new Wall(0, 0, w$4, c.h, wallColour$1),
+        new Wall(c.w - w$4, 0, w$4, c.h, wallColour$1),
         // Top opening
-        new Wall(0, 0, (c.w - gap$1) / 2, w$3, wallColour$1),
-        new Wall((c.w - gap$1) / 2 + gap$1, 0, (c.w - gap$1) / 2, w$3, wallColour$1)
+        new Wall(0, 0, (c.w - gap$1) / 2, w$4, wallColour$1),
+        new Wall((c.w - gap$1) / 2 + gap$1, 0, (c.w - gap$1) / 2, w$4, wallColour$1)
     ],
 ];
 const claudius = new Interactable$1("Claudius", new Wall(200, 600, c.s, c.s, "#1d697c"));
@@ -2556,6 +2566,7 @@ class House {
         this.collisions = [];
     }
     init() {
+        c.bgWhite();
         document.onkeydown = event => {
             let code = event.code;
             if (scene$3.playing && code == "KeyZ")
@@ -2644,7 +2655,7 @@ class House {
         // Black entrance floor to Augustus's room
         if (this.room == 1) {
             c.fillStyle = "#000";
-            c.frect(c.w - w$3 / 2, (c.h - gap$1) / 2, w$3 / 2, gap$1);
+            c.frect(c.w - w$4 / 2, (c.h - gap$1) / 2, w$4 / 2, gap$1);
         }
         for (const obj of this.collisions) {
             obj.draw();
@@ -2784,26 +2795,293 @@ class House {
 const house = new House();
 
 // Wall width inside augustusRoom
-const w$2 = 25;
-class Slider extends Enemy {
-    constructor(y) {
-        super(-100, y, [0, 0], 0, "#111", "#eee");
+const w$3 = 25;
+/*
+elapsed {
+    0: timer for x movement
+    1: timer for y movement
+    2: timer for countdown (attack counter manipulation)
+}
+*/
+let Slider$1 = class Slider extends Enemy {
+    constructor(x, y, direction) {
+        super(x, y, [0, 0, 0], 0, "#8db255", "#111");
+        this.travelTime = { x: 0, y: 0 };
+        this.buffer = { x: 0, y: 0 };
+        this.direction = direction;
+        this.initSpeed("x");
+        this.initSpeed("y");
+        this.initCounter();
+    }
+    initCounter() {
         this.counter = RNG(10, 15) * 2;
-        this.initSpeed(1);
+        this.counterThreshold = RNG(200, 400);
     }
     initSpeed(direction) {
-        this.cx = RNG(1, 3) * direction;
+        if (this.direction[direction] == 0)
+            return;
+        let time;
+        if (direction == "x")
+            time = RNG(2000, 4000);
+        else
+            time = RNG(1000, 2000);
+        this.travelTime[direction] = time;
     }
-    move() {
-        this.x += this.cx;
-        if (this.cx > 0 && this.x > c.w - w$2 - c.s) {
-            this.x = c.w - w$2 - c.s;
-            this.initSpeed(-1);
+    attackCounter() {
+        if (this.elapsed[2] > this.counterThreshold) {
+            this.counter -= 1;
+            this.elapsed[2] = 0;
+            if (this.counter == 0) {
+                this.startSwing();
+                this.buffer.x = this.elapsed[0];
+                this.buffer.y = this.elapsed[1];
+            }
         }
-        if (this.cx < 0 && this.x < w$2) {
-            this.x = w$2;
-            this.initSpeed(1);
+    }
+    attack(time) {
+        // We want a 180 degree rotation in 200ms, which means 180/200 = 0.9
+        // degrees per millisecond
+        this.sword.rotate((time - this.lastFrame) * 0.9);
+        if (this.elapsed[2] > 200) {
+            // Reset to old, pre-attack values
+            this.status = "countdown";
+            this.elapsed[0] = this.buffer.x;
+            this.elapsed[1] = this.buffer.y;
+            this.elapsed[2] = 0;
+            this.initCounter();
         }
+    }
+    moveX() {
+        const direction = this.direction.x;
+        if (direction == 0)
+            return;
+        let progress = this.elapsed[0] / this.travelTime.x;
+        if (direction == -1)
+            progress = 1 - progress;
+        this.x = (c.w - 2 * w$3 - c.s) * progress + w$3;
+        const rightThreshold = c.w - w$3 - c.s;
+        if (direction == 1 && this.x >= rightThreshold) {
+            this.x = rightThreshold;
+            this.direction.x = -1;
+            this.initSpeed("x");
+            this.elapsed[0] = 0;
+        }
+        const leftThreshold = w$3;
+        if (direction == -1 && this.x <= leftThreshold) {
+            this.x = leftThreshold;
+            this.direction.x = 1;
+            this.initSpeed("x");
+            this.elapsed[0] = 0;
+        }
+    }
+    moveY() {
+        const direction = this.direction.y;
+        if (direction == 0)
+            return;
+        let progress = this.elapsed[1] / this.travelTime.y;
+        if (direction == -1)
+            progress = 1 - progress;
+        this.y = (c.h - 2 * w$3 - c.s) * progress + w$3;
+        const topThreshold = c.h - w$3 - c.s;
+        if (direction == 1 && this.y > topThreshold) {
+            this.y = topThreshold;
+            this.direction.y = -1;
+            this.initSpeed("y");
+            this.elapsed[1] = 0;
+        }
+        const bottomThreshold = w$3;
+        if (direction == -1 && this.y < bottomThreshold) {
+            this.y = bottomThreshold;
+            this.direction.y = 1;
+            this.initSpeed("y");
+            this.elapsed[1] = 0;
+        }
+    }
+    countdown() {
+        this.moveX();
+        this.moveY();
+        this.attackCounter();
+    }
+    move(time) {
+        this.timer("start", time);
+        // attack() or countdown()
+        this[this.status](time);
+        this.timer("end", time);
+    }
+};
+
+/*
+elapsed {
+    0: timer for x movement
+    1: timer for y movement
+    2: timer for countdown (attack counter manipulation)
+}
+*/
+class Homer extends Enemy {
+    constructor(x, y) {
+        super(x, y, [0, 0, 0], 0, "#8db255", "#111");
+        this.moveInterval = 20;
+        this.moveMultiplier = 0.01;
+        this.buffer = { x: 0, y: 0 };
+        this.initCounter();
+    }
+    initCounter() {
+        this.counter = RNG(10, 15) * 2;
+        this.counterThreshold = RNG(200, 400);
+    }
+    attackCounter() {
+        if (this.elapsed[2] > this.counterThreshold) {
+            this.counter -= 1;
+            this.elapsed[2] = 0;
+            if (this.counter == 0) {
+                this.startSwing();
+                this.buffer.x = this.elapsed[0];
+                this.buffer.y = this.elapsed[1];
+            }
+        }
+    }
+    attack(time) {
+        // We want a 180 degree rotation in 200ms, which means 180/200 = 0.9
+        // degrees per millisecond
+        this.sword.rotate((time - this.lastFrame) * 0.9);
+        if (this.elapsed[2] > 200) {
+            // Reset to old, pre-attack values
+            this.status = "countdown";
+            this.elapsed[0] = this.buffer.x;
+            this.elapsed[1] = this.buffer.y;
+            this.elapsed[2] = 0;
+            this.initCounter();
+        }
+    }
+    countdown() {
+        // Move forward every 10 ms
+        let threshold = 10;
+        while (this.elapsed[0] > threshold) {
+            this.elapsed[0] -= threshold;
+            let dx = player.x - this.x;
+            let dy = player.y - this.y;
+            this.x += dx / 100;
+            this.y += dy / 100;
+        }
+        this.attackCounter();
+    }
+    move(time) {
+        this.timer("start", time);
+        // attack() or countdown()
+        this[this.status](time);
+        this.timer("end", time);
+    }
+}
+
+// Wall width inside augustusRoom
+const w$2 = 25;
+/*
+elapsed {
+    0: timer for xy movement
+    1: timer for countdown (attack counter manipulation)
+}
+
+phase
+    0: moving right
+    1: moving down
+    2: moving left
+    3: moving up
+*/
+class Slider extends Enemy {
+    constructor(x, y, phase) {
+        super(x, y, [0, 0], 0, "#8db255", "#111");
+        this.phase = 0;
+        this.phase = phase;
+        this.initSpeed();
+        this.initCounter();
+    }
+    initCounter() {
+        this.counter = RNG(10, 15) * 2;
+        this.counterThreshold = RNG(200, 400);
+    }
+    initSpeed() {
+        // Horizontal
+        if (this.phase == 0 || this.phase == 2)
+            this.travelTime = RNG(4000, 8000);
+        // Vertical
+        else
+            this.travelTime = RNG(2000, 4000);
+    }
+    attackCounter() {
+        if (this.elapsed[1] > this.counterThreshold) {
+            this.counter -= 1;
+            this.elapsed[1] = 0;
+            if (this.counter == 0) {
+                this.startSwing();
+                this.buffer = this.elapsed[0];
+            }
+        }
+    }
+    attack(time) {
+        // We want a 180 degree rotation in 200ms, which means 180/200 = 0.9
+        // degrees per millisecond
+        this.sword.rotate((time - this.lastFrame) * 0.9);
+        if (this.elapsed[1] > 200) {
+            // Reset to old, pre-attack values
+            this.status = "countdown";
+            this.elapsed[0] = this.buffer;
+            this.elapsed[1] = 0;
+            this.initCounter();
+        }
+    }
+    moveX() {
+        let progress = this.elapsed[0] / this.travelTime;
+        if (this.phase == 2)
+            progress = 1 - progress;
+        this.x = (c.w - 2 * w$2 - c.s) * progress + w$2;
+        const rightThreshold = c.w - w$2 - c.s;
+        if (this.phase == 0 && this.x >= rightThreshold) {
+            this.x = rightThreshold;
+            this.phase = 1;
+            this.initSpeed();
+            this.elapsed[0] = 0;
+        }
+        const leftThreshold = w$2;
+        if (this.phase == 2 && this.x <= leftThreshold) {
+            this.x = leftThreshold;
+            this.phase = 3;
+            this.initSpeed();
+            this.elapsed[0] = 0;
+        }
+    }
+    moveY() {
+        let progress = this.elapsed[0] / this.travelTime;
+        if (this.phase == 3)
+            progress = 1 - progress;
+        this.y = (c.h - 2 * w$2 - c.s) * progress + w$2;
+        console.log(progress);
+        const topThreshold = c.h - w$2 - c.s;
+        if (this.phase == 1 && this.y > topThreshold) {
+            this.y = topThreshold;
+            this.phase = 2;
+            this.initSpeed();
+            this.elapsed[0] = 0;
+        }
+        const bottomThreshold = w$2;
+        if (this.phase == 3 && this.y < bottomThreshold) {
+            this.y = bottomThreshold;
+            this.phase = 0;
+            this.initSpeed();
+            this.elapsed[0] = 0;
+        }
+    }
+    countdown() {
+        if (this.phase == 0 || this.phase == 2)
+            this.moveX();
+        else
+            this.moveY();
+        this.attackCounter();
+    }
+    move(time) {
+        this.timer("start", time);
+        // attack() or countdown()
+        this[this.status](time);
+        this.timer("end", time);
     }
 }
 
@@ -2815,28 +3093,24 @@ const w$1 = 25;
 elapsed {
     0: timer for movement (x,y manipulation)
     1: timer for countdown (attack counter manipulation)
+    2: music progression
 }
 
 status
-    "circle" = moving in a circle
-    "glide" = moving in a straight line towards the next rotation origin
-    "attacking" = swinging sword
-
-Times
-    19, 37, 54.5, 1:12
+    "circle"   : moving in a circle
+    "glide"    : moving in a straight line towards the next rotation origin
+    "attacking": swinging sword
 */
 class Augustus extends Enemy {
     constructor() {
-        super(993.75, 337.5, [0, 0], 99, "#eee", "#111");
+        super(993.75, 337.5, [0, 0, 0], 75, "#eee", "#111");
         this.angle = {
             degrees: 0,
             change: 0
         };
-        this.sliders = [
-            new Slider(100),
-            new Slider(337.5),
-            new Slider(575)
-        ];
+        this.phase = 0;
+        this.minions = [];
+        this.phases = [19, 36.8, 54.5, 72];
         // Radius of rotation circle
         this.radius = 200;
         this.origin = {
@@ -2855,7 +3129,7 @@ class Augustus extends Enemy {
         };
         this.status = "glide";
         this.dir = "right";
-        this.counter = 63;
+        this.counter = 75;
         this.radius = RNG(100, 250);
         this.genGlide();
     }
@@ -2973,7 +3247,31 @@ class Augustus extends Enemy {
             this.status = this.buffer.status;
             this.elapsed[0] = this.buffer.elapsed;
             this.elapsed[1] = 0;
-            this.counter = 63;
+            this.counter = 75;
+        }
+    }
+    musicProgress() {
+        // We're done
+        if (this.phase == this.phases.length)
+            return;
+        if (this.minions.length == 0)
+            this.minions.push(new Slider(c.w - c.s - w$1, w$1, 1));
+        if (this.elapsed[2] / 1000 > this.phases[this.phase]) {
+            this.phase++;
+            switch (this.phase) {
+                case 1:
+                    this.minions.push(new Slider$1(0, 100, { x: 1, y: 0 }), new Slider$1(0, 575, { x: 1, y: 0 }));
+                    break;
+                case 2:
+                    this.minions.push(new Slider$1(0, c.h, { x: 1, y: -1 }), new Slider$1(c.w, c.h, { x: -1, y: -1 }));
+                    break;
+                case 3:
+                    this.minions.push(new Slider$1(0, 337.5, { x: 1, y: 0 }));
+                    break;
+                case 4:
+                    this.minions.push(new Homer(0, 0));
+                    break;
+            }
         }
     }
     move(time) {
@@ -2981,19 +3279,21 @@ class Augustus extends Enemy {
         this[this.status](time); // circle(), glide(), etc.
         if (this.status != "attack")
             this.attackCounter();
+        this.musicProgress();
         this.timer("end", time);
-        this.sliders.forEach(slider => {
-            slider.move();
+        this.minions.forEach(minion => {
+            minion.move(time);
         });
     }
     collision(playerX, playerY) {
-        // Augustus is physically overlapping Claudia
-        if (this.x + c.s > playerX &&
-            this.y + c.s > playerY &&
-            playerX + c.s > this.x &&
-            playerY + c.s > this.y)
+        if (super.collision(playerX, playerY))
             return true;
-        return super.collision(playerX, playerY);
+        // We have to use a for loop and not forEach so that we can return
+        for (let i = 0; i < this.minions.length; i++) {
+            if (this.minions[i].collision(playerX, playerY))
+                return true;
+        }
+        return false;
     }
     draw() {
         super.draw();
@@ -3003,12 +3303,11 @@ class Augustus extends Enemy {
         c.rect(this.origin.x, this.origin.y, 50, 50);
         c.strokeStyle = "#eee";
         c.stroke();
-        this.sliders.forEach(slider => {
-            slider.draw();
+        this.minions.forEach(minion => {
+            minion.draw();
         });
     }
 }
-const augustus = new Augustus();
 
 // Dialogue in Augustus' room
 const dialogue$2 = [
@@ -3055,7 +3354,6 @@ const dialogue$2 = [
     ]
 ];
 
-let scene$2 = new Scene(dialogue$2[0]);
 // Wall width and door gap
 const w = 25;
 const gap = 200;
@@ -3073,18 +3371,30 @@ const closedWalls = [
     new Wall(0, 0, w, c.h, wallColour),
     new Wall(c.w - w, 0, w, c.h, wallColour)
 ];
-let walls = openWalls;
+let walls;
+let scene$2;
+let augustus;
 class Room {
     constructor() {
-        this.status = "dialogue_0";
-        this.gameState = "playing";
-        // The timestamp of the timer starting
-        this.initTime = 0;
+        this.initBaseDone = false;
         // How many ms have passed since the timer started
         this.time = 0;
     }
+    initBase() {
+        this.status = "dialogue_0";
+        this.initTime = 0;
+        this.initBaseDone = true;
+        scene$2 = new Scene(dialogue$2[0]);
+        augustus = new Augustus();
+        walls = openWalls;
+    }
     init() {
+        if (!this.initBaseDone)
+            this.initBase();
+        c.bgBlack();
         player.x = 30;
+        player.life.hp = 10;
+        player.life.threatened = false;
         document.onkeydown = this.inputInit;
         // Stop the trailing movement from the previous screen
         if (scene$2.playing)
@@ -3096,8 +3406,6 @@ class Room {
     fightInit() {
         this.status = "fighting";
         document.onkeydown = this.inputFight;
-        player.life.hp = 10;
-        player.life.threatened = false;
         music.reset();
         music.climax_reasoning.play();
         walls = closedWalls;
@@ -3150,19 +3458,20 @@ class Room {
             if (player.status == "attacking")
                 augustus.receiveDamage();
             // Have the player take damage if Augustus hits (sword) or overlaps
-            if (augustus.collision(player.x, player.y)) {
+            // (Including minions)
+            if (augustus.collision(player.x, player.y))
                 player.receiveDamage();
-                // Tell steps.ts to render the lose screen
-                if (player.life.hp < 1)
-                    this.gameState = "lose";
-            }
         }
     }
     transitions() {
         if (player.x < 0)
             return "TiberiusHouse";
+        if (player.life.hp < 1)
+            return "lose";
+        if (augustus.life.hp < 1)
+            return "win";
         else
-            return null;
+            return undefined;
     }
     drawTimer() {
         let seconds = Math.round(this.time / 1000);
@@ -3194,6 +3503,13 @@ class Room {
             player.life.draw();
         }
         scene$2.draw();
+    }
+    gameRestart() {
+        music.reset();
+        this.initBaseDone = false;
+        this.init();
+        player.y = (c.h - w * 2) / 2 + w - c.s / 2;
+        player.resetCooldowns();
     }
 }
 const room = new Room();
@@ -4096,6 +4412,70 @@ const lerwick = {
     }
 };
 
+const gameOver = {
+    neroLose() {
+        c.fillStyle = "#000";
+        c.frect(0, 0, c.w, c.h);
+        c.font = "48px serif";
+        c.fillStyle = "red";
+        c.text("YOU DIED", 100, 100);
+        c.font = "20px serif";
+        c.fillStyle = "white";
+        c.text("Nero has killed you! Are you this bad at video games?", 100, 200);
+        c.text("Just log off if you're not even going to try.", 100, 230);
+        c.text("Installing Linux is only for real gamers.", 100, 260);
+        c.text("Press Space to reset back before the fight to try again...", 100, 350);
+    },
+    neroWin() {
+        c.fillStyle = "#fff";
+        c.frect(0, 0, c.w, c.h);
+        c.fillStyle = "#000";
+        c.font = "48px serif";
+        c.text("You win!", 100, 100);
+        c.font = "20px serif";
+        c.text("You have successfully killed Nero.", 100, 300);
+        c.text("But, will you be able to sucessfully burn his body and generate the Linux CD-ROM?", 100, 330);
+        c.text("Will you be able to program your GPU driver?", 100, 360);
+        c.text("How come the pause key (Backspace) wasn't working?", 100, 420);
+        c.text("How come Frontinus said you could replay the tutorial but you actually couldn't without restarting?", 100, 450);
+        c.text("Find the answer to these questions in the full version of the game!", 100, 480);
+        c.text("Available now! To access, send your parents' credit card numbers to nop04824@xcoxc.com!", 100, 550);
+        c.text("Don't forget the expiration date and the three numbers on the back!", 100, 580);
+        c.text("I definitely won't make any bank transactions! The game is free!", 100, 610);
+        c.text("(You can press Space if you want to return to the game.)", 100, 660);
+    },
+    augustusLose() {
+        c.fillStyle = "#8db255";
+        c.frect(0, 0, c.w, c.h);
+        c.fillStyle = "#111";
+        c.font = "48px serif";
+        c.text("YOU DIED", 100, 100);
+        c.font = "20px serif";
+        c.text("Augustus has killed you! Didn't you read his warning?", 100, 200);
+        c.text("Are you still waiting 3 minutes every time? You know that's not optimal, right?", 100, 230);
+        c.text("Just turn off your computer and touch some grass instead.", 100, 260);
+        c.text("Press Space to reset back before the fight to try again...", 100, 350);
+    },
+    augustusWin() {
+        c.fillStyle = "#eee";
+        c.frect(0, 0, c.w, c.h);
+        c.fillStyle = "#111";
+        c.font = "48px serif";
+        c.text("You win!", 100, 100);
+        c.font = "20px serif";
+        c.text("You have successfully killed Augustus.", 100, 300);
+        c.text("Did you cheat? Did you do the practice?", 100, 330);
+        c.text("If you have the diligence for that, why? Why haven't you founded an AI startup?", 100, 360);
+        c.text("Anyway, you are hereby declared Empress of Lerwick.", 100, 420);
+        c.text("If the entire country's population showed up to overthrow you, you wouldn't even flinch, would you?", 100, 450);
+        c.text("You can just assume rule by default. Even the Emperor is a mere straggler in your shadow.", 100, 480);
+        c.text("There may be a bit more \"\"\"content\"\"\" added in the future.", 100, 550);
+        c.text("I personally find the combat system somewhat amusing, after all.", 100, 580);
+        c.text("Would some kind of procedurally-generated dungeon system be interesting? Maybe...", 100, 610);
+        c.text("(You can press Space if you want to return to the game.)", 100, 660);
+    }
+};
+
 const steps = {
     mainMenu() {
         mainMenu.draw();
@@ -4197,44 +4577,8 @@ const steps = {
                 window.requestAnimationFrame(this.tiberiusHouse);
         }
     },
-    gameOver() {
-        if (neroHouse.gameState == "playing")
-            return;
-        c.fillStyle = "#000";
-        c.frect(0, 0, c.w, c.h);
-        c.font = "48px serif";
-        c.fillStyle = "red";
-        c.text("YOU DIED", 100, 100);
-        c.font = "20px serif";
-        c.fillStyle = "white";
-        c.text("Nero has killed you! Are you this bad at video games?", 100, 200);
-        c.text("Just log off if you're not even going to try.", 100, 230);
-        c.text("Installing Linux is only for real gamers.", 100, 260);
-        c.text("Press Space to reset back before the fight to try again...", 100, 350);
-    },
     neroHouse(time) {
         neroHouse.move(time);
-        if (neroHouse.gameState == "win")
-            return;
-        if (neroHouse.gameState == "lose") {
-            window.requestAnimationFrame(this.gameOver);
-            // Space to try again
-            document.onkeydown = function (event) {
-                if (event.code == "Space") {
-                    neroHouse.gameState = "playing";
-                    neroHouse.room = 3;
-                    neroHouse.init();
-                    player.x = c.w / 2 - c.s / 2;
-                    player.y = c.h - c.s - 5;
-                    window.requestAnimationFrame(steps.neroHouse);
-                }
-            };
-            // Reset cooldowns - this is important so that the healing cooldown
-            // isn't active. Otherwise, after pressing Space to return to the game,
-            // you'll be stuck with slower movement speed
-            player.resetCooldowns();
-            return;
-        }
         neroHouse.draw();
         // Transition back to Lerwick
         if (neroHouse.locationTransitions()) {
@@ -4242,9 +4586,32 @@ const steps = {
             player.x = 900;
             player.y = -970;
             window.requestAnimationFrame(this.lerwick);
+            return;
         }
-        else
-            window.requestAnimationFrame(this.neroHouse);
+        // Win or lose screen
+        switch (neroHouse.gameOverTransitions()) {
+            case "win":
+                document.onkeydown = function (event) {
+                    if (event.code == "Space") {
+                        neroHouse.gameRestart();
+                        window.requestAnimationFrame(steps.neroHouse);
+                    }
+                };
+                window.requestAnimationFrame(gameOver.neroWin);
+                break;
+            case "lose":
+                document.onkeydown = function (event) {
+                    if (event.code == "Space") {
+                        neroHouse.gameRestart();
+                        window.requestAnimationFrame(steps.neroHouse);
+                    }
+                };
+                window.requestAnimationFrame(gameOver.neroLose);
+                break;
+            // No win or lose, so we are still in the house
+            default:
+                window.requestAnimationFrame(this.neroHouse);
+        }
     },
     tiberiusHouse(time) {
         house.move(time);
@@ -4269,13 +4636,31 @@ const steps = {
         room.move(time);
         room.draw();
         switch (room.transitions()) {
-            case null:
-                window.requestAnimationFrame(this.augustusRoom);
-                break;
             case "TiberiusHouse":
                 house.init();
                 player.x = 1220;
                 window.requestAnimationFrame(this.tiberiusHouse);
+                break;
+            case "win":
+                document.onkeydown = function (event) {
+                    if (event.code == "Space") {
+                        room.gameRestart();
+                        window.requestAnimationFrame(steps.augustusRoom);
+                    }
+                };
+                window.requestAnimationFrame(gameOver.augustusWin);
+                break;
+            case "lose":
+                document.onkeydown = function (event) {
+                    if (event.code == "Space") {
+                        room.gameRestart();
+                        window.requestAnimationFrame(steps.augustusRoom);
+                    }
+                };
+                window.requestAnimationFrame(gameOver.augustusLose);
+                break;
+            default:
+                window.requestAnimationFrame(this.augustusRoom);
                 break;
         }
     }
@@ -4285,9 +4670,24 @@ for (const step of Object.keys(steps)) {
     steps[step] = steps[step].bind(steps);
 }
 
+// Official start
 document.getElementById("load").onclick = () => {
     mainMenu.init();
     window.requestAnimationFrame(steps.mainMenu);
-    // Hide load button
     document.getElementById("load").style.display = "none";
 };
+// Testing Augustus fight
+/*
+import steps from "./steps"
+import augustusRoom from "../fixed/augustusRoom"
+import password from "../events/password"
+import c from "./canvas"
+
+// Based qutebrowser doesn't require input, so I can leave it like this while testing
+document.getElementById("help").style.display = "none"
+
+password.timeMachine = true
+
+augustusRoom.init()
+window.requestAnimationFrame(steps.augustusRoom)
+*/
