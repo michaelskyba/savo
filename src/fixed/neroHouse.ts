@@ -12,7 +12,10 @@ import Scene from "../menus/Scene"
 import MenuOption from "../menus/MenuOption"
 import dialogue from "../events/6"
 
-let nero = new Nero()
+import { RNG } from "../util/functions"
+
+let nero: Nero
+let ocarinus: Nero
 
 // Wall width
 const w = 25
@@ -138,6 +141,12 @@ function genCollisions() {
 				width: 50,
 				height: 50
 			},
+			{
+				x: ocarinus.x,
+				y: ocarinus.y,
+				width: 50,
+				height: 50
+			},
 			...collisions
 		]
 	else return collisions
@@ -173,11 +182,14 @@ const neroHouse = {
 		document.onkeyup = event => player.handleKey("keyup", event.code)
 
 		music.reset()
-		music.box_15.play()
+		// music.box_15.play()
+		music.despair_searching.play()
 
 		// Important resets after a game over
 		collisions = genCollisions()
-		nero = new Nero()
+		nero = new Nero(true)
+		ocarinus = new Nero(false)
+		ocarinus.x = 100
 	},
 
 	neroRoomInit() {
@@ -255,35 +267,56 @@ const neroHouse = {
 			this.roomTransitions()
 		}
 
+		let enemyOverlap = Math.abs(ocarinus.x - nero.x) < 5 && Math.abs(ocarinus.y - nero.y) < 5
+		if (enemyOverlap) {
+			switch(RNG(1, 4)) {
+				case 1:
+					ocarinus.x = w + c.s
+					ocarinus.y = w + c.s
+					break
+
+				case 2:
+					ocarinus.x = c.w - w - c.s - c.s
+					ocarinus.y = w + c.s
+					break
+
+				case 3:
+					ocarinus.x = w + c.s
+					ocarinus.y = c.h - w - c.s - c.s
+					break
+
+				case 4:
+					ocarinus.x = c.w - w - c.s - c.s
+					ocarinus.y = c.h - w - c.s - c.s
+					break
+			}
+		}
+
 	},
 
 	moveBattle(time: number) {
 		player.progressCooldowns(time)
 		nero.move(time)
+		ocarinus.move(time)
 
 		// The first collision is Nero, but the collisions array doesn't keep
 		// track of his movement
 
-		/*
-		TypeScript isn't smart enough to figure out that if this block is
-		running, collisions[0] has to have a .x and .y. But, I don't know how to
-		tell it that. Since I'm running out of time, it's easier to just ingore
-		these.
-		*/
-
-		// @ts-ignore
 		collisions[0].x = nero.x
-
-		// @ts-ignore
 		collisions[0].y = nero.y
+
+		collisions[1].x = ocarinus.x
+		collisions[1].y = ocarinus.y
 
 		if (player.status == "attacking")
 			nero.receiveDamage()
 
 		player.move(time, "fixed", collisions)
 
-		// Have the player take damage if Frontinus' sword hits them
+		// Have the player take damage if Nero or Ocarinus's sword hits them
 		if (nero.collision(player.x, player.y))
+			player.receiveDamage()
+		if (ocarinus.collision(player.x, player.y))
 			player.receiveDamage()
 	},
 
@@ -340,7 +373,10 @@ const neroHouse = {
 
 			// Don't worry about the battle besides the Nero placement, so it
 			// doesn't look like Claudia is talking to nothing
-			if (this.room == 4) nero.draw()
+			if (this.room == 4) {
+				nero.draw()
+				ocarinus.draw()
+			}
 		}
 
 		if (this.room == 5)
@@ -350,6 +386,8 @@ const neroHouse = {
 	drawBattle() {
 		nero.draw()
 		nero.drawPowerup()
+
+		ocarinus.draw()
 
 		player.drawRange(nero.x, nero.y)
 		player.drawCooldowns()

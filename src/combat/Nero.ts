@@ -11,6 +11,10 @@ elapsed {
 	0: timer for movement (x,y manipulation)
 	1: timer for countdown (attack counter manipulation)
 }
+
+real
+	true: Nero
+	false: Ocarinus
 */
 
 // Width of wall
@@ -22,8 +26,16 @@ class Nero extends Enemy {
 	// Different attack / counter patterns
 	pattern = 0
 
-	constructor() {
-		super(637.5, 445, [0, 0], 50, "maroon", "#ffb5b5")
+	// Distance divisor
+	dr: number
+
+	constructor(real: boolean) {
+		let bg = real ? "maroon" : "#111"
+		let fg = real ? "#ffb5b5" : "#eee"
+
+		super(637.5, 445, [0, 0], 50, bg, fg)
+
+		this.dr = real ? 20 : 40
 		this.counter = 10
 	}
 
@@ -64,8 +76,8 @@ class Nero extends Enemy {
 				return
 			}
 
-			this.x += dx / 20
-			this.y += dy / 20
+			this.x += dx / this.dr
+			this.y += dy / this.dr
 		}
 	}
 
