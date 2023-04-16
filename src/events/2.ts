@@ -246,6 +246,18 @@ const dialogue = {
 		["Frontinus", "If you go out there, you will experience pain and death."],
 		["Claudia", "Yeah, yeah, okay buddy."],
 		["Claudia", "Hopefully a Nero Linux ROM is around here somewhere..."],
+	],
+
+	// You have the peanuts
+	skip: [
+		["Frontinus", "What is that smell? Peanuts?"],
+		["Frontinus", "I guess you've already learned this before, then."],
+		["Frontinus", "Do you expect to come into possession of a time machine in the near future?"],
+		["Claudia", "It is likely."],
+		["Frontinus", "If you do, consider paying Nero another visit."],
+		["Claudia", "Nero is pretty boring, though."],
+		["Frontinus", "If he's alone, yes... but that may not be the case for long..."],
+		["Frontinus", "Regardless, I wish you luck with your pursuits."],
 	]
 }
 

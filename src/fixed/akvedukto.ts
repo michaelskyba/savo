@@ -9,12 +9,13 @@ import Frontinus from "../combat/Frontinus"
 
 import Scene from "../menus/Scene"
 import dialogue from "../events/2"
+import password from "../events/password"
 
 import Img from "./Img"
 
 let frontinus = new Frontinus(5)
-let scene = new Scene(dialogue.introduction)
 let bg = new Img("akvedukto_fixed", 0, 0)
+let scene: Scene
 
 function resetCombat() {
 	frontinus = new Frontinus(5)
@@ -103,31 +104,43 @@ const akvedukto = {
 	phase: 0,
 
 	init() {
+		if (this.phase == 0) {
+			if (password.peanuts) {
+				scene = new Scene(dialogue.skip)
+				this.phase = 10
+
+			} else
+				scene = new Scene(dialogue.introduction)
+		}
+
 		document.onkeydown = event => {
 			if (scene.playing && event.code == "KeyZ") {
 				scene.progress()
 
 				// The last frame was finished, so the scene is over
 				if (!scene.playing) {
-					this.phase++
+					if (!password.peanuts) {
+						this.phase++
 
-					// The attacking dialogue is the only one that follows
-					// another dialogue (introduction)
-					if (this.phase == 1) scene = new Scene(dialogue.attacking)
+						// The attacking dialogue is the only one that follows
+						// another dialogue (introduction)
+						if (this.phase == 1) scene = new Scene(dialogue.attacking)
 
-					if (this.phase == 6) {
-						// Have Frontinus use a 10 * 500ms timer to give extra
-						// time for healing
-						frontinus = new Frontinus(10)
-						frontinus.life.hp = 15
+						if (this.phase == 6) {
+							// Have Frontinus use a 10 * 500ms timer to give extra
+							// time for healing
+							frontinus = new Frontinus(10)
+							frontinus.life.hp = 15
+						}
+
+						// Block Claudia in to force healing / dodging
+						// The better option would be to have Frontinus chase you in
+						// a way that makes it impossible to fully escape, but that
+						// would take a huge amount of extra effort
+						if (this.phase == 6 || this.phase == 8)
+							player.y = 300
+
 					}
-
-					// Block Claudia in to force healing / dodging
-					// The better option would be to have Frontinus chase you in
-					// a way that makes it impossible to fully escape, but that
-					// would take a huge amount of extra effort
-					if (this.phase == 6 || this.phase == 8)
-						player.y = 300
 
 					player.resetInput()
 				}
