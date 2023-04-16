@@ -11,6 +11,7 @@ import Interactable from "./Interactable"
 import Scene from "../menus/Scene"
 import MenuOption from "../menus/MenuOption"
 import dialogue from "../events/6"
+import password from "../events/password"
 
 import { RNG } from "../util/functions"
 
@@ -154,8 +155,11 @@ function genCollisions() {
 
 const neroHouse = {
 	room: 0,
+	dualBattle: false,
 
 	init() {
+		this.dualBattle = password.timeMachine
+
 		player.life.hp = 10
 		player.life.threatened = false
 
@@ -182,8 +186,11 @@ const neroHouse = {
 		document.onkeyup = event => player.handleKey("keyup", event.code)
 
 		music.reset()
-		// music.box_15.play()
-		music.despair_searching.play()
+
+		if (this.dualBattle)
+			music.despair_searching.play()
+		else
+			music.box_15.play()
 
 		// Important resets after a game over
 		collisions = genCollisions()
@@ -266,44 +273,48 @@ const neroHouse = {
 			if (!scene.playing) player.move(time, "fixed", collisions)
 			this.roomTransitions()
 		}
-
-		let enemyOverlap = Math.abs(ocarinus.x - nero.x) < 5 && Math.abs(ocarinus.y - nero.y) < 5
-		if (enemyOverlap) {
-			switch(RNG(1, 4)) {
-				case 1:
-					ocarinus.x = w + c.s
-					ocarinus.y = w + c.s
-					break
-
-				case 2:
-					ocarinus.x = c.w - w - c.s - c.s
-					ocarinus.y = w + c.s
-					break
-
-				case 3:
-					ocarinus.x = w + c.s
-					ocarinus.y = c.h - w - c.s - c.s
-					break
-
-				case 4:
-					ocarinus.x = c.w - w - c.s - c.s
-					ocarinus.y = c.h - w - c.s - c.s
-					break
-			}
-		}
-
 	},
 
 	moveBattle(time: number) {
 		player.progressCooldowns(time)
 		nero.move(time)
-		ocarinus.move(time)
+
+		if (this.dualBattle) {
+			ocarinus.move(time)
+
+			let enemyOverlap = Math.abs(ocarinus.x - nero.x) < 5 && Math.abs(ocarinus.y - nero.y) < 5
+			if (enemyOverlap) {
+				switch(RNG(1, 4)) {
+					case 1:
+						ocarinus.x = w + c.s
+						ocarinus.y = w + c.s
+						break
+
+					case 2:
+						ocarinus.x = c.w - w - c.s - c.s
+						ocarinus.y = w + c.s
+						break
+
+					case 3:
+						ocarinus.x = w + c.s
+						ocarinus.y = c.h - w - c.s - c.s
+						break
+
+					case 4:
+						ocarinus.x = c.w - w - c.s - c.s
+						ocarinus.y = c.h - w - c.s - c.s
+						break
+				}
+			}
+		}
 
 		// The first collision is Nero, but the collisions array doesn't keep
 		// track of his movement
 
 		collisions[0].x = nero.x
 		collisions[0].y = nero.y
+
+		// (The second is Ocarinus)
 
 		collisions[1].x = ocarinus.x
 		collisions[1].y = ocarinus.y
@@ -375,7 +386,9 @@ const neroHouse = {
 			// doesn't look like Claudia is talking to nothing
 			if (this.room == 4) {
 				nero.draw()
-				ocarinus.draw()
+
+				if (this.dualBattle)
+					ocarinus.draw()
 			}
 		}
 
@@ -387,7 +400,8 @@ const neroHouse = {
 		nero.draw()
 		nero.drawPowerup()
 
-		ocarinus.draw()
+		if (this.dualBattle)
+			ocarinus.draw()
 
 		player.drawRange(nero.x, nero.y)
 		player.drawCooldowns()

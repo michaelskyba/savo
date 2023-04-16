@@ -29,6 +29,9 @@ window.requestAnimationFrame(steps.augustusRoom)
 // Testing dual Nero fight
 import steps from "./steps"
 import neroHouse from "../fixed/neroHouse"
+import password from "../events/password"
+
+password.timeMachine = true
 
 document.getElementById("help").style.display = "none"
 neroHouse.init()
