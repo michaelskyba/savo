@@ -121,7 +121,7 @@ let prompt = {
 	box: new MenuOption("=================================================", 0, 0)
 }
 
-let scene = new Scene(dialogue.Nero)
+let scene = new Scene([[]])
 scene.playing = false
 
 // Generate the collisions array - what physical objects can Claudia collide
@@ -246,7 +246,10 @@ const neroHouse = {
 			this.room = 4
 			player.y = c.s
 
-			scene = new Scene(dialogue.Nero)
+			if (this.dualBattle)
+				scene = new Scene(dialogue.NeroDual)
+			else
+				scene = new Scene(dialogue.Nero)
 		}
 
 		else if (this.room == 3 && player.x > c.w - c.s) {

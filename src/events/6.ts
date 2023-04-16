@@ -149,6 +149,27 @@ const dialogue = {
 		["Nero", "This encourages you to move around the room while fighting instead of staying in the same spot."],
 		["Nero", "It's peak game design, okay?"],
 		["Claudia", "Thanks for making it even easier to kill you, idiot."]
+	],
+
+	NeroDual: [
+		["Nero", "Oh ho! Robbed poor Tiberius of his only possession?"],
+		["Claudia", "I needed it to fight Augustus properly."],
+		["Claudia", "What else was I supposed to do?"],
+		["Nero", "I'm not here to pass moral judgement!"],
+		["Nero", "However, by pulling off such a despicable crime..."],
+		["Nero", "...you surely must understand the consequences of your actions, right?"],
+		["Claudia", "Of course: the consequence is that I can go forward in time, in one room, in one house."],
+		["Claudia", "Why do you think I wasted all that time finding the password?"],
+		["Nero", "Forget it! The point is, my friend Ocarinus, here, has his own time machine too."],
+		["Nero", "After I called him over, he was eager to participate."],
+		["Claudia", "How is this fair at all?"],
+		["Ocarinus", "It's not. Nero's goal may be to defend his life, but I only care about ending yours."],
+		["Ocarinus", "If you could quantify your average daily happiness, it would be below zero, wouldn't it?"],
+		["Claudia", "Uh..."],
+		["Ocarinus", "By allowing me to kill you, that number would permanently go up."],
+		["Ocarinus", "Don't you see? Make the instrumentally rational decision."],
+		["Ocarinus", "Lay down your weapon."],
+		["Ocarinus", "𝗗𝗶𝗲."]
 	]
 }
 

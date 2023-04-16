@@ -257,7 +257,7 @@ const dialogue = {
 		["Frontinus", "If you do, consider paying Nero another visit."],
 		["Claudia", "Nero is pretty boring, though."],
 		["Frontinus", "If he's alone, yes... but that may not be the case for long..."],
-		["Frontinus", "Regardless, I wish you luck with your pursuits."],
+		["Frontinus", "Regardless, I wish you luck with your pursuits."]
 	]
 }
 
