@@ -4,8 +4,6 @@ import c from "../game/canvas"
 import Powerup from "./Powerup"
 import { RNG } from "../util/functions"
 
-const powerup = new Powerup()
-
 /*
 elapsed {
 	0: timer for movement (x,y manipulation)
@@ -22,6 +20,7 @@ const w = 25
 
 class Nero extends Enemy {
 	moveStatus = "approaching"
+	powerup: Powerup
 
 	// Different attack / counter patterns
 	pattern = 0
@@ -37,6 +36,8 @@ class Nero extends Enemy {
 
 		this.dr = real ? 20 : 40
 		this.counter = 10
+
+		this.powerup = new Powerup()
 	}
 
 	retreat() {
@@ -148,8 +149,8 @@ class Nero extends Enemy {
 		this.timer("end", time)
 
 		// Check for Powerup collision
-		if (!powerup.activated && powerup.doesCollide())
-			powerup.activated = true
+		if (!this.powerup.activated && this.powerup.doesCollide())
+			this.powerup.activated = true
 	}
 
 	// Progress attack coutner
@@ -195,18 +196,18 @@ class Nero extends Enemy {
 	}
 
 	drawPowerup() {
-		powerup.draw()
+		this.powerup.draw()
 	}
 
 	receiveDamage() {
 		super.receiveDamage()
 
 		// Double damage with a powerup
-		if (powerup.activated) {
+		if (this.powerup.activated) {
 			super.receiveDamage()
 
-			powerup.activated = false
-			powerup.newPos()
+			this.powerup.activated = false
+			this.powerup.newPos()
 		}
 	}
 }
