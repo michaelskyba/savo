@@ -70,6 +70,7 @@ const music = {
     beautiful_ruin: document.getElementById("beautiful_ruin"),
     summer_salt: document.getElementById("summer_salt"),
     box_15: document.getElementById("box_15"),
+    despair_searching: document.getElementById("despair_searching"),
     beautiful_dead: document.getElementById("beautiful_dead"),
     climactic_return: document.getElementById("climactic_return"),
     climax_reasoning: document.getElementById("climax_reasoning"),
@@ -1455,12 +1456,23 @@ const dialogue$5 = {
         ["Frontinus", "If you go out there, you will experience pain and death."],
         ["Claudia", "Yeah, yeah, okay buddy."],
         ["Claudia", "Hopefully a Nero Linux ROM is around here somewhere..."],
+    ],
+    // You have the peanuts
+    skip: [
+        ["Frontinus", "What is that smell? Peanuts?"],
+        ["Frontinus", "I guess you've already learned this before, then."],
+        ["Frontinus", "Do you expect to come into possession of a time machine in the near future?"],
+        ["Claudia", "It is likely."],
+        ["Frontinus", "If you do, consider paying Nero another visit."],
+        ["Claudia", "Nero is pretty boring, though."],
+        ["Frontinus", "If he's alone, yes... but that may not be the case for long..."],
+        ["Frontinus", "Regardless, I wish you luck with your pursuits."]
     ]
 };
 
 let frontinus = new Frontinus(5);
-let scene$5 = new Scene(dialogue$5.introduction);
 let bg = new Img$1("akvedukto_fixed", 0, 0);
+let scene$5;
 function resetCombat() {
     frontinus = new Frontinus(5);
     player.resetCooldowns();
@@ -1531,28 +1543,38 @@ const akvedukto = {
     // Which phase of akvedukto / the tutorial are you on?
     phase: 0,
     init() {
+        if (this.phase == 0) {
+            if (password.peanuts) {
+                scene$5 = new Scene(dialogue$5.skip);
+                this.phase = 10;
+            }
+            else
+                scene$5 = new Scene(dialogue$5.introduction);
+        }
         document.onkeydown = event => {
             if (scene$5.playing && event.code == "KeyZ") {
                 scene$5.progress();
                 // The last frame was finished, so the scene is over
                 if (!scene$5.playing) {
-                    this.phase++;
-                    // The attacking dialogue is the only one that follows
-                    // another dialogue (introduction)
-                    if (this.phase == 1)
-                        scene$5 = new Scene(dialogue$5.attacking);
-                    if (this.phase == 6) {
-                        // Have Frontinus use a 10 * 500ms timer to give extra
-                        // time for healing
-                        frontinus = new Frontinus(10);
-                        frontinus.life.hp = 15;
+                    if (!password.peanuts) {
+                        this.phase++;
+                        // The attacking dialogue is the only one that follows
+                        // another dialogue (introduction)
+                        if (this.phase == 1)
+                            scene$5 = new Scene(dialogue$5.attacking);
+                        if (this.phase == 6) {
+                            // Have Frontinus use a 10 * 500ms timer to give extra
+                            // time for healing
+                            frontinus = new Frontinus(10);
+                            frontinus.life.hp = 15;
+                        }
+                        // Block Claudia in to force healing / dodging
+                        // The better option would be to have Frontinus chase you in
+                        // a way that makes it impossible to fully escape, but that
+                        // would take a huge amount of extra effort
+                        if (this.phase == 6 || this.phase == 8)
+                            player.y = 300;
                     }
-                    // Block Claudia in to force healing / dodging
-                    // The better option would be to have Frontinus chase you in
-                    // a way that makes it impossible to fully escape, but that
-                    // would take a huge amount of extra effort
-                    if (this.phase == 6 || this.phase == 8)
-                        player.y = 300;
                     player.resetInput();
                 }
             }
@@ -1696,22 +1718,29 @@ class Powerup {
     }
 }
 
-const powerup = new Powerup();
 /*
 elapsed {
     0: timer for movement (x,y manipulation)
     1: timer for countdown (attack counter manipulation)
 }
+
+real
+    true: Nero
+    false: Ocarinus
 */
 // Width of wall
 const w$6 = 25;
 class Nero extends Enemy {
-    constructor() {
-        super(637.5, 445, [0, 0], 50, "maroon", "#ffb5b5");
+    constructor(real) {
+        let bg = real ? "maroon" : "#111";
+        let fg = real ? "#ffb5b5" : "#eee";
+        super(637.5, 445, [0, 0], 50, bg, fg);
         this.moveStatus = "approaching";
         // Different attack / counter patterns
         this.pattern = 0;
+        this.dr = real ? 20 : 40;
         this.counter = 10;
+        this.powerup = new Powerup();
     }
     retreat() {
         // Move backward every 10 ms
@@ -1741,8 +1770,8 @@ class Nero extends Enemy {
                 this.elapsed[0] = 0;
                 return;
             }
-            this.x += dx / 20;
-            this.y += dy / 20;
+            this.x += dx / this.dr;
+            this.y += dy / this.dr;
         }
     }
     constraints() {
@@ -1804,8 +1833,8 @@ class Nero extends Enemy {
         this.constraints();
         this.timer("end", time);
         // Check for Powerup collision
-        if (!powerup.activated && powerup.doesCollide())
-            powerup.activated = true;
+        if (!this.powerup.activated && this.powerup.doesCollide())
+            this.powerup.activated = true;
     }
     // Progress attack coutner
     attackCounter() {
@@ -1845,15 +1874,15 @@ class Nero extends Enemy {
         }
     }
     drawPowerup() {
-        powerup.draw();
+        this.powerup.draw();
     }
     receiveDamage() {
         super.receiveDamage();
         // Double damage with a powerup
-        if (powerup.activated) {
+        if (this.powerup.activated) {
             super.receiveDamage();
-            powerup.activated = false;
-            powerup.newPos();
+            this.powerup.activated = false;
+            this.powerup.newPos();
         }
     }
 }
@@ -2001,10 +2030,31 @@ const dialogue$4 = {
         ["Nero", "This encourages you to move around the room while fighting instead of staying in the same spot."],
         ["Nero", "It's peak game design, okay?"],
         ["Claudia", "Thanks for making it even easier to kill you, idiot."]
+    ],
+    NeroDual: [
+        ["Nero", "Oh ho! Robbed poor Tiberius of his only possession?"],
+        ["Claudia", "I needed it to fight Augustus properly."],
+        ["Claudia", "What else was I supposed to do?"],
+        ["Nero", "I'm not here to pass moral judgement!"],
+        ["Nero", "However, by pulling off such a despicable crime..."],
+        ["Nero", "...you surely must understand the consequences of your actions, right?"],
+        ["Claudia", "Of course: the consequence is that I can go forward in time, in one room, in one house."],
+        ["Claudia", "Why do you think I wasted all that time finding the password?"],
+        ["Nero", "Forget it! The point is, my friend Ocarinus, here, has his own time machine too."],
+        ["Nero", "After I called him over, he was eager to participate."],
+        ["Claudia", "How is this fair at all?"],
+        ["Ocarinus", "It's not. Nero's goal may be to defend his life, but I only care about ending yours."],
+        ["Ocarinus", "If you could quantify your average daily happiness, it would be below zero, wouldn't it?"],
+        ["Claudia", "Uh..."],
+        ["Ocarinus", "By allowing me to kill you, that number would permanently go up."],
+        ["Ocarinus", "Don't you see? Make the instrumentally rational decision."],
+        ["Ocarinus", "Lay down your weapon."],
+        ["Ocarinus", "𝗗𝗶𝗲."]
     ]
 };
 
-let nero = new Nero();
+let nero;
+let ocarinus;
 // Wall width
 const w$5 = 25;
 // Door gap
@@ -2086,7 +2136,7 @@ let prompt$4 = {
     active: false,
     box: new MenuOption("=================================================", 0, 0)
 };
-let scene$4 = new Scene(dialogue$4.Nero);
+let scene$4 = new Scene([[]]);
 scene$4.playing = false;
 // Generate the collisions array - what physical objects can Claudia collide
 // with in the current room?
@@ -2104,6 +2154,12 @@ function genCollisions() {
                 width: 50,
                 height: 50
             },
+            {
+                x: ocarinus.x,
+                y: ocarinus.y,
+                width: 50,
+                height: 50
+            },
             ...collisions
         ];
     else
@@ -2111,7 +2167,9 @@ function genCollisions() {
 }
 const neroHouse = {
     room: 0,
+    dualBattle: false,
     init() {
+        this.dualBattle = password.timeMachine;
         player.life.hp = 10;
         player.life.threatened = false;
         document.onkeydown = event => {
@@ -2132,10 +2190,15 @@ const neroHouse = {
         };
         document.onkeyup = event => player.handleKey("keyup", event.code);
         music.reset();
-        music.box_15.play();
+        if (this.dualBattle)
+            music.despair_searching.play();
+        else
+            music.box_15.play();
         // Important resets after a game over
         collisions = genCollisions();
-        nero = new Nero();
+        nero = new Nero(true);
+        ocarinus = new Nero(false);
+        ocarinus.x = 100;
     },
     neroRoomInit() {
         document.onkeydown = event => {
@@ -2174,7 +2237,10 @@ const neroHouse = {
         else if (this.room == 3 && player.y > c.h - c.s) {
             this.room = 4;
             player.y = c.s;
-            scene$4 = new Scene(dialogue$4.Nero);
+            if (this.dualBattle)
+                scene$4 = new Scene(dialogue$4.NeroDual);
+            else
+                scene$4 = new Scene(dialogue$4.Nero);
         }
         else if (this.room == 3 && player.x > c.w - c.s) {
             this.room = 2;
@@ -2201,23 +2267,44 @@ const neroHouse = {
     moveBattle(time) {
         player.progressCooldowns(time);
         nero.move(time);
+        if (this.dualBattle) {
+            ocarinus.move(time);
+            let enemyOverlap = Math.abs(ocarinus.x - nero.x) < 5 && Math.abs(ocarinus.y - nero.y) < 5;
+            if (enemyOverlap) {
+                switch (RNG(1, 4)) {
+                    case 1:
+                        ocarinus.x = w$5 + c.s;
+                        ocarinus.y = w$5 + c.s;
+                        break;
+                    case 2:
+                        ocarinus.x = c.w - w$5 - c.s - c.s;
+                        ocarinus.y = w$5 + c.s;
+                        break;
+                    case 3:
+                        ocarinus.x = w$5 + c.s;
+                        ocarinus.y = c.h - w$5 - c.s - c.s;
+                        break;
+                    case 4:
+                        ocarinus.x = c.w - w$5 - c.s - c.s;
+                        ocarinus.y = c.h - w$5 - c.s - c.s;
+                        break;
+                }
+            }
+        }
         // The first collision is Nero, but the collisions array doesn't keep
         // track of his movement
-        /*
-        TypeScript isn't smart enough to figure out that if this block is
-        running, collisions[0] has to have a .x and .y. But, I don't know how to
-        tell it that. Since I'm running out of time, it's easier to just ingore
-        these.
-        */
-        // @ts-ignore
         collisions[0].x = nero.x;
-        // @ts-ignore
         collisions[0].y = nero.y;
+        // (The second is Ocarinus)
+        collisions[1].x = ocarinus.x;
+        collisions[1].y = ocarinus.y;
         if (player.status == "attacking")
             nero.receiveDamage();
         player.move(time, "fixed", collisions);
-        // Have the player take damage if Frontinus' sword hits them
+        // Have the player take damage if Nero or Ocarinus's sword hits them
         if (nero.collision(player.x, player.y))
+            player.receiveDamage();
+        if (ocarinus.collision(player.x, player.y))
             player.receiveDamage();
     },
     gameOverTransitions() {
@@ -2264,8 +2351,11 @@ const neroHouse = {
             scene$4.draw();
             // Don't worry about the battle besides the Nero placement, so it
             // doesn't look like Claudia is talking to nothing
-            if (this.room == 4)
+            if (this.room == 4) {
                 nero.draw();
+                if (this.dualBattle)
+                    ocarinus.draw();
+            }
         }
         if (this.room == 5)
             this.drawBattle();
@@ -2273,6 +2363,8 @@ const neroHouse = {
     drawBattle() {
         nero.draw();
         nero.drawPowerup();
+        if (this.dualBattle)
+            ocarinus.draw();
         player.drawRange(nero.x, nero.y);
         player.drawCooldowns();
         nero.life.draw();
@@ -4690,4 +4782,17 @@ password.timeMachine = true
 
 augustusRoom.init()
 window.requestAnimationFrame(steps.augustusRoom)
+*/
+// Testing dual Nero fight
+/*
+import steps from "./steps"
+import neroHouse from "../fixed/neroHouse"
+import password from "../events/password"
+
+password.peanuts = true
+
+document.getElementById("help").style.display = "none"
+neroHouse.init()
+neroHouse.room = 3
+window.requestAnimationFrame(steps.neroHouse)
 */
