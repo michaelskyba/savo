@@ -139,7 +139,7 @@ const steps = {
 				// We can't have the music operations in tiberiusHouse.init() or
 				// else it will have to run when coming back from augustusRoom
 				music.reset()
-				music.climactic_return.play()
+				music.monomono_slots.play()
 
 				window.requestAnimationFrame(this.tiberiusHouse)
 		}

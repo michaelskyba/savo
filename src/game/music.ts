@@ -5,7 +5,7 @@ const music = {
 	box_15: document.getElementById("box_15") as HTMLAudioElement,
 	despair_searching: document.getElementById("despair_searching") as HTMLAudioElement,
 	beautiful_dead: document.getElementById("beautiful_dead") as HTMLAudioElement,
-	climactic_return: document.getElementById("climactic_return") as HTMLAudioElement,
+	monomono_slots: document.getElementById("monomono_slots") as HTMLAudioElement,
 	climax_reasoning: document.getElementById("climax_reasoning") as HTMLAudioElement,
 
 	reset() {

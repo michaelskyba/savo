@@ -1,4 +1,5 @@
 // Official start
+/*
 import mainMenu from "../menus/mainMenu"
 import steps from "./steps"
 
@@ -7,6 +8,7 @@ document.getElementById("load").onclick = () => {
 	window.requestAnimationFrame(steps.mainMenu)
 	document.getElementById("load").style.display = "none"
 }
+*/
 
 // Testing Augustus fight
 /*
@@ -25,15 +27,13 @@ window.requestAnimationFrame(steps.augustusRoom)
 */
 
 // Testing dual Nero fight
-/*
 import steps from "./steps"
 import neroHouse from "../fixed/neroHouse"
 import password from "../events/password"
 
-password.peanuts = true
+password.timeMachine = true
 
 document.getElementById("help").style.display = "none"
 neroHouse.init()
 neroHouse.room = 3
 window.requestAnimationFrame(steps.neroHouse)
-*/
