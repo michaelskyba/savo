@@ -287,28 +287,25 @@ const neroHouse = {
 
 			let range = 20
 			let enemyOverlap = Math.abs(ocarinus.x - nero.x) < range && Math.abs(ocarinus.y - nero.y) < range
+
+			// If Ocarinus and Nero are very close, teleport Ocarinus to the
+			// nearest corner to the player
 			if (enemyOverlap) {
-				switch(RNG(1, 4)) {
-					case 1:
-						ocarinus.x = w + c.s
-						ocarinus.y = w + c.s
-						break
+				let x1 = w + c.s
+				let y1 = w + c.s
 
-					case 2:
-						ocarinus.x = c.w - w - c.s - c.s
-						ocarinus.y = w + c.s
-						break
+				let x2 = c.w - w - c.s - c.s
+				let y2 = c.h - w - c.s - c.s
 
-					case 3:
-						ocarinus.x = w + c.s
-						ocarinus.y = c.h - w - c.s - c.s
-						break
+				if (Math.abs(player.x - x1) < Math.abs(player.x - x2))
+					ocarinus.x = x1
+				else
+					ocarinus.x = x2
 
-					case 4:
-						ocarinus.x = c.w - w - c.s - c.s
-						ocarinus.y = c.h - w - c.s - c.s
-						break
-				}
+				if (Math.abs(player.y - y1) < Math.abs(player.y - y2))
+					ocarinus.y = y1
+				else
+					ocarinus.y = y2
 			}
 		}
 
