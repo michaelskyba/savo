@@ -115,6 +115,9 @@ const dialogue = {
 		["Tiberius", "cuz u cant touch my arguments"],
 		["Tiberius", "lmao how can you be this dumb"],
 		[null, "Claudia sighs."],
+		["Tiberius", "u mad?"],
+		["Claudia", "You've yet to express any idea of substance. There's nothing to make me mad."],
+		["Tiberius", "yeah u mad"],
 		["Claudia", "You know, let's just move on to the next topic."],
 		["Claudia", "But first, I think that there's a bit too much tension. Don't you think so?"],
 		["Tiberius", "idk u tell me"],
@@ -174,6 +177,10 @@ const dialogue = {
 		["Tiberius", "etc"],
 		["Claudia", "You're accepting that some sort of logic exists to make these arguments in the first place..."],
 		["Tiberius", "no"],
+		["Claudia", "..."],
+		["Tiberius", "u mad?"],
+		["Claudia", "...I am a little bit irritated with your lack of coherence."],
+		["Tiberius", "lol u mad"],
 
 		["Claudia", "I've had enough of this. But I still don't have the time machine..."],
 		["Claudia", "Maybe there's a different way of getting it from him..."]
