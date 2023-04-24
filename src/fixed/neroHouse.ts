@@ -285,7 +285,8 @@ const neroHouse = {
 		if (this.dualBattle) {
 			ocarinus.move(time)
 
-			let enemyOverlap = Math.abs(ocarinus.x - nero.x) < 5 && Math.abs(ocarinus.y - nero.y) < 5
+			let range = 20
+			let enemyOverlap = Math.abs(ocarinus.x - nero.x) < range && Math.abs(ocarinus.y - nero.y) < range
 			if (enemyOverlap) {
 				switch(RNG(1, 4)) {
 					case 1:
