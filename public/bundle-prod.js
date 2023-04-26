@@ -72,7 +72,7 @@ const music = {
     box_15: document.getElementById("box_15"),
     despair_searching: document.getElementById("despair_searching"),
     beautiful_dead: document.getElementById("beautiful_dead"),
-    climactic_return: document.getElementById("climactic_return"),
+    monomono_slots: document.getElementById("monomono_slots"),
     climax_reasoning: document.getElementById("climax_reasoning"),
     reset() {
         Object.keys(music).forEach(name => {
@@ -2269,26 +2269,23 @@ const neroHouse = {
         nero.move(time);
         if (this.dualBattle) {
             ocarinus.move(time);
-            let enemyOverlap = Math.abs(ocarinus.x - nero.x) < 5 && Math.abs(ocarinus.y - nero.y) < 5;
+            let range = 20;
+            let enemyOverlap = Math.abs(ocarinus.x - nero.x) < range && Math.abs(ocarinus.y - nero.y) < range;
+            // If Ocarinus and Nero are very close, teleport Ocarinus to the
+            // nearest corner to the player
             if (enemyOverlap) {
-                switch (RNG(1, 4)) {
-                    case 1:
-                        ocarinus.x = w$5 + c.s;
-                        ocarinus.y = w$5 + c.s;
-                        break;
-                    case 2:
-                        ocarinus.x = c.w - w$5 - c.s - c.s;
-                        ocarinus.y = w$5 + c.s;
-                        break;
-                    case 3:
-                        ocarinus.x = w$5 + c.s;
-                        ocarinus.y = c.h - w$5 - c.s - c.s;
-                        break;
-                    case 4:
-                        ocarinus.x = c.w - w$5 - c.s - c.s;
-                        ocarinus.y = c.h - w$5 - c.s - c.s;
-                        break;
-                }
+                let x1 = w$5 + c.s;
+                let y1 = w$5 + c.s;
+                let x2 = c.w - w$5 - c.s - c.s;
+                let y2 = c.h - w$5 - c.s - c.s;
+                if (Math.abs(player.x - x1) < Math.abs(player.x - x2))
+                    ocarinus.x = x1;
+                else
+                    ocarinus.x = x2;
+                if (Math.abs(player.y - y1) < Math.abs(player.y - y2))
+                    ocarinus.y = y1;
+                else
+                    ocarinus.y = y2;
             }
         }
         // The first collision is Nero, but the collisions array doesn't keep
@@ -2496,6 +2493,9 @@ const dialogue$3 = {
         ["Tiberius", "cuz u cant touch my arguments"],
         ["Tiberius", "lmao how can you be this dumb"],
         [null, "Claudia sighs."],
+        ["Tiberius", "u mad?"],
+        ["Claudia", "You've yet to express any idea of substance. There's nothing to make me mad."],
+        ["Tiberius", "yeah u mad"],
         ["Claudia", "You know, let's just move on to the next topic."],
         ["Claudia", "But first, I think that there's a bit too much tension. Don't you think so?"],
         ["Tiberius", "idk u tell me"],
@@ -2554,6 +2554,10 @@ const dialogue$3 = {
         ["Tiberius", "etc"],
         ["Claudia", "You're accepting that some sort of logic exists to make these arguments in the first place..."],
         ["Tiberius", "no"],
+        ["Claudia", "..."],
+        ["Tiberius", "u mad?"],
+        ["Claudia", "...I am a little bit irritated with your lack of coherence."],
+        ["Tiberius", "lol u mad"],
         ["Claudia", "I've had enough of this. But I still don't have the time machine..."],
         ["Claudia", "Maybe there's a different way of getting it from him..."]
     ],
@@ -4665,7 +4669,7 @@ const steps = {
                 // We can't have the music operations in tiberiusHouse.init() or
                 // else it will have to run when coming back from augustusRoom
                 music.reset();
-                music.climactic_return.play();
+                music.monomono_slots.play();
                 window.requestAnimationFrame(this.tiberiusHouse);
         }
     },
@@ -4789,7 +4793,7 @@ import steps from "./steps"
 import neroHouse from "../fixed/neroHouse"
 import password from "../events/password"
 
-password.peanuts = true
+password.timeMachine = true
 
 document.getElementById("help").style.display = "none"
 neroHouse.init()
