@@ -15,7 +15,7 @@ import Interactable from "./Interactable"
 const w = 25
 
 // Door gap
-const gap = 200 
+const gap = 200
 
 const wallColour = "#c3272b"
 const walls = [
