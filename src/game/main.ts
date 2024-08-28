@@ -36,4 +36,6 @@ document.getElementById("help").style.display = "none"
 neroHouse.init()
 neroHouse.room = 3
 window.requestAnimationFrame(steps.neroHouse)
+
+document.body.style.backgroundColor = "#111"
 */

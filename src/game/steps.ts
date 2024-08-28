@@ -202,7 +202,7 @@ const steps = {
 
 			case "Lerwick":
 				lerwick.init()
-				player.x = 1825
+				player.x = 1820
 				player.y = -447.5
 
 				window.requestAnimationFrame(this.lerwick)
